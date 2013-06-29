@@ -1,4 +1,4 @@
-Super-Haxon-Casio
+Super-Hexagon-Casio
 =================
 
-Super-Haxon-Casio
+A port of Super Hexagon on Casio FX-9860G USB series.
