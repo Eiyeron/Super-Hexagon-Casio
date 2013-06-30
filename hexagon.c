@@ -146,19 +146,20 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 //there is still for code to calculate the vertices of the hexagon, in case we want to change that again
 void drawPlayer()
 {
-/*    int x[6];
+    int x[6];
     int y[6];
     int i = 0;
 
     for(i = 0; i++; i != 6)
     {
         int angle = i *60;
-        x[i] = 16*cos(PI*angle/180) + cam.cX;
-        y[i] = 16*sin(PI*angle/180) + cam.cY;
+        x[i] = 16*cos(PI*angle/180.) + cam.cX;
+        y[i] = 16*sin(PI*angle/180.) + cam.cY;
     }
-*/
+
 	//draw the aforementionned circle, depending on the camera's center
-    ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
+    //ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
+	ML_polygone(x, y, 6, 6);
 	//draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
     ML_filled_circle(9*cos( PI*(player_angle + cam.angle)/180) + cam.cX, 9*sin( PI*(player_angle+cam.angle)/180) + cam.cY, 1, BLACK);
     
