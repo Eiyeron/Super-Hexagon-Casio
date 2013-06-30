@@ -38,12 +38,4 @@ struct Wall{
 
     Wall *nxt;
 };
-
-//a line. There are six lines (by default) in the game, numeroted from 0 to 5
-//each list has a list of obstacles and an angle
-struct Line{
-    int id;
-    Wall *list;
-    int angle;
-};
 #endif

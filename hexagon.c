@@ -11,9 +11,6 @@
 //duration of a frame
 #define FRAME_TIME 1/FPS
 
-//see struct.h
-Line lines[6] = {{0, NULL, 0},{1, NULL, 60},{2, NULL, 120},{3, NULL, 180},{4, NULL, 240},{5, NULL, 300}};
-
 //oriented angle between the player and the horizontal axis
 int player_angle=0;
 
