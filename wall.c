@@ -61,6 +61,8 @@ Wall *removeWall(Wall *list, int d)
 
 void update(Wall *list, unsigned int delta_time)
 {
+	//we want to move the obstacle by 1 every two ticks (1/64 seconds ~= 1/60)
+	//
 	Wall *tmp;
 	tmp = list;
 
@@ -68,7 +70,7 @@ void update(Wall *list, unsigned int delta_time)
 		if(tmp != NULL)
 		{
 			//just reducing the distance from the center
-			tmp->d-=1;
+			tmp->d -= 0.5 * delta_time;
 		}
 		tmp = tmp->nxt;
 	}while(tmp != NULL);

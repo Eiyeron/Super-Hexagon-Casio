@@ -31,7 +31,7 @@ struct Camera{
 //id is self explanatory
 //nxt is used by the linked list
 struct Wall{
-    int d;
+    float d;
     int h;
     int id;
     int line;
