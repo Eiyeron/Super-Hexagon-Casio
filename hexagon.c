@@ -31,6 +31,9 @@ void drawDiagonal(int nb);
 
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
+    unsigned int start_time = RTC_GetTicks(); //1 tick == 1/128 second
+    unsigned int last_time = 0;
+    unsigned int current_time = RTC_GetTicks();
 	//variables for fps calculation
     unsigned int fps = 0, frame = 0, tempsOrigine = RTC_GetTicks();
 	//char string to display the fps
@@ -40,9 +43,10 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
     //list = addWall(list, 128, 8, 1, 1);
 
-    while(KeyUp(K_EXIT)){
+    while(KeyUp(K_EXIT)){ //main loop
+    	last_time = current_time;
+	current_time = RTC_GetTicks();
         //fps
-        int current_frame_time = RTC_GetTicks();
         if(RTC_GetTicks() - tempsOrigine >= 32 )//if 1/4 seconds elapsed
         {
             fps = frame*4;
@@ -55,7 +59,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         cam.angle = (int) (cam.angle + dAngle);
         if(cam.angle >= 360)cam.angle = cam.angle - 359;
         if(list != NULL){ //if the linked list is not empty
-            update(list); //update the linked list
+            update(list, current_time - last_time); //update the linked list
 
         if(isColliding(list, player_angle) == true) //if the player and a wall collide
      	{

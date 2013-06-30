@@ -59,7 +59,7 @@ Wall *removeWall(Wall *list, int d)
 	return list;
 }
 
-void update(Wall *list)
+void update(Wall *list, unsigned int delta_time)
 {
 	Wall *tmp;
 	tmp = list;

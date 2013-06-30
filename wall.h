@@ -13,7 +13,7 @@ Wall *removeWall(Wall *list, int d); //returns a new pointer to the first elemen
 //show the ll "list"
 void show(Wall *list, Camera *cam);
 //updates the ll "list"
-void update(Wall *list);
+void update(Wall *list, unsigned int delta_time);
 //simple collision test. Returns true if a Wall from the list collides with the player
 bool isColliding(Wall *list, int player_angle);
 #endif
