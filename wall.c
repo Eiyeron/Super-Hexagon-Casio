@@ -26,7 +26,7 @@ Wall *addWall(Wall *list, int d, int h, int id, int line)
 
 }
 
-Wall *removeWall(Wall *list, int id)
+Wall *removeWall(Wall *list, int d)
 {
 	Wall *tmp1;
 	Wall *tmp2;
@@ -67,12 +67,15 @@ void update(Wall *list)
 	do{
 		if(tmp != NULL)
 		{
+			//just reducing the distance from the center
 			tmp->d-=1;
 		}
 		tmp = tmp->nxt;
 	}while(tmp != NULL);
 }
 
+//these are the actual drawing functions
+//they should the rewritten from scratch
 int getSlopeIndex(int dot1, int dot2)
 {
 	if(dot2 - dot1 == 1)
@@ -186,6 +189,7 @@ void show(Wall *list, Camera *cam)
 	}while(tmp != NULL);
 }
 
+//tests every Wall in the list
 bool isColliding(Wall *list, int player_angle)
 {
 	Wall *tmp;
@@ -194,10 +198,10 @@ bool isColliding(Wall *list, int player_angle)
 	do{
 		if(tmp != NULL)
 		{
-			if(tmp-> d <= 8)
-			{
+			if(tmp-> d <= 8)//if the wall is close enough from the center of the screen
+			{	//and is on the same line than the player
 				if(tmp->line == (int)(player_angle/60)) //&& tmp->line * 60 + 60 > player_angle)
-				{
+				{	//BOOM
 					return true;
 				}
 			}

@@ -20,6 +20,7 @@ int player_angle=0;
 Camera cam = {64, 32, 0};
 
 //linked list of obstacles
+//at the moment, there is only a list, but at term, we should be using the lists from the Line struct. (And thus remove the "line" member from the Wall struct
 Wall *list = NULL;
 
 //delta angle: defines the 'speed' of the player
