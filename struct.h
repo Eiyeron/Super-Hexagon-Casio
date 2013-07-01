@@ -24,7 +24,6 @@ struct Camera{
     int angle;
 
     float speed;
-    float acceleration;
 };
 
 //a simple obstacle structure

@@ -141,18 +141,11 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 }
 
 void updateCamera(Camera *cam, unsigned int delta_time){
-	cam->acceleration += 0.25 / 2 - rand() / 4; //between -0.25 and 0.25, perfect.
-	if(cam->acceleration > 0.5)
-		cam->acceleration = 0.5;
-	else if(cam->acceleration < -0.5)
-		cam->acceleration = -0.5;
-	cam->speed += 0.5 * cam->acceleration * delta_time / 2;
-	cam->angle += cam->speed;
+	cam->speed = 1; //to change
+	cam->angle += cam->speed * delta_time / 2.;
 
 	if(cam->angle >= 360)
 		cam->angle -= 359;
-
-
 }
 //draws the player
 //at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
