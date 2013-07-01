@@ -14,7 +14,7 @@
 //oriented angle between the player and the horizontal axis
 int player_angle=0;
 
-Camera cam = {64, 32, 0, 0};
+Camera cam = {64, 32, 0, 0, 0};
 
 //linked list of obstacles
 //at the moment, there is only a list, but at term, we should be using the lists from the Line struct. (And thus remove the "line" member from the Wall struct
@@ -159,15 +159,15 @@ void drawPlayer()
     for(i = 0; i<6; ++i)
     {
         int angle = i *60;
-        x[i] = 8.*cos(PI * (angle + cam.angle)/180.) + cam.cX;
-        y[i] = 8.*sin(PI * (angle + cam.angle)/180.) + cam.cY;
+        x[i] = (8. + cam.zoom)*cos(PI * (angle + cam.angle)/180.) + cam.cX;
+        y[i] = (8. + cam.zoom)*sin(PI * (angle + cam.angle)/180.) + cam.cY;
     }
 
 	//draw the aforementionned circle, depending on the camera's center
     //ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
 	ML_polygone(x, y, 6, BLACK);
 	//draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
-    ML_filled_circle(9*cos( PI*(player_angle + cam.angle)/180) + cam.cX, 9*sin( PI*(player_angle+cam.angle)/180) + cam.cY, 1, BLACK);
+    ML_filled_circle((9. + cam.zoom)*cos( PI*(player_angle + cam.angle)/180) + cam.cX, (9. + cam.zoom)*sin( PI*(player_angle+cam.angle)/180) + cam.cY, 1, BLACK);
 
 }
 
