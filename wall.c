@@ -76,17 +76,6 @@ void updateWalls(Wall *list, unsigned int delta_time)
 	}while(tmp != NULL);
 }
 
-//these are the actual drawing functions
-//they should the rewritten from scratch
-int getSlopeIndex(int dot1, int dot2)
-{
-	if(dot2 - dot1 == 1)
-	{
-		return dot1;
-	}else if(dot2 - dot1 == -1){
-		return dot2;
-	}else return 3;
-}
 void drawWalls(Wall *list, Camera *cam)
 {
 	Wall *tmp;
@@ -103,7 +92,7 @@ void drawWalls(Wall *list, Camera *cam)
 				const float sin1 = sin(angle);
 				const float sin2 = sin(angle + PI/3);
 				int i,j, x, y;
-				float dist = tmp->d - tmp->h + cam.zoom;
+				float dist = tmp->d - tmp->h + cam->zoom;
 				for(i = 0; i < tmp->h; ++i) {
 					if(dist <= 8) break;
 					ML_line(64 + dist*cos1, 32 + dist*sin1, 64 + dist*cos2, 32 + dist*sin2, BLACK);
