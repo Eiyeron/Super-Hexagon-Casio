@@ -153,8 +153,8 @@ void drawPlayer()
     for(i = 0; i<6; ++i)
     {
         int angle = i *60;
-        x[i] = 8.*cos((PI*angle + cam.angle*2)/180.) + cam.cX;
-        y[i] = 8.*sin((PI*angle + cam.angle*2.)/180.) + cam.cY;
+        x[i] = 8.*cos(PI * (angle + cam.angle)/180.) + cam.cX;
+        y[i] = 8.*sin(PI * (angle + cam.angle)/180.) + cam.cY;
     }
 
 	//draw the aforementionned circle, depending on the camera's center
