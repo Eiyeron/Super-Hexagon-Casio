@@ -48,7 +48,7 @@ struct Camera{
     int cX;
     int cY;
     int angle;
-    unsigned float zoom;
+    float zoom;
 
     float speed;
 };
