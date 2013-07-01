@@ -103,7 +103,7 @@ void show(Wall *list, Camera *cam)
 				const float sin1 = sin(angle);
 				const float sin2 = sin(angle + PI/3);
 				int i,j, x, y;
-				float dist = tmp->d - tmp->h;
+				float dist = tmp->d + tmp->h;
 				for(i = 0; i < tmp->h; ++i) {
 					if(dist <= 8) break;
 					ML_line(64 + dist*cos1, 32 + dist*sin1, 64 + dist*cos2, 32 + dist*sin2, BLACK);
