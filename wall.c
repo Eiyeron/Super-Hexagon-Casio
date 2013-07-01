@@ -44,7 +44,7 @@ Wall *removeWall(Wall *list, int d)
 	do{
 		if(tmp1->nxt != NULL)
 		{
-			if(tmp1->nxt->d <= 0)
+			if(tmp1->nxt->d <= 0.0)
 			{
 				tmp2 = tmp1->nxt;
 				if(tmp1->nxt->nxt != NULL)

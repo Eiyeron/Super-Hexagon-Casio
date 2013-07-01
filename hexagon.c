@@ -14,20 +14,21 @@
 //oriented angle between the player and the horizontal axis
 int player_angle=0;
 
-Camera cam = {64, 32, 0};
+Camera cam = {64, 32, 0, 0, 0};
 
 //linked list of obstacles
 //at the moment, there is only a list, but at term, we should be using the lists from the Line struct. (And thus remove the "line" member from the Wall struct
 Wall *list = NULL;
 
-//delta angle: defines the 'speed' of the player
-float dAngle = 10;
+//delta angle: defines the 'speed' of the camera
 
 //function prototypes
 //draws the player
 void drawPlayer();
 //draws one of the lines (from 0 to 2)
 void drawDiagonal(int nb);
+
+void updateCamera(Camera *cam, unsigned int delta_time);
 
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
@@ -55,9 +56,6 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         }
         frame++;
 	
-	//rotating the camera
-        cam.angle = (int) (cam.angle + dAngle);
-        if(cam.angle >= 360)cam.angle = cam.angle - 359;
         if(list != NULL){ //if the linked list is not empty
             update(list, current_time - last_time); //update the linked list
 
@@ -112,9 +110,10 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             player_angle+=15;
         }
 
+	updateCamera(&cam, current_time - last_time);
 	//manually change the rotation speed
 	//TODO: automatize this
-        if(KeyDown(K_PLUS))
+/*        if(KeyDown(K_PLUS))
         {
             dAngle += 0.2;
         }
@@ -122,7 +121,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         {
             dAngle -= 0.2;
         }
-
+*/
 	//the angle must not be greater than 360
         if(player_angle < 0)
             player_angle = 360 + player_angle;
@@ -141,6 +140,20 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     return 1;
 }
 
+void updateCamera(Camera *cam, unsigned int delta_time){
+	cam->acceleration += 0.25 / 2 - rand() / 4; //between -0.25 and 0.25, perfect.
+	if(cam->acceleration > 0.5)
+		cam->acceleration = 0.5;
+	else if(cam->acceleration < -0.5)
+		cam->acceleration = -0.5;
+	cam->speed += 0.5 * cam->acceleration * delta_time / 2;
+	cam->angle += cam->speed;
+
+	if(cam->angle >= 360)
+		cam->angle -= 359;
+
+
+}
 //draws the player
 //at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
 //but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.
