@@ -36,16 +36,15 @@ void drawPlayer(Camera *cam, int player_angle)
     for(i = 0; i<6; ++i)
     {
         angle = i *60;
-
-        x[i] = 8.0*cos(PI * (angle + cam->angle)/180.0) + cam->cX;
-        y[i] = 8.0*sin(PI * (angle + cam->angle)/180.0) + cam->cY;
+        x[i] = (8. + cam->zoom)*cos(PI * (angle + cam->angle)/180.) + cam->cX;
+        y[i] = (8. + cam->zoom)*sin(PI * (angle + cam->angle)/180.) + cam->cY;
     }
 
 	//draw the aforementionned circle, depending on the camera's center
     //ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
 	ML_polygone(x, y, 6, BLACK);
 	//draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
-    ML_filled_circle(9*cos( PI*(player_angle + cam->angle)/180) + cam->cX, 9*sin( PI*(player_angle+cam->angle)/180) + cam->cY, 1, BLACK);
+    ML_filled_circle((9. + cam->zoom)*cos( PI*(player_angle + cam->angle)/180) + cam->cX, (9. + cam->zoom)*sin( PI*(player_angle+cam->angle)/180) + cam->cY, 1, BLACK);
 
 }
 

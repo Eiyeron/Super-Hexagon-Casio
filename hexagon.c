@@ -7,7 +7,6 @@
 #include "syscall.h"
 #include "states.h"
 
-
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
     Game_Data data;
@@ -46,7 +45,6 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
     return 1;
 }
-
 
 #pragma section _BR_Size
 unsigned long BR_Size;
