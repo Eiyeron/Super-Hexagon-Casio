@@ -11,10 +11,19 @@
 
 //macros
 #define abs(x) x>0 ? x : -x
-
+typedef enum Pattern_Enum Pattern_Enum;
 typedef struct Camera Camera;
 typedef struct Wall Wall;
 typedef struct Line Line;
+typedef struct Level Level;
+
+struct Level{
+	//for the level generation
+	Pattern_Enum available_patterns[][];
+	int nb_patterns;
+
+
+};
 //the camera is defined by its center
 // ! and not by its upper left corner !
 //and an angle
