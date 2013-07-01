@@ -59,7 +59,7 @@ Wall *removeWall(Wall *list, int d)
 	return list;
 }
 
-void updateWalls(Wall *list, unsigned int delta_time)
+void update(Wall *list, unsigned int delta_time)
 {
 	//we want to move the obstacle by 1 every two ticks (1/64 seconds ~= 1/60)
 	//
@@ -87,7 +87,7 @@ int getSlopeIndex(int dot1, int dot2)
 		return dot2;
 	}else return 3;
 }
-void drawWalls(Wall *list, Camera *cam)
+void show(Wall *list, Camera *cam)
 {
 	Wall *tmp;
 	tmp = list;
