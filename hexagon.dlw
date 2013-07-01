@@ -9,7 +9,7 @@ Height=4740
 Width=5565
 State=0
 Flags=00000020
-Setting=157:1:hexagon.c
+Setting=124:1:MonochromeLib.c
 OptionA=0
 
 [_2]
@@ -48,7 +48,7 @@ OptionA=0
 
 [_5]
 Type=8
-Order=4
+Order=5
 Top=450
 Left=14730
 Height=3225
@@ -125,7 +125,7 @@ OptionA=0
 
 [_32]
 Type=16
-Order=5
+Order=6
 Top=2940
 Left=2370
 Height=4590
@@ -149,12 +149,12 @@ OptionA=0
 
 [_34]
 Type=16
-Order=6
+Order=4
 Top=3600
 Left=5985
 Height=6885
 Width=17190
 State=0
 Flags=00000020
-Setting=156:5:wall.c
+Setting=116:1:wall.c
 OptionA=0

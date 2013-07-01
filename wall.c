@@ -4,7 +4,7 @@ Wall *addWall(Wall *list, int d, int h, int id, int line)
 {
 	Wall *tmp;
 	Wall *new;
-	tmp = list;		 
+	tmp = list;
 
 	new = malloc(sizeof(Wall));
 	new->d = d;
@@ -13,7 +13,7 @@ Wall *addWall(Wall *list, int d, int h, int id, int line)
 	new->line = line;
 	new->nxt = NULL;
 
-	if(list == NULL)		
+	if(list == NULL)
 		return new;
 	else if(list != NULL)
 	{
@@ -104,12 +104,21 @@ void show(Wall *list, Camera *cam)
 		{
 			if(tmp->d + tmp->h< 64)
 			{
+
 				const float angle = PI * ((tmp->line)*60 +cam->angle) / 180;
 				const float cos1 = cos(angle);
 				const float cos2 = cos(angle + PI/3);
 				const float sin1 = sin(angle);
 				const float sin2 = sin(angle + PI/3);
-				int x[4];
+				int i,j, x, y;
+				float dist = tmp->d - tmp->h;
+				for(i = 0; i < tmp->h; ++i) {
+					if(dist <= 8) break;
+					ML_line(64 + dist*cos1, 32 + dist*sin1, 64 + dist*cos2, 32 + dist*sin2, BLACK);
+					--dist;
+
+				}
+				/*int x[4];
 				int y[4];
 				float slopes[4];
 				int i = 0;
@@ -129,7 +138,7 @@ void show(Wall *list, Camera *cam)
 				y[1]=tmp->d * sin2 + 32;
 				y[2]= (tmp->h + tmp->d) * sin2 + 32;
 				y[3]=(tmp->h + tmp->d) * sin1 + 32;
-
+				*/
 				/*slopes[0] = (y[1] - y[0])/(x[1]-x[0]);
 				slopes[1] = (y[2] - y[1])/(x[2]-x[1]);
 				slopes[2] = (y[3] - y[2])/(x[3]-x[2]);
@@ -163,8 +172,8 @@ void show(Wall *list, Camera *cam)
 							tmpInt = x[leftDotIndex];
 					}
 					for(rightDotIndex = 0; rightDotIndex == i || rightDotIndex == j || rightDotIndex == leftDotIndex; rightDotIndex ++)
-					{}						
-					
+					{}
+
 					tmpInt = i;
 					while(i <= j)
 					{
@@ -182,7 +191,7 @@ void show(Wall *list, Camera *cam)
 						x2 = x2 - (1/slopes[rightSlope]);
 						i++;
 					}*/
-				ML_filled_polygone(x, y, 4, BLACK);
+				//ML_filled_polygone(x, y, 4, BLACK);
 			}
 		}
 		tmp = tmp->nxt;
