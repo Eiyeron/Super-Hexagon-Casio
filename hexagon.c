@@ -11,20 +11,16 @@
 //duration of a frame
 #define FRAME_TIME 1/FPS
 
-//see struct.h
-Line lines[6] = {{0, NULL, 0},{1, NULL, 60},{2, NULL, 120},{3, NULL, 180},{4, NULL, 240},{5, NULL, 300}};
-
 //oriented angle between the player and the horizontal axis
 int player_angle=0;
 
-Camera cam = {64, 32, 0};
+Camera cam = {64, 32, 0, 0};
 
 //linked list of obstacles
 //at the moment, there is only a list, but at term, we should be using the lists from the Line struct. (And thus remove the "line" member from the Wall struct
 Wall *list = NULL;
 
 //delta angle: defines the 'speed' of the camera
-float dAngle = 10;
 
 //function prototypes
 //draws the player
@@ -32,8 +28,13 @@ void drawPlayer();
 //draws one of the lines (from 0 to 2)
 void drawDiagonal(int nb);
 
+void updateCamera(Camera *cam, unsigned int delta_time);
+
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
+    unsigned int start_time = RTC_GetTicks(); //1 tick == 1/128 second
+    unsigned int last_time = 0;
+    unsigned int current_time = RTC_GetTicks();
 	//variables for fps calculation
     unsigned int fps = 0, frame = 0, tempsOrigine = RTC_GetTicks();
 	//char string to display the fps
@@ -43,9 +44,10 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
     //list = addWall(list, 128, 8, 1, 1);
 
-    while(KeyUp(K_EXIT)){
+    while(KeyUp(K_EXIT)){ //main loop
+    	last_time = current_time;
+	current_time = RTC_GetTicks();
         //fps
-        int current_frame_time = RTC_GetTicks();
         if(RTC_GetTicks() - tempsOrigine >= 32 )//if 1/4 seconds elapsed
         {
             fps = frame*4;
@@ -53,12 +55,8 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             tempsOrigine = RTC_GetTicks();
         }
         frame++;
-
-	//rotating the camera
-        cam.angle = (int) (cam.angle + dAngle);
-        if(cam.angle >= 360)cam.angle = cam.angle - 359;
         if(list != NULL){ //if the linked list is not empty
-            update(list); //update the linked list
+            update(list, current_time - last_time); //update the linked list
 
         if(isColliding(list, player_angle) == true) //if the player and a wall collide
      	{
@@ -111,9 +109,10 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             player_angle+=15;
         }
 
+	updateCamera(&cam, current_time - last_time);
 	//manually change the rotation speed
 	//TODO: automatize this
-        if(KeyDown(K_PLUS))
+/*        if(KeyDown(K_PLUS))
         {
             dAngle += 0.2;
         }
@@ -121,7 +120,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         {
             dAngle -= 0.2;
         }
-
+*/
 	//the angle must not be greater than 360
         if(player_angle < 0)
             player_angle = 360 + player_angle;
@@ -140,6 +139,13 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     return 1;
 }
 
+void updateCamera(Camera *cam, unsigned int delta_time){
+	cam->speed = 1; //to change
+	cam->angle += cam->speed * delta_time / 2.;
+
+	if(cam->angle >= 360)
+		cam->angle -= 359;
+}
 //draws the player
 //at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
 //but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.

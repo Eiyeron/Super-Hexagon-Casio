@@ -22,6 +22,8 @@ struct Camera{
     int cX;
     int cY;
     int angle;
+
+    float speed;
 };
 
 //a simple obstacle structure
@@ -31,19 +33,11 @@ struct Camera{
 //id is self explanatory
 //nxt is used by the linked list
 struct Wall{
-    int d;
+    float d;
     int h;
     int id;
     int line;
 
     Wall *nxt;
-};
-
-//a line. There are six lines (by default) in the game, numeroted from 0 to 5
-//each list has a list of obstacles and an angle
-struct Line{
-    int id;
-    Wall *list;
-    int angle;
 };
 #endif
