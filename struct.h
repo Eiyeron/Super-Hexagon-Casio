@@ -1,7 +1,11 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
+#include "stdlib.h"
+
 //constants
+#define FPS 60
+#define FRAME_TIME 1/FPS
 #define PI 3.14159265
 #define SIN_60 0.866025404
 #define COS_60 0.5
@@ -11,20 +15,22 @@
 
 //macros
 #define abs(x) x>0 ? x : -x
-typedef enum Pattern_Enum Pattern_Enum;
+typedef enum {PATTERN} Pattern_Enum;
 typedef struct Camera Camera;
 typedef struct Wall Wall;
 typedef struct Line Line;
 typedef struct Level Level;
+typedef struct Game_Data Game_Data;
+typedef enum {GAME, MENU, TITLE, GAME_OVER} State;
 
 struct Level{
 	//for the level generation
-	Pattern_Enum available_patterns[][];
+	Pattern_Enum available_patterns[32][32];
 	int nb_patterns;
 
 	//for the camera rotation
 	int change_interval; //5 seconds most of the time, but who knows...
-	int change_precision //to add a bit of randomness to the intervals
+	int change_precision; //to add a bit of randomness to the intervals
 	float change_probability; //sometimes, there can be no change at all
 	
 	float max_speed;
@@ -58,4 +64,18 @@ struct Wall{
 
     Wall *nxt;
 };
+
+struct Game_Data{
+	unsigned int start_time;
+	unsigned int last_time;
+	unsigned int current_time;
+	unsigned int player_angle;
+
+	Wall *list;
+
+	Level *level;
+
+	Camera cam;
+};
+
 #endif
