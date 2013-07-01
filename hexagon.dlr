@@ -96,6 +96,7 @@ Flags=00001012
 File=C:\Users\Florian\GIT\Super-Hexagon-Casio\wall.c
 Line=112
 Flags=00001012
+Sublevel=1
 
 [Breakpoint]
 File=C:\Users\Florian\GIT\Super-Hexagon-Casio\hexagon.c
@@ -157,3 +158,9 @@ Flags=00001012
 File=C:\Users\Florian\GIT\Super-Hexagon-Casio\hexagon.c
 Line=161
 Flags=00001012
+
+[Breakpoint]
+File=C:\Users\Florian\GIT\Super-Hexagon-Casio\wall.c
+Line=112
+Flags=00001012
+Sublevel=2
