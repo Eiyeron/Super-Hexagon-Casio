@@ -7,13 +7,13 @@ MemoryPath=INIT
 MemCardPath=SDCard
 
 [Program1]
-Program=HEXAGON.G1A
+Program=hexagon.G1A
 Debug=Debug\FXADDINror.dbg
 LoadAddress=80000000:90100000
 
 [Files]
-SourceFile=:hexagon.c
 SourceFile=:ECode.c
+SourceFile=:hexagon.c
 SourceFile=:MonochromeLib.c
 SourceFile=:syscall.src
 SourceFile=:wall.c
