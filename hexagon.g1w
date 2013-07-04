@@ -13,11 +13,13 @@ LoadAddress=80000000:90100000
 
 [Files]
 SourceFile=:draw_states.c
-SourceFile=:ECode.c
-SourceFile=:hexagon.c
 SourceFile=:init_states.c
 SourceFile=:MonochromeLib.c
 SourceFile=:states.c
 SourceFile=:syscall.src
 SourceFile=:update_states.c
+SourceFile=:ECode.c
+SourceFile=:hexagon.c
+SourceFile=:MonochromeLib.c
+SourceFile=:syscall.src
 SourceFile=:wall.c

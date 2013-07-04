@@ -22,6 +22,6 @@ INIT
 SDCard
 *.g1a
 *.G1A
-FXSH_Build.bat
+*.bat
 *.dlw
 *.dlr

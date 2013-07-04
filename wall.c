@@ -92,6 +92,7 @@ void drawWalls(Wall *list, Camera *cam)
 				const float sin1 = sin(angle);
 				const float sin2 = sin(angle + PI/3);
 				int i,j, x, y;
+
 				float dist = tmp->d - tmp->h + cam->zoom;
 				for(i = 0; i < tmp->h; ++i) {
 					if(dist <= 8) break;
