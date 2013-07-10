@@ -2,7 +2,7 @@
 void draw_game(Game_Data *data)
 {
 	//draw the player and the lines
-    drawPlayer(&(data->cam), data->player_angle);
+    drawPlayer(&(data->cam), data->player_angle, data->nb_lines);
     drawDiagonal(1, data->cam);
     drawDiagonal(2, data->cam);
     drawDiagonal(3, data->cam);
@@ -27,7 +27,7 @@ void draw_game_over(Game_Data *data)
 //at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
 //but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.
 //there is still for code to calculate the vertices of the hexagon, in case we want to change that again
-void drawPlayer(Camera *cam, int player_angle)
+void drawPlayer(Camera *cam, int player_angle, int nb_lines)
 {
     int x[6];
     int y[6];
@@ -35,7 +35,7 @@ void drawPlayer(Camera *cam, int player_angle)
     int angle = 0;
     for(i = 0; i<6; ++i)
     {
-        angle = i *60;
+        angle = i * 360 / nb_lines;
         x[i] = (8. + cam->zoom)*cos(PI * (angle + cam->angle)/180.) + cam->cX;
         y[i] = (8. + cam->zoom)*sin(PI * (angle + cam->angle)/180.) + cam->cY;
     }
@@ -49,7 +49,7 @@ void drawPlayer(Camera *cam, int player_angle)
 }
 
 //draws one of the three rotating lines
-void drawDiagonal(int nb, Camera cam)
+void drawDiagonal(int nb, Camera cam, int nb_lines)
 {
     int tmp_angle = 0;
     float coeff = 0;

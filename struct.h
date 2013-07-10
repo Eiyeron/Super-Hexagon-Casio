@@ -74,6 +74,8 @@ struct Game_Data{
 	unsigned int current_time;
 	unsigned int player_angle;
 
+	unsigned int nb_lines;
+	int line_transition_counter; //neg = removing one line, pos: adding one line
 	Wall *list;
 
 	Level *level;

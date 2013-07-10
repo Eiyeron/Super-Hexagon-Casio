@@ -14,6 +14,9 @@ void init_game(Game_Data *data)
 	data->cam.cY = 32;
 	data->cam.angle = 0;
 	data->cam.speed = 0.0;
+
+	data->nb_lines = 6;
+	data->line_transition_counter = 0;
 }
 void init_title(Game_Data *data)
 {

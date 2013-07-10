@@ -9,6 +9,6 @@ void draw_title(Game_Data *data);
 void draw_menu(Game_Data *data);
 void draw_game_over(Game_Data *data);
 
-void drawPlayer(Camera *cam, int player_angle);
-void drawDiagonal(int nb, Camera cam);
+void drawPlayer(Camera *cam, int player_angle, int nb_lines);
+void drawDiagonal(int nb, Camera cam, int nb_lines);
 #endif
