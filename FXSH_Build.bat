@@ -1,7 +1,7 @@
 @echo off
 rem Do not edit! This batch file is created by CASIO fx-9860G SDK.
 
-
+if exist debug\*.obj  del debug\*.obj
 if exist HEXAGON.G1A  del HEXAGON.G1A
 
 cd debug
@@ -10,7 +10,7 @@ if exist FXADDINror.bin  del FXADDINror.bin
 cd ..
 if not exist debug\FXADDINror.bin  goto error
 
-"C:\Program Files\CASIO\fx-9860G SDK\Tools\MakeAddinHeader363.exe" "C:\Users\Florian\GIT\Super-Hexagon-Casio"
+"C:\Program Files\CASIO\fx-9860G SDK\Tools\MakeAddinHeader363.exe" "Z:\Super-Hexagon-Casio"
 if not exist HEXAGON.G1A  goto error
 echo Build has completed.
 goto end

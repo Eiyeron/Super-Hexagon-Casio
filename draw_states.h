@@ -11,4 +11,5 @@ void draw_game_over(Game_Data *data);
 
 void drawPlayer(Camera *cam, int player_angle);
 void drawDiagonal(int nb, Camera cam);
+void drawGameHUD(Game_Data *data);
 #endif

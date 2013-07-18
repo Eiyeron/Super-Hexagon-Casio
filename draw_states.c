@@ -1,4 +1,6 @@
 #include "draw_states.h"
+#include "fxlib.h"
+
 void draw_game(Game_Data *data)
 {
 	//draw the player and the lines
@@ -9,6 +11,8 @@ void draw_game(Game_Data *data)
 	//showing the walls
     if(data->list != NULL)
         drawWalls(data->list, &(data->cam));
+	//showing the HUD
+	drawGameHUD(data);
 }
 void draw_title(Game_Data *data)
 {
@@ -21,6 +25,34 @@ void draw_menu(Game_Data *data)
 void draw_game_over(Game_Data *data)
 {
 
+}
+
+int numDigits(unsigned int number)
+{
+    int digits = 0;
+    if (number <= 0) digits = 1; // remove this line if '-' counts as a digit
+    while (number) {
+        number /= 10;
+        digits++;
+    }
+    return digits;
+}
+
+
+//draws HUD
+//Shows the time elapsed and the current level
+void drawGameHUD(Game_Data *data) {
+	unsigned char timeBuffer[11] =""; 					//9 digits + . + \0
+	unsigned long int delta = RTC_GetTIcks() - data->start_time;
+	unsigned int centis = ((delta%128)/128.) *100; 		//calculate 1/100e second deciaml part
+	unsigned int seconds = delta /128;					//calculatr seconds
+	
+	unsigned char offset = 0;							//offset touse to merge strings in the same array
+	uintToStr(timeBuffer + offset, seconds);
+	offset += numDigits(seconds);
+	timeBuffer[offset++] ='.';
+	uintToStr(timeBuffer + offset, centis);
+	PrintMini(0, 8, timeBuffer, MINI_OVER);
 }
 
 //draws the player

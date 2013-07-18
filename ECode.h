@@ -45,7 +45,7 @@
 // #define EASY_CHAR2STR
 // #define EASY_UCHAR2STR
 #define EASY_INT2STR
-// #define EASY_UINT2STR
+#define EASY_UINT2STR
 // #define EASY_FLOAT2STR
 
 /**TO NUMBER**/
@@ -111,7 +111,7 @@ void printn(unsigned char x, unsigned char y, int n, unsigned char mode);
 
 /**TO STRING OPERATIONS**/
 unsigned char* intToStr(unsigned char* c, int n);
-unsigned char* uintToStr(char* c, unsigned int n);
+unsigned char* uintToStr(unsigned char* c, unsigned int n);
 unsigned char* charToStr(char* c, char n);
 unsigned char* ucharToStr(char* c, unsigned char n);
 unsigned char* floatToStr(char* c, float f, int pecision);
