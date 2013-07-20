@@ -4,7 +4,7 @@
 #include "stdlib.h"
 
 //constants
-#define FPS 60
+#define FPS 20
 #define FRAME_TIME 1/FPS
 #define PI 3.14159265
 #define SIN_60 0.866025404

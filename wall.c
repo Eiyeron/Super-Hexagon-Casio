@@ -76,7 +76,7 @@ void updateWalls(Wall *list, unsigned int delta_time)
 	}while(tmp != NULL);
 }
 
-void drawWalls(Wall *list, Camera *cam)
+void drawWalls(Wall *list, Camera *cam, int nb_lines)
 {
 	Wall *tmp;
 	tmp = list;
@@ -85,12 +85,12 @@ void drawWalls(Wall *list, Camera *cam)
 		{
 			if(tmp->d + tmp->h< 64)
 			{
-
-				const float angle = PI * ((tmp->line)*60 +cam->angle) / 180;
+				const float angle =  ((360 / nb_lines) * tmp->line + cam->angle) * PI / 180;
 				const float cos1 = cos(angle);
-				const float cos2 = cos(angle + PI/3);
+				const float cos2 = cos(angle +  (360.0 / nb_lines) * (PI / 180));
 				const float sin1 = sin(angle);
-				const float sin2 = sin(angle + PI/3);
+				const float sin2 = sin(angle + (360.0 / nb_lines) * (PI / 180));
+
 				int i,j, x, y;
 
 				float dist = tmp->d - tmp->h + cam->zoom;
@@ -106,7 +106,7 @@ void drawWalls(Wall *list, Camera *cam)
 }
 
 //tests every Wall in the list
-bool isColliding(Wall *list, int player_angle)
+bool isColliding(Wall *list, int player_angle, int nb_lines)
 {
 	Wall *tmp;
 	tmp = list;
@@ -116,7 +116,7 @@ bool isColliding(Wall *list, int player_angle)
 		{
 			if(tmp-> d <= 8)//if the wall is close enough from the center of the screen
 			{	//and is on the same line than the player
-				if(tmp->line == (int)(player_angle/60)) //&& tmp->line * 60 + 60 > player_angle)
+				if(tmp->line == (int)(player_angle/ 360 / nb_lines))
 				{	//BOOM
 					return true;
 				}

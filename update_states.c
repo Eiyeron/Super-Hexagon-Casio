@@ -11,7 +11,7 @@ void update_game(Game_Data *data)
     if(data->list != NULL){ //if the linked list is not empty
             updateWalls(data->list, data->current_time - data->last_time); //update the linked list
 
-        if(isColliding(data->list, data->player_angle) == true){ //if the player and a wall collide
+        if(isColliding(data->list, data->player_angle, data->nb_lines) == true){ //if the player and a wall collide
             PrintMini(50, 0, "TOUCHE", MINI_OVER); //death handling
     	}
         data->list = removeWall(data->list, 0); //remove every wall whose distance to the center equals zero
@@ -54,5 +54,5 @@ void updateCamera(Camera *cam, unsigned int delta_time){
     cam->angle += cam->speed * delta_time / 2.;
 
     if(cam->angle >= 360)
-        cam->angle -= 359;
+        cam->angle = cam->angle % 360;
 }
