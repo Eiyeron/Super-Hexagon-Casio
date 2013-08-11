@@ -21,6 +21,7 @@ typedef struct Camera Camera;
 typedef struct Wall Wall;
 typedef struct Line Line;
 typedef struct Level Level;
+typedef struct Line_Transition Line_Transition;
 typedef struct Game_Data Game_Data;
 typedef enum {GAME, MENU, TITLE, GAME_OVER} State;
 
@@ -47,7 +48,7 @@ struct Level{
 struct Camera{
     int cX;
     int cY;
-    int angle;
+    unsigned int angle;
     float zoom;
 
     float speed;
@@ -61,11 +62,17 @@ struct Camera{
 //nxt is used by the linked list
 struct Wall{
     float d;
-    int h;
-    int id;
-    int line;
+    unsigned int h;
+    unsigned int id;
+    unsigned int line;
 
     Wall *nxt;
+};
+
+struct Line_Transition{
+	unsigned int counter;
+	unsigned int counter_start;
+	int delta_nb_lines;
 };
 
 struct Game_Data{
@@ -75,7 +82,8 @@ struct Game_Data{
 	unsigned int player_angle;
 
 	unsigned int nb_lines;
-	int line_transition_counter; //neg = removing one line, pos: adding one line
+	Line_Transition line_transition;
+
 	Wall *list;
 
 	Level *level;
