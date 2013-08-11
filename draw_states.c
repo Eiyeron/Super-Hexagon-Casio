@@ -31,12 +31,43 @@ void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition lin
 	int y[32];
 	int i = 0;
 	int angle = 0;
-	for(i = 0; i < nb_lines; ++i)
+
+	float tmp_angle = 0.0;
+	float transition_angle = 0.0;
+	float delta_angle = 0.0;
+
+	if(line_transition.delta_nb_lines == 1)
+		nb_lines ++;
+	if(line_transition.counter_start != 0)
+		transition_angle = (360.0 / (float)nb_lines) * ((float)line_transition.counter / (float)line_transition.counter_start);
+	delta_angle = 360.0/nb_lines;
+
+	do
 	{
-	angle = i * 360/nb_lines;
-		x[i] = (8. + cam->zoom)*cos(PI * (angle + cam->angle)/180.) + cam->cX;
-        	y[i] = (8. + cam->zoom)*sin(PI * (angle + cam->angle)/180.) + cam->cY;
-	}
+		x[i] = (8. + cam->zoom)*cos(PI * (tmp_angle + cam->angle)/180.) + cam->cX;
+		y[i] = (8. + cam->zoom)*sin(PI * (tmp_angle + cam->angle)/180.) + cam->cY;
+
+		i++;
+		
+		switch(line_transition.delta_nb_lines)
+		{
+			case 0:
+				tmp_angle += delta_angle;
+				break;
+			case 1:
+				if(i < nb_lines)
+					tmp_angle += (360 - (delta_angle - transition_angle)) / (nb_lines - 1);
+				else
+					tmp_angle += delta_angle - transition_angle;
+				break;
+			case -1:
+				if(i < nb_lines)
+					tmp_angle += (360 - transition_angle) / (nb_lines - 1);
+				else
+					tmp_angle = transition_angle;
+				break;
+		}
+	}while(i <= nb_lines);
 
 	//draw the aforementionned circle, depending on the camera's center
 	//ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
