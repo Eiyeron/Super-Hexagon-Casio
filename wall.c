@@ -77,7 +77,7 @@ void updateWalls(Wall *list, unsigned int delta_time)
 }
 
 void drawWalls(Wall *list, Camera *cam, int nb_lines)
-{
+{//NEEDS A COMPLETE REWRITE TO SUPPORT THE LINE TRANSITIONS !
 	Wall *tmp;
 	tmp = list;
 	do{
