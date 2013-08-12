@@ -84,6 +84,7 @@ struct Line_Transition{
 };
 
 struct Game_Data{
+//Main game data
 	unsigned int start_time;
 	unsigned int last_time;
 	unsigned int current_time;
@@ -97,6 +98,12 @@ struct Game_Data{
 	Level *level;
 
 	Camera cam;
+
+//Start menu data
+	unsigned int nb_entries;
+	unsigned int current_entry; //from 1 to 6
+	unsigned int current_entry_high_score;
+	char **entry_difficulties; //a table of null-terminated strings
 };
 
 #endif
