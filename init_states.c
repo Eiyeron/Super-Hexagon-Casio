@@ -55,13 +55,16 @@ void load_difficulty_names(char **str_list)
 	char c_5[] = "Hardestest";
 	char c_6[] = "Hardestestest";
 
-	for(int i = 0; i < 6; i++)
+	int i = 0;
+	int j = 0;
+
+	for(i = 0; i < 6; i++)
 	{
 		str_list[i] = NULL;
 		str_list[i] = malloc(sizeof(char) * 24);
 		if(str_list[i] == NULL)
 			return;
-		for(int j = 0; j < 24; str_list[i][j] = 0, j++);
+		for(j = 0; j < 24; str_list[i][j] = 0, j++);
 	}
 	memcpy(str_list[0], c_1, sizeof(char) * strlen(c_1));
 	memcpy(str_list[1], c_2, sizeof(char) * strlen(c_2));

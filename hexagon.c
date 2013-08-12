@@ -17,7 +17,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 	//rand initialisation
     srand(RTC_GetTicks());
 
-    switch_to_state(GAME, &data);
+    switch_to_state(MENU, &data);
 
     while(KeyUp(K_EXIT)){ //main loop
         //fps

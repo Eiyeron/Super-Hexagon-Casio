@@ -1,6 +1,6 @@
 #include "states.h"
 
-State current_state = GAME;
+State current_state = MENU;
 void switch_to_state(State new_state, Game_Data *data)
 {
 	switch (new_state)
