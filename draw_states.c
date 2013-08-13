@@ -10,7 +10,8 @@ void draw_game(Game_Data *data)
 }
 void draw_title(Game_Data *data)
 {
-
+	PrintMini(20, 28, "Press EXE to begin");
+	drawDiagonals(data->cam, 6, data->line_transition);
 }
 void draw_menu(Game_Data *data)
 {
@@ -48,7 +49,7 @@ void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition lin
 		y[i] = (8. + cam->zoom)*sin(PI * (tmp_angle + cam->angle)/180.) + cam->cY;
 
 		i++;
-		
+
 		switch(line_transition.delta_nb_lines)
 		{
 			case 0:
@@ -74,7 +75,6 @@ void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition lin
 	ML_polygone(x, y, nb_lines, BLACK);
 	//draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
 	ML_filled_circle((9. + cam->zoom)*cos( PI*(player_angle + cam->angle)/180) + cam->cX, (9. + cam->zoom)*sin( PI*(player_angle+cam->angle)/180) + cam->cY, 1, BLACK);
-
 }
 
 //draws one of the three rotating lines
@@ -104,8 +104,8 @@ void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition)
 		tmp_angle_rad = tmp_angle * PI / 180.0f;
 		x1 = 9.0f * cos(tmp_angle_rad);
 		y1 = 9.0f * sin(tmp_angle_rad);
-		x2 = 64.0f * cos(tmp_angle_rad);
-		y2 = 64.0f * sin(tmp_angle_rad);
+		x2 = 128.0f * cos(tmp_angle_rad);
+		y2 = 128.0f * sin(tmp_angle_rad);
 		ML_line(x1 + cam.cX, y1 + cam.cY, x2 + cam.cX, y2 + cam.cY, BLACK);
 
 		i++;

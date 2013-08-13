@@ -41,8 +41,14 @@ void init_game(Game_Data *data)
 }
 void init_title(Game_Data *data)
 {
-
-
+        data->cam.cX = 64;
+        data->cam.cY = 70;
+        data->cam.angle = 0;
+        data->cam.speed = 1.0;
+        data->nb_lines = 6;
+        data->line_transition.counter = 0;
+        data->line_transition.counter_start = 0;
+        data->line_transition.delta_nb_lines = 0;
 }
 
 

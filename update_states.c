@@ -2,6 +2,10 @@
 
 void update_title(Game_Data *data)
 {
+        data->last_time = data->current_time;
+        data->current_time = RTC_GetTicks();
+
+	updateCamera(&(data->cam), data->current_time - data->last_time);
 	if(KeyDown(K_EXE))
 		switch_to_state(MENU, data);
 }
