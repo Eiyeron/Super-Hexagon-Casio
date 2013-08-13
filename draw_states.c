@@ -12,7 +12,7 @@ void draw_game(Game_Data *data)
     if(data->list != NULL)
         drawWalls(data->list, &(data->cam));
 	//showing the HUD
-	drawGameHUD(data);
+	//drawGameHUD(data);
 }
 void draw_title(Game_Data *data)
 {
