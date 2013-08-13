@@ -2,7 +2,8 @@
 
 void update_title(Game_Data *data)
 {
-//TODO
+	if(KeyDown(K_EXE))
+		switch_to_state(MENU, data);
 }
 void update_game(Game_Data *data)
 {
