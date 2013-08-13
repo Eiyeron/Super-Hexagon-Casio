@@ -2,12 +2,12 @@
 
 void init_game(Game_Data *data)
 {
+//TODO: init the level depending on the value of data->current_entry
 	data->level = NULL;
 	data->level = malloc(sizeof(Level));
 	if(data->level == NULL)
 		return;
 
-	data->level->id = 1;
 	data->level->nb_patterns = 0;
 
 	data->level->cam_change_interval = 5;
@@ -42,7 +42,7 @@ void init_game(Game_Data *data)
 void init_title(Game_Data *data)
 {
         data->cam.cX = 64;
-        data->cam.cY = 70;
+        data->cam.cY = 75;
         data->cam.angle = 0;
         data->cam.speed = 1.0;
         data->nb_lines = 6;
@@ -81,6 +81,7 @@ void load_difficulty_names(char **str_list)
 }
 void init_menu(Game_Data *data)
 {
+	data->keypress_delay = 50;
 	data->nb_entries = 6;
 	data->current_entry = 1;
 	data->current_entry_high_score = 0; //to load from a save file

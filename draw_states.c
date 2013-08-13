@@ -15,7 +15,8 @@ void draw_title(Game_Data *data)
 }
 void draw_menu(Game_Data *data)
 {
-
+	PrintMini(20,28, data->entry_difficulties[data->current_entry - 1]);
+	drawDiagonals(data->cam, 6, data->line_transition);
 }
 void draw_game_over(Game_Data *data)
 {
@@ -29,7 +30,7 @@ void draw_game_over(Game_Data *data)
 void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition)
 {
 	int x[32];
-	int y[32];
+ 	int y[32];
 	int i = 0;
 	int angle = 0;
 
