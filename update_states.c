@@ -7,7 +7,7 @@ void update_title(Game_Data *data)
 
 	updateCamera(&(data->cam), data->current_time - data->last_time);
 	if(KeyDown(K_EXE))
-		switch_to_state(MENU, data);
+		switch_to_state(GAME, data);
 }
 void update_game(Game_Data *data)
 {

@@ -93,7 +93,7 @@ void drawWalls(Wall *list, Camera *cam, int nb_lines)
 
 				int i,j, x, y;
 
-				float dist = tmp->d - tmp->h + cam->zoom;
+				float dist = tmp->d + cam->zoom;
 				for(i = 0; i < tmp->h; ++i) {
 					if(dist <= 8) break;
 					ML_line(64 + dist*cos1, 32 + dist*sin1, 64 + dist*cos2, 32 + dist*sin2, BLACK);
