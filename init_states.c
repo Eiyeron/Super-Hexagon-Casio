@@ -1,5 +1,45 @@
 #include "init_states.h"
+void init_pattern_wall(int *buffer, int w1, int w2, int w3, int w4, int w5, int w6)
+{
+	buffer[0] = w1;
+	buffer[1] = w2;
+	buffer[2] = w3;
+	buffer[3] = w4;
+	buffer[4] = w5;
+	buffer[5] = w6;
+}
+void init_patterns(Game_Data *data)
+{
+	int i = 0;
+	Pattern *current_pattern;
+	do{
+		current_pattern = &(data->patterns[i]);
+		switch(i)
+		{
+			case PATTERN1:
+				current_pattern->num_stages = 6;
+				current_pattern->stages = NULL;
+				current_pattern->stages = malloc(sizeof(Pattern_Stage));
+				if(current_pattern->stages == NULL)
+					return;
 
+				init_pattern_wall(current_pattern->stages[0].walls, 0, 0, 1, 0, 0, 1);
+				init_pattern_wall(current_pattern->stages[0].walls, 1, 0, 0, 1, 0, 0);
+				init_pattern_wall(current_pattern->stages[0].walls, 0, 1, 0, 0, 1, 0);
+				init_pattern_wall(current_pattern->stages[0].walls, 0, 0, 1, 0, 0, 1);
+				init_pattern_wall(current_pattern->stages[0].walls, 1, 0, 0, 1, 0, 0);
+				init_pattern_wall(current_pattern->stages[0].walls, 0, 1, 0, 0, 1, 0);
+				current_pattern->prob = 0.5;
+			break;
+			case PATTERN2:
+			break;
+			case PATTERN3:
+			break;
+		}
+	}while(i != END_PATTERNS)
+
+
+}
 void init_game(Game_Data *data)
 {
 //TODO: init the level depending on the value of data->current_entry
@@ -8,8 +48,8 @@ void init_game(Game_Data *data)
 	if(data->level == NULL)
 		return;
 
-	data->level->nb_patterns = 0;
-
+	data->level->nb_patterns = 3;
+	
 	data->level->cam_change_interval = 5;
 	data->level->cam_change_precision = 1;
 	data->level->cam_change_probability = 0.75;
@@ -94,5 +134,11 @@ void init_menu(Game_Data *data)
 }
 void init_game_over(Game_Data *data)
 {
+
+}
+
+void init_patterns(Game_Data *data)
+{
+
 
 }

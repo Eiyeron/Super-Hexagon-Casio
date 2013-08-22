@@ -14,16 +14,29 @@
 #define bool unsigned char
 
 //macros
+
 #define abs(x) x>0 ? x : -x
 
-typedef enum {PATTERN} Pattern_Enum;
+typedef enum {PATTERN1, PATTERN2, PATTERN3, END_PATTERNS} Pattern_Enum;
 typedef struct Camera Camera;
 typedef struct Wall Wall;
 typedef struct Line Line;
 typedef struct Level Level;
 typedef struct Line_Transition Line_Transition;
 typedef struct Game_Data Game_Data;
+typedef struct Pattern_Stage Pattern_Stage;
 typedef enum {GAME, MENU, TITLE, GAME_OVER} State;
+typedef struct Pattern Pattern;
+
+struct Pattern_Stage{
+	bool walls[6];
+};
+struct Pattern{
+	Pattern_Stage *stages;
+	int num_stages;
+	int nb_lines; //so that we don't load a 5-lines pattern when we have 6 lines to fill
+	float prob; //some patterns are more common than some others
+};
 
 struct Level{
 
@@ -105,6 +118,8 @@ struct Game_Data{
 	unsigned int current_entry_high_score;
 	char **entry_difficulties; //a table of null-terminated strings
 	unsigned int keypress_delay;
+
+	Pattern patterns[END_PATTERNS];
 };
 
 #endif
