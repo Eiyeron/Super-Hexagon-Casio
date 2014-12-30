@@ -6,7 +6,7 @@ void draw_game(Game_Data *data)
     drawDiagonals(data->cam, data->nb_lines, data->line_transition);
     	//showing the walls
     if(data->list != NULL)
-	drawWalls(data->list, &(data->cam), data->nb_lines);
+	drawWalls(data->list, &(data->cam), data->nb_lines, data->line_transition);
 }
 void draw_title(Game_Data *data)
 {

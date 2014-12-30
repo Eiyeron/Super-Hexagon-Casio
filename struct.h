@@ -87,7 +87,7 @@ struct Game_Data{
 	unsigned int start_time;
 	unsigned int last_time;
 	unsigned int current_time;
-	unsigned int player_angle;
+	int player_angle;
 
 	unsigned int nb_lines;
 	Line_Transition line_transition;

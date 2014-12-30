@@ -19,6 +19,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 
     switch_to_state(GAME, &data);
 
+
     while(KeyUp(K_EXIT)){ //main loop
         //fps
         if(RTC_GetTicks() - tempsOrigine >= 32 )//if 1/4 seconds elapsed
@@ -33,13 +34,14 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         draw(&data);
 
 	//printing debug information
-        intToStr(fps_text, fps);
-        PrintMini(0, 0, fps_text, MINI_OVER);
+        // intToStr(fps_text, fps);
+        // PrintMini(0, 0, fps_text, MINI_OVER);
 
 	//updating the screen
         ML_display_vram();
         ML_clear_vram();
 
+        //Sleep(1/0.06);
         Sleep(1/0.06);
     }
 
