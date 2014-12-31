@@ -5,7 +5,8 @@
 static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition);
 static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition);
 static void drawHud(Game_Data *data);
-
+static void drawChrono(Game_Data *data);
+static void drawStep(Game_Data *data);
 
 void draw_game(Game_Data *data)
 {
@@ -30,8 +31,30 @@ void draw_game_over(Game_Data *data)
 
 }
 
-static void drawHud(Game_Data *data) {
+static void drawChrono(Game_Data *data) {
 	unsigned char time_text[8] = "";
+	static const unsigned char time_hud_border[8] = {0xF0, 0xF0, 0xE0, 0xE0, 0xC0, 0xC0, 0x80, 0x80};
+	unsigned short length_of_time, length_of_time_line;
+
+	sprintf(time_text, "%.2f", data->chrono_time);
+	length_of_time = strlen(time_text);
+	length_of_time_line = 4 * length_of_time;
+
+
+	if(data->chrono_time < 60) {
+		PrintMini(0, 0, time_text, MINI_REV);
+		ML_horizontal_line(6, 0, (data->chrono_time/60.) * (length_of_time_line - 2), BLACK);
+		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
+	}
+	else {
+		PrintMini(0, 1, time_text, MINI_REV);
+		ML_horizontal_line(6, 0, length_of_time_line - 1, BLACK);
+		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
+	}
+	ML_bmp_8_or(time_hud_border, length_of_time_line, 0);
+}
+
+static void drawStep(Game_Data *data) {
 	unsigned char *step_text[6] = {
 		"Point",
 		"Line",
@@ -48,9 +71,7 @@ static void drawHud(Game_Data *data) {
 		60
 	};
 
-	unsigned char time_hud_border[8] = {0xF0, 0xF0, 0xE0, 0xE0, 0xC0, 0xC0, 0x80, 0x80};
 	unsigned char step_hud_border[8] ={0x1F, 0x1F, 0x0F, 0x0F, 0x07, 0x07, 0x01, 0x01};
-	unsigned short length_of_time, length_of_time_line;
 	unsigned short length_of_step, current_step, i;
 	current_step = 5;
 	for(i = 0; i < 5; i++) {
@@ -60,10 +81,7 @@ static void drawHud(Game_Data *data) {
 		}
 	}
 
-	sprintf(time_text, "%.2f", data->chrono_time);
 
-	length_of_time = strlen(time_text);
-	length_of_time_line = 4 * length_of_time;
 	length_of_step = 4 * strlen(step_text[current_step]) + 1;
 
 	// Little patch because the font is not fixed width and 'n' chars are annoying me.
@@ -75,18 +93,12 @@ static void drawHud(Game_Data *data) {
 	ML_bmp_8_or(step_hud_border, 127 - length_of_step - 8, 0);
 	ML_horizontal_line(6, 127 - length_of_step - 2, 127, BLACK);
 	ML_horizontal_line(7, 127 - length_of_step - 2, 127, BLACK);
+}
 
-	if(data->chrono_time < 60) {
-		PrintMini(0, 0, time_text, MINI_REV);
-		ML_horizontal_line(6, 0, (data->chrono_time/60.) * (length_of_time_line - 2), BLACK);
-		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
-	}
-	else {
-		PrintMini(0, 1, time_text, MINI_REV);
-		ML_horizontal_line(6, 0, length_of_time_line - 1, BLACK);
-		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
-	}
-	ML_bmp_8_or(time_hud_border, length_of_time_line, 0);
+static void drawHud(Game_Data *data) {
+	drawChrono(data);
+	drawStep(data);
+
 }
 
 //draws the player
