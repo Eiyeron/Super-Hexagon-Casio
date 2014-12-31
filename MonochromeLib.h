@@ -58,7 +58,7 @@
 //#define ML_BMP_AND_CL
 //#define ML_BMP_XOR_CL
 
-//#define ML_BMP_8_OR
+#define ML_BMP_8_OR
 //#define ML_BMP_8_AND
 //#define ML_BMP_8_XOR
 #define ML_BMP_8_OR_CL
