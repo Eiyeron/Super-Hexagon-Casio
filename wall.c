@@ -7,6 +7,10 @@ Wall *addWall(Wall *list, int d, int h, int id, int line)
 	tmp = list;
 
 	new = malloc(sizeof(Wall));
+	if(new == NULL) {
+		// Uh oh
+		return list;
+	}
 	new->d = d;
 	new->h = h;
 	new->id = id;
