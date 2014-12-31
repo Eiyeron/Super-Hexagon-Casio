@@ -1,12 +1,21 @@
 #include "draw_states.h"
+#include "fxlib.h"
+#include <stdio.h>
+// static functions
+static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition);
+static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition);
+static void drawHud(Game_Data *data);
+
+
 void draw_game(Game_Data *data)
 {
 	//draw the player and the lines
-    drawPlayer(&(data->cam), data->player_angle, data->nb_lines, data->line_transition);
-    drawDiagonals(data->cam, data->nb_lines, data->line_transition);
+	drawPlayer(&(data->cam), data->player_angle, data->nb_lines, data->line_transition);
+	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
+	drawHud(data);
     	//showing the walls
-    if(data->list != NULL)
-	drawWalls(data->list, &(data->cam), data->nb_lines, data->line_transition);
+	if(data->list != NULL)
+		drawWalls(data->list, &(data->cam), data->nb_lines, data->line_transition);
 }
 void draw_title(Game_Data *data)
 {
@@ -21,11 +30,17 @@ void draw_game_over(Game_Data *data)
 
 }
 
+static void drawHud(Game_Data *data) {
+	unsigned char time_text[8] = "";
+	sprintf(time_text, "%.2f", data->chrono_time);
+	PrintMini(0, 0, time_text, MINI_REV);
+}
+
 //draws the player
 //at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
 //but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.
 //there is still for code to calculate the vertices of the hexagon, in case we want to change that again
-void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition)
+static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition)
 {
 	int x[32];
 	int y[32];
@@ -52,20 +67,20 @@ void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition lin
 		switch(line_transition.delta_nb_lines)
 		{
 			case 0:
-				tmp_angle += delta_angle;
-				break;
+			tmp_angle += delta_angle;
+			break;
 			case 1:
-				if(i < nb_lines)
-					tmp_angle += (360 - (delta_angle - transition_angle)) / (nb_lines - 1);
-				else
-					tmp_angle += delta_angle - transition_angle;
-				break;
+			if(i < nb_lines)
+				tmp_angle += (360 - (delta_angle - transition_angle)) / (nb_lines - 1);
+			else
+				tmp_angle += delta_angle - transition_angle;
+			break;
 			case -1:
-				if(i < nb_lines)
-					tmp_angle += (360 - transition_angle) / (nb_lines - 1);
-				else
-					tmp_angle = transition_angle;
-				break;
+			if(i < nb_lines)
+				tmp_angle += (360 - transition_angle) / (nb_lines - 1);
+			else
+				tmp_angle = transition_angle;
+			break;
 		}
 	}while(i <= nb_lines);
 
@@ -78,7 +93,7 @@ void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition lin
 }
 
 //draws one of the three rotating lines
-void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition)
+static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition)
 {
 	int tmp_angle = cam.angle;
 	float tmp_angle_rad = 0.0f;
@@ -111,11 +126,11 @@ void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition)
 		i++;
 
 		switch(line_transition.delta_nb_lines){
-		case 0:
+			case 0:
 			tmp_angle += 360/nb_lines;
 			break;
 
-		case 1:
+			case 1:
 			if(i < nb_lines - 1)
 			{
 				tmp_angle += (360 - (delta_angle - transition_angle)) / (nb_lines - 1);
@@ -124,7 +139,7 @@ void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition)
 			}
 			break;
 
-		case -1:
+			case -1:
 			if(i < nb_lines - 1)
 			{
 				tmp_angle += (360 - transition_angle) / (nb_lines - 1);

@@ -87,6 +87,7 @@ struct Game_Data{
 	unsigned int start_time;
 	unsigned int last_time;
 	unsigned int current_time;
+	float chrono_time;
 	int player_angle;
 
 	unsigned int nb_lines;

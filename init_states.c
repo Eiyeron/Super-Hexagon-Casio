@@ -26,6 +26,7 @@ void init_game(Game_Data *data)
 	data->start_time = RTC_GetTicks(); //1 tick == 1/128 second
 	data->last_time = 0;
 	data->current_time = RTC_GetTicks();
+	data->chrono_time = 0;
 
 	data->player_angle = 0;
 

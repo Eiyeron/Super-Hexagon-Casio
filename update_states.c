@@ -11,6 +11,8 @@ void update_game(Game_Data *data)
 {
 	data->last_time = data->current_time;
 	data->current_time = RTC_GetTicks();
+	data->chrono_time += (data->current_time - data->last_time)/ 128.;
+
 	if(data->list != NULL){ //if the linked list is not empty
 		updateWalls(data->list, min(data->current_time - data->last_time, 2)); //update the linked list
 

@@ -20,6 +20,5 @@ SourceFile=:syscall.src
 SourceFile=:update_states.c
 SourceFile=:ECode.c
 SourceFile=:hexagon.c
-SourceFile=:MonochromeLib.c
-SourceFile=:syscall.src
 SourceFile=:wall.c
+SourceFile=:fixed.c
