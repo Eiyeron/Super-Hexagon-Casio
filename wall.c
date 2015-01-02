@@ -84,29 +84,21 @@ void updateWalls(Wall *list, unsigned int delta_time)
 
 void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_transition)
 {//NEEDS A COMPLETE REWRITE TO SUPPORT THE LINE TRANSITIONS !
-	// TODO : Speeed up with more fixed.
 	Wall *tmp;
 
 	fix coeff = 0;
-	// float coeff = 0.0;
 	fix transition_angle = 0;
-	// float transition_angle = 0.0;
 	fix delta_angle = fdiv(FIX(360), FIX(nb_lines));
-	// float delta_angle = 360.0 / nb_lines;
 	fix offset = 0;
-	// float offset = 0;
 
 	if(line_transition.delta_nb_lines == 1)
 		nb_lines ++;
 
 	if(line_transition.counter_start != 0)
 		coeff = fdiv(FIX(line_transition.counter), FIX(line_transition.counter_start));
-	// 	coeff = (float)line_transition.counter / (float)line_transition.counter_start;
 	transition_angle = fmul(delta_angle, coeff);
-	// transition_angle = delta_angle * coeff;
 
 	offset = fdiv(fmul((delta_angle - transition_angle), FIX(line_transition.delta_nb_lines)), FIX(nb_lines));
-	// offset = (delta_angle - transition_angle) * line_transition.delta_nb_lines/(float)nb_lines;
 
 	tmp = list;
 	do{
@@ -116,7 +108,6 @@ void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_trans
 			{
 				const fix delta_angle_minus_offset = delta_angle - offset;
 				const fix angle =  fmul(delta_angle_minus_offset, FIX(tmp->line)) + FIX(cam->angle);
-				// const float angle = ((delta_angle - offset) * tmp->line + cam->angle) * PI / 180.;
 				const fix cos1 = fcos(angle);
 				const fix cos2 = fcos(angle + delta_angle_minus_offset);
 				const fix sin1 = fsin(angle);
@@ -124,7 +115,6 @@ void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_trans
 				int i;
 
 				fix dist = ftofix(tmp->d + cam->zoom);
-				// float dist = tmp->d + cam->zoom;
 				for(i = 0; i < tmp->h && dist > FIX(8); ++i) {
 					ML_line(64 + fixtof(fmul(dist, cos1)), 32 + fixtof(fmul(dist,sin1)), 64 + fixtof(fmul(dist, cos2)), 32 + fixtof(fmul(dist, sin2)), BLACK);
 					dist -= FIX(1);

@@ -125,6 +125,7 @@ static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transit
 
 	do
 	{
+		// TODO : use fixed for only two trig calls?
 		x[i] = (8. + cam->zoom)*cos(PI * (tmp_angle + cam->angle)/180.) + cam->cX;
 		y[i] = (8. + cam->zoom)*sin(PI * (tmp_angle + cam->angle)/180.) + cam->cY;
 
@@ -154,6 +155,7 @@ static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transit
 	//ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
 	ML_polygone(x, y, nb_lines, BLACK);
 	//draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
+	// TODO : Replace it for a quick sprite blit, or unwrapped ML_pixel procedure.
 	ML_filled_circle((9. + cam->zoom)*cos( PI*(player_angle + cam->angle)/180) + cam->cX, (9. + cam->zoom)*sin( PI*(player_angle+cam->angle)/180) + cam->cY, 1, BLACK);
 
 }
