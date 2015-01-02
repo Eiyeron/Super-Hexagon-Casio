@@ -81,4 +81,10 @@ void updateCamera(Camera *cam, unsigned int delta_time){
 
 	if(cam->angle >= 360)
 		cam->angle = cam->angle % 360;
+	if(cam->zoom == 1)
+		cam->zoom = 3;
+	else
+		cam->zoom -= 0.5 * delta_time * FRAME_TIME;
+	if(cam->zoom < 1)
+		cam->zoom = 1;
 }

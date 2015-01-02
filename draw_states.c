@@ -182,8 +182,8 @@ static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transit
 
 	do{
 		tmp_angle_rad = tmp_angle * PI / 180.0f;
-		x1 = 9.0f * cos(tmp_angle_rad);
-		y1 = 9.0f * sin(tmp_angle_rad);
+		x1 = (9.0f + cam.zoom) * cos(tmp_angle_rad);
+		y1 = (9.0f + cam.zoom) * sin(tmp_angle_rad);
 		x2 = 64.0f * cos(tmp_angle_rad);
 		y2 = 64.0f * sin(tmp_angle_rad);
 		ML_line(x1 + cam.cX, y1 + cam.cY, x2 + cam.cX, y2 + cam.cY, BLACK);
