@@ -1,7 +1,7 @@
 #ifndef _FIXED_H
 #define _FIXED_H
 
-// Bit lenght of the decimal part, change it to change the precision :
+// Bit length of the decimal part, change it to change the precision :
 #define DB 12
 
 #define MOD(x, y) ((x)<0 ? (y)+(x)%(y) : (x)%(y))
