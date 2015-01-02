@@ -1,5 +1,6 @@
 #include "draw_states.h"
 #include "fxlib.h"
+#include "fixed.h"
 #include <stdio.h>
 // static functions
 static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition);
@@ -160,45 +161,43 @@ static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transit
 //draws one of the three rotating lines
 static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition)
 {
-	int tmp_angle = cam.angle;
-	float tmp_angle_rad = 0.0f;
+	fix tmp_angle = FIX(cam.angle);
 	int i = 0;
 
-	float x1 = 0.0f, y1 = 0.0f, x2 = 0.0f, y2 = 0.0f;
+	fix x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
-	float delta_angle = 0.0;
+	fix delta_angle = 0;
 
-	float coeff = 0.0;
-	float transition_angle = 0.0;
+	fix coeff = 0;
+	fix transition_angle = 0;
 	
-	delta_angle = 360.0 / nb_lines;
+	delta_angle = fdiv(FIX(360), FIX(nb_lines));
 
 	if(line_transition.delta_nb_lines == 1)
 		nb_lines ++;
 
 	if(line_transition.counter_start != 0)
-		coeff = (float)line_transition.counter / (float)line_transition.counter_start;
-	transition_angle = delta_angle * coeff;
+		coeff = fdiv(FIX(line_transition.counter), FIX(line_transition.counter_start));
+	transition_angle = fmul(delta_angle, coeff);
 
 	do{
-		tmp_angle_rad = tmp_angle * PI / 180.0f;
-		x1 = (9.0f + cam.zoom) * cos(tmp_angle_rad);
-		y1 = (9.0f + cam.zoom) * sin(tmp_angle_rad);
-		x2 = 64.0f * cos(tmp_angle_rad);
-		y2 = 64.0f * sin(tmp_angle_rad);
-		ML_line(x1 + cam.cX, y1 + cam.cY, x2 + cam.cX, y2 + cam.cY, BLACK);
+		x1 = fmul(FIX(9) + ftofix(cam.zoom), fcos(tmp_angle));
+		y1 = fmul(FIX(9) + ftofix(cam.zoom), fsin(tmp_angle));
+		x2 = fmul(fcos(tmp_angle), FIX(64));
+		y2 = fmul(fsin(tmp_angle), FIX(64));
+		ML_line(UNFIX(x1) + cam.cX, UNFIX(y1) + cam.cY, UNFIX(x2) + cam.cX, UNFIX(y2) + cam.cY, BLACK);
 
 		i++;
 
 		switch(line_transition.delta_nb_lines){
 			case 0:
-			tmp_angle += 360/nb_lines;
+			tmp_angle += fdiv(FIX(360), FIX(nb_lines));
 			break;
 
 			case 1:
 			if(i < nb_lines - 1)
 			{
-				tmp_angle += (360 - (delta_angle - transition_angle)) / (nb_lines - 1);
+				tmp_angle += fdiv(FIX(360) - (delta_angle - transition_angle), FIX(nb_lines - 1));
 			}else{
 				tmp_angle += delta_angle - transition_angle;
 			}
@@ -207,12 +206,12 @@ static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transit
 			case -1:
 			if(i < nb_lines - 1)
 			{
-				tmp_angle += (360 - transition_angle) / (nb_lines - 1);
+				tmp_angle += fdiv(FIX(360) - transition_angle, FIX(nb_lines - 1));
 			}else{
 				tmp_angle += transition_angle;
 			}
 			break;
 		}
-		if(tmp_angle >= 360)tmp_angle = tmp_angle - 359;
+		if(tmp_angle >= FIX(360)) tmp_angle = tmp_angle - FIX(359);
 	}while(i < nb_lines);
 }
