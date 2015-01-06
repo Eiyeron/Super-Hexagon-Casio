@@ -3,7 +3,8 @@
 #include "fixed.h"
 #include <stdio.h>
 // static functions
-static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition);
+static void drawPlayer(Camera *cam, int player_angle);
+static void drawPolygon(Camera *cam, int nb_lines, Line_Transition line_transition);
 static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transition);
 static void drawHud(Game_Data *data);
 static void drawChrono(Game_Data *data);
@@ -12,7 +13,8 @@ static void drawStep(Game_Data *data);
 void draw_game(Game_Data *data)
 {
 	//draw the player and the lines
-	drawPlayer(&(data->cam), data->player_angle, data->nb_lines, data->line_transition);
+	drawPlayer(&(data->cam), data->player_angle);
+	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
 	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
 	drawHud(data);
     	//showing the walls
@@ -21,10 +23,14 @@ void draw_game(Game_Data *data)
 }
 void draw_title(Game_Data *data)
 {
+	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
+	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
 
 }
 void draw_menu(Game_Data *data)
 {
+	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
+	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
 
 }
 void draw_game_over(Game_Data *data)
@@ -102,13 +108,8 @@ static void drawHud(Game_Data *data) {
 
 }
 
-//draws the player
-//at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
-//but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.
-//there is still for code to calculate the vertices of the hexagon, in case we want to change that again
-static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transition line_transition)
-{
-	int x[32];
+static void drawPolygon(Camera *cam, int nb_lines, Line_Transition line_transition) {
+		int x[32];
 	int y[32];
 	int i = 0;
 	int angle = 0;
@@ -156,6 +157,14 @@ static void drawPlayer(Camera *cam, int player_angle, int nb_lines, Line_Transit
 	ML_polygone(x, y, nb_lines, BLACK);
 	//draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
 	// TODO : Replace it for a quick sprite blit, or unwrapped ML_pixel procedure.
+}
+
+//draws the player
+//at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
+//but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.
+//there is still for code to calculate the vertices of the hexagon, in case we want to change that again
+static void drawPlayer(Camera *cam, int player_angle)
+{
 	ML_filled_circle((9. + cam->zoom)*cos( PI*(player_angle + cam->angle)/180) + cam->cX, (9. + cam->zoom)*sin( PI*(player_angle+cam->angle)/180) + cam->cY, 1, BLACK);
 
 }
@@ -185,8 +194,8 @@ static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transit
 	do{
 		x1 = fmul(FIX(9) + ftofix(cam.zoom), fcos(tmp_angle));
 		y1 = fmul(FIX(9) + ftofix(cam.zoom), fsin(tmp_angle));
-		x2 = fmul(fcos(tmp_angle), FIX(64));
-		y2 = fmul(fsin(tmp_angle), FIX(64));
+		x2 = fmul(fcos(tmp_angle), FIX(128));
+		y2 = fmul(fsin(tmp_angle), FIX(128));
 		ML_line(UNFIX(x1) + cam.cX, UNFIX(y1) + cam.cY, UNFIX(x2) + cam.cX, UNFIX(y2) + cam.cY, BLACK);
 
 		i++;
