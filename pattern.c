@@ -25,12 +25,12 @@ static Pattern* allocatePattern(Pattern* pattern, unsigned int pattern_length) {
 Pattern* readPattern(Pattern* pattern, unsigned char* data) {
 	unsigned int i;
 	pattern->length = data[0];
-	pattern->cooldown = data[1];
+	pattern->cooldown = (data[1]<<8)+(data[2]);
 	allocatePattern(pattern, pattern->length);
 	if(pattern  == NULL) return NULL;
 
 	for(i = 0; i < data[0]; i++) {
-		unsigned int offset = i*5 + 2;
+		unsigned int offset = i*5 + 3;
 		pattern->side[i] = data[offset];
 		pattern->distance[i] = (data[offset + 1]<<8) + data[offset + 2];
 		pattern->wall_length[i] = (data[offset + 3]<<8) + data[offset + 4];
