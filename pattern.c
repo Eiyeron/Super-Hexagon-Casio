@@ -42,7 +42,7 @@ void addPattern(Game_Data* data, Pattern* pattern, unsigned char offset) {
 	unsigned int i;
 	for(i = 0; i < pattern->length; i++) {
 		// Build wall
-		data->list = addWall(data->list, pattern->distance[i] + 128, pattern->wall_length[i], 1, (pattern->side[i] + offset)%data->nb_lines);
+		data->list = addWall(data->list, pattern->distance[i] + pattern->wall_length[i] + 128, pattern->wall_length[i], 1, (pattern->side[i] + offset)%data->nb_lines);
 	}
 }
 
