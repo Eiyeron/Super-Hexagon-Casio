@@ -10,6 +10,19 @@ static void drawHud(Game_Data *data);
 static void drawChrono(Game_Data *data);
 static void drawStep(Game_Data *data);
 
+static unsigned int length_of_print_string(unsigned char* txt);
+static void drawTopLeftCornerText(unsigned char* txt);
+static void drawTopRightCornerText(unsigned char* txt);
+static void drawBottomLeftCornerText(unsigned char* txt);
+static void drawBottomRightCornerText(unsigned char* txt);
+
+static const unsigned char title_spr[] = {0x07, 0xF6, 0x1B, 0xFD, 0xFE, 0xFE, 0x00, 0x00, 0x0F, 0xF6, 0x1B, 0xFD, 0xFE, 0xFF, 0x00, 0x00, 0x0C, 0x06, 0x1B, 0x0D, 0x80, 0xC3, 0x00, 0x00, 0x0F, 0xF6, 0x1B, 0x0D, 0xFE, 0xC3, 0x00, 0x00, 0x0F, 0xF6, 0x1B, 0xFD, 0xFE, 0xFE, 0x00, 0x00, 0x00, 0x36, 0x1B, 0xF9, 0x80, 0xFF, 0x00, 0x00, 0x0F, 0xF7, 0xFB, 0x01, 0xFE, 0xC3, 0x00, 0x00, 0x0F, 0xE3, 0xFB, 0x00, 0xFE, 0xC3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC3, 0x7F, 0xB0, 0xCF, 0xEF, 0xF3, 0xFB, 0xF8, 0xC3, 0x7F, 0xB0, 0xDF, 0xEF, 0xF7, 0xFB, 0xFC, 0xC3, 0x60, 0x30, 0xD8, 0x6C, 0x06, 0x1B, 0x0C, 0xFF, 0x7F, 0xBF, 0xD8, 0x6C, 0x36, 0x1B, 0x0C, 0xFF, 0x7F, 0x9F, 0x9F, 0xEC, 0x36, 0x1B, 0x0C, 0xC3, 0x60, 0x30, 0xDF, 0xEC, 0x36, 0x1B, 0x0C, 0xC3, 0x7F, 0xB0, 0xD8, 0x6F, 0xF7, 0xFB, 0x0C, 0xC3, 0x3F, 0xB0, 0xD8, 0x6F, 0xE7, 0xF3, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7F, 0x9F, 0xCF, 0xEF, 0xF3, 0xF8, 0x00, 0x00, 0x7F, 0xBF, 0xDF, 0xEF, 0xF7, 0xF8, 0x00, 0x00, 0x60, 0x30, 0xD8, 0x01, 0x86, 0x18, 0x00, 0x00, 0x60, 0x30, 0xDF, 0xE1, 0x86, 0x18, 0x00, 0x00, 0x60, 0x3F, 0xDF, 0xE1, 0x86, 0x18, 0x00, 0x00, 0x60, 0x3F, 0xC0, 0x61, 0x86, 0x18, 0x00, 0x00, 0x7F, 0xB0, 0xDF, 0xEF, 0xF7, 0xF8, 0x00, 0x00, 0x3F, 0xB0, 0xDF, 0xCF, 0xF7, 0xF0, 0x00};
+static const unsigned char hex_border_top_left[8] = {0xF0, 0xF0, 0xE0, 0xE0, 0xC0, 0xC0, 0x80, 0x80};
+static const unsigned char hex_border_top_right[8] ={0x1F, 0x1F, 0x0F, 0x0F, 0x07, 0x07, 0x03, 0x03};
+static const unsigned char hex_border_bottom_left[8] = {0x80, 0x80, 0xC0, 0xC0, 0xE0, 0xE0, 0xF0, 0xF0};
+static const unsigned char hex_border_bottom_right[8] ={0x03, 0x03, 0x07, 0x07, 0x0F, 0x0F, 0x1F, 0x1F};
+
+
 void draw_game(Game_Data *data)
 {
 	//draw the player and the lines
@@ -23,12 +36,20 @@ void draw_game(Game_Data *data)
 }
 void draw_title(Game_Data *data)
 {
+
+	ML_bmp_or(title_spr, 12, (64-26)/2, 62, 26);
+
+	drawBottomLeftCornerText("Press Shift");	
+	drawBottomRightCornerText("By Eiyeron");	
+
+
 	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
 	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
 
 }
 void draw_menu(Game_Data *data)
 {
+	drawTopRightCornerText("WIP Menu. Forget that.  ");
 	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
 	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
 
@@ -40,7 +61,6 @@ void draw_game_over(Game_Data *data)
 
 static void drawChrono(Game_Data *data) {
 	unsigned char time_text[8] = "";
-	static const unsigned char time_hud_border[8] = {0xF0, 0xF0, 0xE0, 0xE0, 0xC0, 0xC0, 0x80, 0x80};
 	unsigned short length_of_time, length_of_time_line;
 
 	sprintf(time_text, "%.2f", data->chrono_time);
@@ -58,7 +78,8 @@ static void drawChrono(Game_Data *data) {
 		ML_horizontal_line(6, 0, length_of_time_line - 1, BLACK);
 		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
 	}
-	ML_bmp_8_or(time_hud_border, length_of_time_line, 0);
+	ML_bmp_8_or(hex_border_top_left
+	, length_of_time_line, 0);
 }
 
 static void drawStep(Game_Data *data) {
@@ -78,8 +99,7 @@ static void drawStep(Game_Data *data) {
 		60
 	};
 
-	unsigned char step_hud_border[8] ={0x1F, 0x1F, 0x0F, 0x0F, 0x07, 0x07, 0x01, 0x01};
-	unsigned short length_of_step, current_step, i;
+	unsigned short current_step, i;
 	current_step = 5;
 	for(i = 0; i < 5; i++) {
 		if(data->chrono_time < step_time[i]) {
@@ -88,18 +108,16 @@ static void drawStep(Game_Data *data) {
 		}
 	}
 
-
-	length_of_step = 4 * strlen(step_text[current_step]) + 1;
-
 	// Little patch because the font is not fixed width and 'n' chars are annoying me.
-	ML_vertical_line(125,0,5, BLACK);
-	ML_vertical_line(126,0,5, BLACK);
-	ML_vertical_line(127,0,5, BLACK);
+	// ML_vertical_line(125,0,5, BLACK);
+	// ML_vertical_line(126,0,5, BLACK);
+	// ML_vertical_line(127,0,5, BLACK);
 
-	PrintMini(127 - length_of_step, 1, step_text[current_step], MINI_REV);
-	ML_bmp_8_or(step_hud_border, 127 - length_of_step - 8, 0);
-	ML_horizontal_line(6, 127 - length_of_step - 2, 127, BLACK);
-	ML_horizontal_line(7, 127 - length_of_step - 2, 127, BLACK);
+	// PrintMini(127 - length_of_step, 1, step_text[current_step], MINI_REV);
+	// ML_bmp_8_or(hex_border_top_right, 127 - length_of_step - 8, 0);
+	// ML_horizontal_line(6, 127 - length_of_step - 2, 127, BLACK);
+	// ML_horizontal_line(7, 127 - length_of_step - 2, 127, BLACK);
+	drawTopRightCornerText(step_text[current_step]);
 }
 
 static void drawHud(Game_Data *data) {
@@ -225,4 +243,39 @@ static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transit
 		}
 		if(tmp_angle >= FIX(360)) tmp_angle = tmp_angle - FIX(359);
 	}while(i < nb_lines);
+}
+
+static unsigned int length_of_print_string(unsigned char* txt) {
+	// TODO : define
+	return strlen(txt) * 4;
+}
+
+static void drawTopLeftCornerText(unsigned char* txt) {
+	unsigned int text_length = length_of_print_string(txt);
+	PrintMini(0, 1, txt, MINI_REV);
+	ML_bmp_8_or(hex_border_top_left, text_length, 0);
+	ML_horizontal_line(7, 0, text_length, BLACK);
+}
+
+static void drawTopRightCornerText(unsigned char* txt) {
+	int text_length = length_of_print_string(txt);
+	int xPosition = 128 - text_length;
+	PrintMini(xPosition, 1, txt, MINI_REV);
+	ML_bmp_8_or(hex_border_top_right, xPosition - 8, 0);
+	ML_horizontal_line(7, xPosition, 127, BLACK);
+}
+
+static void drawBottomLeftCornerText(unsigned char* txt) {
+	unsigned int text_length = length_of_print_string(txt);
+	PrintMini(0, 57, txt, MINI_REV);
+	ML_bmp_8_or(hex_border_bottom_left, text_length - 1, 56);
+	ML_horizontal_line(63, 0, text_length, BLACK);
+}
+
+static void drawBottomRightCornerText(unsigned char* txt) {
+	int text_length = length_of_print_string(txt);
+	int xPosition = 128 - text_length;
+	PrintMini(xPosition, 57, txt, MINI_REV);
+	ML_bmp_8_or(hex_border_bottom_right, xPosition - 8, 56);
+	ML_horizontal_line(63, xPosition, 127, BLACK);
 }

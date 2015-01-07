@@ -17,6 +17,11 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
 	//rand initialisation
     srand(RTC_GetTicks());
 
+    // Key init
+    data.shift_latch_value = 0;
+    data.alpha_latch_value = 0;
+
+
     switch_to_state(TITLE, &data);
 
 
@@ -29,6 +34,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             tempsOrigine = RTC_GetTicks();
         }
         frame++;
+
 
         update(&data);
         draw(&data);

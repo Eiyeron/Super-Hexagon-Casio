@@ -7,7 +7,7 @@ void update_title(Game_Data *data)
 	data->current_time = RTC_GetTicks();
 	data->chrono_time += (data->current_time - data->last_time)/ 128.;
 
-	if(KeyDown(K_SHIFT)) {
+	if(KeyDown(K_SHIFT) && data->shift_latch_value == 0) {
 		switch_to_state(MENU, data);
 	}
 
@@ -55,6 +55,11 @@ void update_game(Game_Data *data)
 		data->player_angle+=15;
 	}
 
+	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
+		switch_to_state(MENU, data);
+	}
+
+
 	if(KeyDown(K_PLUS) && data->line_transition.counter == 0)
 	{
 		data->line_transition.counter = 10;
@@ -86,10 +91,10 @@ void update_menu(Game_Data *data)
 	data->current_time = RTC_GetTicks();
 	data->chrono_time += (data->current_time - data->last_time)/ 128.;
 
-	if(KeyDown(K_SHIFT)) {
+	if(KeyDown(K_SHIFT) && data->shift_latch_value == 0) {
 		switch_to_state(GAME, data);
 	}
-	if(KeyDown(K_ALPHA)) {
+	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
 		switch_to_state(TITLE, data);
 	}
 

@@ -33,7 +33,7 @@ void init_game(Game_Data *data)
 	data->cam.cX = 64;
 	data->cam.cY = 32;
 	data->cam.angle = 0;
-	data->cam.speed = 0.0;
+	data->cam.speed = 1.5;
 	data->cam.zoom = 0.0;
 
 	data->nb_lines = 6;
@@ -52,7 +52,7 @@ void init_title(Game_Data *data)
 	data->cam.cY = 32;
 	data->cam.angle = 0;
 	data->cam.speed = 1;
-	data->cam.zoom = 32;
+	data->cam.zoom = 24;
 
 	data->nb_lines = 6;
 	data->line_transition.counter = 0;
@@ -71,7 +71,7 @@ void init_menu(Game_Data *data)
 	data->cam.cY = 64;
 	data->cam.angle = 0;
 	data->cam.speed = 0;
-	data->cam.zoom = 16;
+	data->cam.zoom = 48;
 
 	data->nb_lines = 6;
 	data->line_transition.counter = 0;

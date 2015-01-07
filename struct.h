@@ -98,6 +98,9 @@ struct Game_Data{
 	Level *level;
 
 	Camera cam;
+
+	unsigned char shift_latch_value;
+	unsigned char alpha_latch_value;
 };
 
 #endif
