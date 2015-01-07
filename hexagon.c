@@ -40,14 +40,11 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         draw(&data);
 
 	//printing debug information
-        // intToStr(fps_text, fps);
-        // PrintMini(0, 0, fps_text, MINI_OVER);
 
 	//updating the screen
         ML_display_vram();
         ML_clear_vram();
 
-        //Sleep(1/0.06);
         Sleep(1/0.06);
     }
 

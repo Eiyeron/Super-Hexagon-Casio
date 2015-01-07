@@ -2,6 +2,7 @@
 #include "fxlib.h"
 #include "fixed.h"
 #include <stdio.h>
+
 // static functions
 static void drawPlayer(Camera *cam, int player_angle);
 static void drawPolygon(Camera *cam, int nb_lines, Line_Transition line_transition);
@@ -59,25 +60,22 @@ void draw_game_over(Game_Data *data)
 
 static void drawChrono(Game_Data *data) {
 	unsigned char time_text[8] = "";
-	unsigned short length_of_time, length_of_time_line;
 
 	sprintf(time_text, "%.2f", data->chrono_time);
-	length_of_time = strlen(time_text);
-	length_of_time_line = 4 * length_of_time;
 
 
 	if(data->chrono_time < 60) {
+		unsigned short length_of_time, length_of_time_line;
+		length_of_time = strlen(time_text);
+		length_of_time_line = 4 * length_of_time;
 		PrintMini(0, 0, time_text, MINI_REV);
 		ML_horizontal_line(6, 0, (data->chrono_time/60.) * (length_of_time_line - 2), BLACK);
 		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
+		ML_bmp_8_or(hex_border_top_left, length_of_time_line, 0);
 	}
 	else {
-		PrintMini(0, 1, time_text, MINI_REV);
-		ML_horizontal_line(6, 0, length_of_time_line - 1, BLACK);
-		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
+		drawTopLeftCornerText(time_text);
 	}
-	ML_bmp_8_or(hex_border_top_left
-		, length_of_time_line, 0);
 }
 
 static void drawStep(Game_Data *data) {
@@ -106,15 +104,6 @@ static void drawStep(Game_Data *data) {
 		}
 	}
 
-	// Little patch because the font is not fixed width and 'n' chars are annoying me.
-	// ML_vertical_line(125,0,5, BLACK);
-	// ML_vertical_line(126,0,5, BLACK);
-	// ML_vertical_line(127,0,5, BLACK);
-
-	// PrintMini(127 - length_of_step, 1, step_text[current_step], MINI_REV);
-	// ML_bmp_8_or(hex_border_top_right, 127 - length_of_step - 8, 0);
-	// ML_horizontal_line(6, 127 - length_of_step - 2, 127, BLACK);
-	// ML_horizontal_line(7, 127 - length_of_step - 2, 127, BLACK);
 	drawTopRightCornerText(step_text[current_step]);
 }
 
