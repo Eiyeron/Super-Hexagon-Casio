@@ -8,10 +8,10 @@
  * Read a buffer to convert into an dynamically pattern
  * Structure of the pattern data:
  * <pre>
- * XX\n <=> Pattern length (uint_8)
- * AABBBBCCCC\n
- * AABBBBCCCC\n
- * AABBBBCCCC\n
+ * XX <=> Pattern length (uint_8)
+ * AABBBBCCCC
+ * AABBBBCCCC
+ * AABBBBCCCC
  * ...
  * </pre>
  * Legend
@@ -23,7 +23,7 @@
  * @param  data Data to read
  * @return      A brand new pattern
  */
-Pattern* readPattern(unsigned char data);
+Pattern* readPattern(unsigned char* data, unsigned int length);
 
 /**
  * Add the whole patter to the current game.
