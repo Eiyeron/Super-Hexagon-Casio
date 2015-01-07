@@ -100,7 +100,7 @@ struct Game_Data{
 
 	unsigned char shift_latch_value;
 	unsigned char alpha_latch_value;
-	unsigned char cooldown_timer;
+	unsigned short cooldown_timer;
 };
 
 struct Pattern{
