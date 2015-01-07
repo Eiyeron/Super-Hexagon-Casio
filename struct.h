@@ -103,4 +103,13 @@ struct Game_Data{
 	unsigned char alpha_latch_value;
 };
 
+typedef struct {
+	unsigned char length;
+	// Should be dynamically allocated
+	unsigned char* side;
+	unsigned short* distance;
+	unsigned short* wall_length;
+} Pattern;
+
+
 #endif
