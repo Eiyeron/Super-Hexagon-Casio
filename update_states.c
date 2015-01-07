@@ -1,4 +1,5 @@
 #include "update_states.h"
+#include "pattern.h"
 #include "fixed.h"
 
 void update_title(Game_Data *data)
@@ -38,15 +39,10 @@ void update_game(Game_Data *data)
 	}
 	//level generation
 	//TODO: something else than pure randomness
-	if(rand() % 40 == 1) {
-		data->list = addWall(data->list, 128, 5, 1, rand()%data->nb_lines);
-	} else if(rand() % 70 == 1) {
-		int emptyRow = rand()%data->nb_lines;
-		int i = 0;
-		for(i = 0; i < data->nb_lines; i++){
-			if(i != emptyRow)
-				data->list = addWall(data->list, 128, 5, 1, i);
-		}
+	if(!data->cooldown_timer--) {
+		Pattern pattern = data->level->patterns[rand()% data->level->nb_patterns];
+		addPattern(data, &pattern, rand()%6);
+		data->cooldown_timer = pattern.cooldown;
 	}
 	if(KeyDown(K_LEFT)){
 		data->player_angle-=15;

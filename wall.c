@@ -104,7 +104,7 @@ void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_trans
 	do{
 		if(tmp != NULL)
 		{
-			if(tmp->d + tmp->h < 128)
+			if(tmp->d - tmp->h < 128)
 			{
 				const fix delta_angle_minus_offset = delta_angle - offset;
 				const fix angle =  fmul(delta_angle_minus_offset, FIX(tmp->line)) + FIX(cam->angle);
@@ -116,6 +116,7 @@ void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_trans
 
 				fix dist = ftofix(tmp->d + cam->zoom);
 				for(i = 0; i < tmp->h && dist > FIX(8); ++i) {
+					if(dist < FIX(96))
 					ML_line(64 + fixtof(fmul(dist, cos1)), 32 + fixtof(fmul(dist,sin1)), 64 + fixtof(fmul(dist, cos2)), 32 + fixtof(fmul(dist, sin2)), BLACK);
 					dist -= FIX(1);
 				}

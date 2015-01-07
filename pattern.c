@@ -2,44 +2,39 @@
 #include "struct.h"
 #include "wall.h"
 
-static Pattern* allocatePattern(unsigned int pattern_length) {
+static Pattern* allocatePattern(Pattern* pattern, unsigned int pattern_length) {
 	// Freaking free cascade
-	pattern->side = malloc(sizeof(unsigned char) * pattern_length);
-	if(pattern_length->side == NULL) {
-		free(pattern);
+	pattern->side = (unsigned char*) malloc(sizeof(unsigned char) * pattern_length);
+	if(pattern->side == NULL) {
 		return NULL;
 	}
-	pattern->distance = malloc(sizeof(unsigned short) * pattern_length);
-	if(pattern_length->distance == NULL) {
+	pattern->distance = (unsigned short*)malloc(sizeof(unsigned short) * pattern_length);
+	if(pattern->distance == NULL) {
 		free(pattern->side);
-		free(pattern);
 		return NULL;
 	}
-	pattern->wall_length = malloc(sizeof(unsigned short) * pattern_length);
-	if(pattern_length->wall_length == NULL) {
+	pattern->wall_length = (unsigned short*)malloc(sizeof(unsigned short) * pattern_length);
+	if(pattern->wall_length == NULL) {
 		free(pattern->distance);
 		free(pattern->side);
-		free(pattern);
 		return NULL;
 	}
-
+	return pattern;
 }
 
-Pattern* readPattern(unsigned char* data, unsigned int length) {
-	unsigned char* iterator = data+1;
-	unsigned i, pattern_length;
-	Pattern* pattern;
-	pattern_length = data[0];
-	pattern = allocatePattern(pattern_length);
-	if(pattern == NULL) return NULL;
+Pattern* readPattern(Pattern* pattern, unsigned char* data) {
+	unsigned int i;
+	pattern->length = data[0];
+	pattern->cooldown = data[1];
+	allocatePattern(pattern, pattern->length);
+	if(pattern  == NULL) return NULL;
 
-	for(int i = 0; i < pattern_length; i++) {
-		pattern->side[i] = data[iterator];
-		pattern->distance[i] = ((data[iterator]+1)<<8) + (data[iterator]+2);
-		pattern->wall_length[i] = ((data[iterator]+2)<<8) + (data[iterator]+3);
-		iterator+= 5;
+	for(i = 0; i < data[0]; i++) {
+		unsigned int offset = i*5 + 2;
+		pattern->side[i] = data[offset];
+		pattern->distance[i] = (data[offset + 1]<<8) + data[offset + 2];
+		pattern->wall_length[i] = (data[offset + 3]<<8) + data[offset + 4];
 	}
-
 	return pattern;
 }
 
@@ -47,7 +42,7 @@ void addPattern(Game_Data* data, Pattern* pattern, unsigned char offset) {
 	unsigned int i;
 	for(i = 0; i < pattern->length; i++) {
 		// Build wall
-		addWall(data->list, pattern->distance[i], pattern->wall_length, 1, (pattern->side[i] + offset)%data->nb_lines);
+		data->list = addWall(data->list, pattern->distance[i] + 128, pattern->wall_length[i], 1, (pattern->side[i] + offset)%data->nb_lines);
 	}
 }
 
@@ -55,6 +50,5 @@ Pattern* freePattern(Pattern* pattern) {
 	free(pattern->side);
 	free(pattern->distance);
 	free(pattern->wall_length);
-	free(pattern);
 	return NULL;
 }

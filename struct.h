@@ -16,13 +16,13 @@
 //macros
 #define abs(x) x>0 ? x : -x
 
-typedef enum {PATTERN} Pattern_Enum;
 typedef struct Camera Camera;
 typedef struct Wall Wall;
 typedef struct Line Line;
 typedef struct Level Level;
 typedef struct Line_Transition Line_Transition;
 typedef struct Game_Data Game_Data;
+typedef struct Pattern Pattern;
 typedef enum {GAME, MENU, TITLE, GAME_OVER} State;
 
 struct Level{
@@ -30,8 +30,7 @@ struct Level{
 	int id; //1 to 6
 
 	//for the level generation
-	Pattern_Enum available_patterns[32];
-
+	Pattern* patterns;
 	int nb_patterns;
 
 	//for the camera rotation
@@ -101,15 +100,17 @@ struct Game_Data{
 
 	unsigned char shift_latch_value;
 	unsigned char alpha_latch_value;
+	unsigned char cooldown_timer;
 };
 
-typedef struct {
+struct Pattern{
 	unsigned char length;
+	unsigned char cooldown;
 	// Should be dynamically allocated
 	unsigned char* side;
 	unsigned short* distance;
 	unsigned short* wall_length;
-} Pattern;
+};
 
 
 #endif

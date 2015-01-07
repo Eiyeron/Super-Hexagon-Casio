@@ -23,7 +23,7 @@
  * @param  data Data to read
  * @return      A brand new pattern
  */
-Pattern* readPattern(unsigned char* data, unsigned int length);
+Pattern* readPattern(Pattern* pattern, unsigned char* data);
 
 /**
  * Add the whole patter to the current game.
@@ -32,6 +32,6 @@ Pattern* readPattern(unsigned char* data, unsigned int length);
  */
 void addPattern(Game_Data* data, Pattern* pattern, unsigned char offset);
 
-free* freePattern(Pattern* pattern);
+Pattern* freePattern(Pattern* pattern);
 
 #endif

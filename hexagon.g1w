@@ -22,3 +22,4 @@ SourceFile=:ECode.c
 SourceFile=:hexagon.c
 SourceFile=:wall.c
 SourceFile=:fixed.c
+SourceFile=:pattern.c
