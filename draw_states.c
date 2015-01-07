@@ -29,29 +29,27 @@ void draw_game(Game_Data *data)
 	drawPlayer(&(data->cam), data->player_angle);
 	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
 	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
-	drawHud(data);
     	//showing the walls
 	if(data->list != NULL)
 		drawWalls(data->list, &(data->cam), data->nb_lines, data->line_transition);
+	drawHud(data);
 }
 void draw_title(Game_Data *data)
 {
 
 	ML_bmp_or(title_spr, 12, (64-26)/2, 62, 26);
 
-	drawBottomLeftCornerText("Press Shift");	
-	drawBottomRightCornerText("By Eiyeron");	
-
-
 	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
 	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
+	drawBottomLeftCornerText("Press Shift");	
+	drawBottomRightCornerText("By Eiyeron");	
 
 }
 void draw_menu(Game_Data *data)
 {
-	drawTopRightCornerText("WIP Menu. Forget that.  ");
 	drawPolygon(&(data->cam), data->nb_lines, data->line_transition);
 	drawDiagonals(data->cam, data->nb_lines, data->line_transition);
+	drawTopRightCornerText("WIP Menu. Forget that.");
 
 }
 void draw_game_over(Game_Data *data)
@@ -79,7 +77,7 @@ static void drawChrono(Game_Data *data) {
 		ML_horizontal_line(7, 0, length_of_time_line - 1, BLACK);
 	}
 	ML_bmp_8_or(hex_border_top_left
-	, length_of_time_line, 0);
+		, length_of_time_line, 0);
 }
 
 static void drawStep(Game_Data *data) {
@@ -127,7 +125,7 @@ static void drawHud(Game_Data *data) {
 }
 
 static void drawPolygon(Camera *cam, int nb_lines, Line_Transition line_transition) {
-		int x[32];
+	int x[32];
 	int y[32];
 	int i = 0;
 	int angle = 0;
@@ -247,35 +245,73 @@ static void drawDiagonals(Camera cam, int nb_lines, Line_Transition line_transit
 
 static unsigned int length_of_print_string(unsigned char* txt) {
 	// TODO : define
-	return strlen(txt) * 4;
+	unsigned int text_length = 0;
+	unsigned int i;
+	unsigned int current_char_length = 0;
+
+	for(i = 0; i < strlen(txt); i++) {
+		switch(txt[i]) {
+			// upper case
+			case  'K':
+			case  'M':
+			case  'N':
+			case  'Q':
+			case  'W':
+			current_char_length = 6;
+			break;
+
+			// lower case
+			case 'i':
+			current_char_length = 2;
+			break;
+
+			case 'n':
+			case 'r':
+			current_char_length = 5;
+			break;
+
+			case 'm':
+			case 'w':
+			current_char_length = 6;
+			break;
+
+			//
+			//
+			default:
+			current_char_length = 4;
+			break;
+		}
+		text_length += current_char_length;
+	}
+	return text_length;
 }
 
 static void drawTopLeftCornerText(unsigned char* txt) {
 	unsigned int text_length = length_of_print_string(txt);
-	PrintMini(0, 1, txt, MINI_REV);
 	ML_bmp_8_or(hex_border_top_left, text_length, 0);
 	ML_horizontal_line(7, 0, text_length, BLACK);
+	PrintMini(0, 1, txt, MINI_REV);
 }
 
 static void drawTopRightCornerText(unsigned char* txt) {
 	int text_length = length_of_print_string(txt);
 	int xPosition = 128 - text_length;
-	PrintMini(xPosition, 1, txt, MINI_REV);
 	ML_bmp_8_or(hex_border_top_right, xPosition - 8, 0);
 	ML_horizontal_line(7, xPosition, 127, BLACK);
+	PrintMini(xPosition, 1, txt, MINI_REV);
 }
 
 static void drawBottomLeftCornerText(unsigned char* txt) {
 	unsigned int text_length = length_of_print_string(txt);
-	PrintMini(0, 57, txt, MINI_REV);
 	ML_bmp_8_or(hex_border_bottom_left, text_length - 1, 56);
 	ML_horizontal_line(63, 0, text_length, BLACK);
+	PrintMini(0, 57, txt, MINI_REV);
 }
 
 static void drawBottomRightCornerText(unsigned char* txt) {
 	int text_length = length_of_print_string(txt);
 	int xPosition = 128 - text_length;
-	PrintMini(xPosition, 57, txt, MINI_REV);
 	ML_bmp_8_or(hex_border_bottom_right, xPosition - 8, 56);
 	ML_horizontal_line(63, xPosition, 127, BLACK);
+	PrintMini(xPosition, 57, txt, MINI_REV);
 }
