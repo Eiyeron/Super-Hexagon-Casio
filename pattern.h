@@ -30,7 +30,7 @@ Pattern* readPattern(Pattern* pattern, unsigned char* data);
  * @param data   data
  * @param offset Offsets the sides to rotate the pattern
  */
-void addPattern(Game_Data* data, Pattern* pattern, unsigned char offset);
+void addPattern(Game_Data* data, Pattern* pattern, unsigned char offset, unsigned char isReversed);
 
 Pattern* freePattern(Pattern* pattern);
 

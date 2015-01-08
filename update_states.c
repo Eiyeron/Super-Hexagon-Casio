@@ -41,7 +41,7 @@ void update_game(Game_Data *data)
 	//TODO: something else than pure randomness
 	if(!data->cooldown_timer--) {
 		Pattern pattern = data->level->patterns[rand()% data->level->nb_patterns];
-		addPattern(data, &pattern, rand()%6);
+		addPattern(data, &pattern, rand()%data->nb_lines, rand()&1);
 		data->cooldown_timer = pattern.cooldown;
 	}
 	if(KeyDown(K_LEFT)){
