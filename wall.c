@@ -104,7 +104,7 @@ void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_trans
 	do{
 		if(tmp != NULL)
 		{
-			if(tmp->d - tmp->h < 128)
+			if(tmp->d - tmp->h < 96)
 			{
 				const fix delta_angle_minus_offset = delta_angle - offset;
 				const fix angle =  fmul(delta_angle_minus_offset, FIX(tmp->line)) + FIX(cam->angle);
