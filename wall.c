@@ -82,10 +82,11 @@ void updateWalls(Wall *list, unsigned int delta_time)
 	}while(tmp != NULL);
 }
 
-void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_transition)
+void drawWalls(Wall *list, Game_Data *data, int nb_lines, Line_Transition line_transition)
 {//NEEDS A COMPLETE REWRITE TO SUPPORT THE LINE TRANSITIONS !
 	Wall *tmp;
-
+	ML_Color drawing_color = data->are_colors_reversed ? WHITE : BLACK;
+	Camera *cam = &data->cam;
 	fix coeff = 0;
 	fix transition_angle = 0;
 	fix delta_angle = fdiv(FIX(360), FIX(nb_lines));
@@ -117,7 +118,7 @@ void drawWalls(Wall *list, Camera *cam, int nb_lines, Line_Transition line_trans
 				fix dist = ftofix(tmp->d + cam->zoom);
 				for(i = 0; i < tmp->h && dist > FIX(8); ++i) {
 					if(dist < FIX(96))
-					ML_line(64 + fixtof(fmul(dist, cos1)), 32 + fixtof(fmul(dist,sin1)), 64 + fixtof(fmul(dist, cos2)), 32 + fixtof(fmul(dist, sin2)), BLACK);
+					ML_line(64 + fixtof(fmul(dist, cos1)), 32 + fixtof(fmul(dist,sin1)), 64 + fixtof(fmul(dist, cos2)), 32 + fixtof(fmul(dist, sin2)), drawing_color);
 					dist -= FIX(1);
 				}
 			}

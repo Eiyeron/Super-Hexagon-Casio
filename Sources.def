@@ -18,9 +18,16 @@ TITLE="hexagon"
 VERSION=0100
 
 #  Application sources
-FILE0=hexagon
-FILE1=ECode
+FILE0=draw_states
+FILE1=init_states
 FILE2=MonochromeLib
-FILE3=syscall
+FILE3=states
+FILE4=syscall
+FILE5=update_states
+FILE6=ECode
+FILE7=hexagon
+FILE8=wall
+FILE9=fixed
+FILE10=pattern
 
 ##########################################################################

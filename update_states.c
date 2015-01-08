@@ -23,6 +23,9 @@ void update_game(Game_Data *data)
 	data->last_time = data->current_time;
 	data->current_time = RTC_GetTicks();
 	data->chrono_time += (data->current_time - data->last_time)/ 128.;
+	if(data->chrono_time >= 60) {
+		data->are_colors_reversed = 1;
+	}
 
 	if(data->list != NULL) {
 	//if the linked list is not empty
@@ -32,7 +35,6 @@ void update_game(Game_Data *data)
 		//if the player and a wall collide
 		if(isColliding(data->list, data->player_angle, data->nb_lines) == true) {
 			//death handling
-			PrintMini(50, 0, "TOUCHE", MINI_OVER);
 		}
 	//remove every wall whose distance to the center equals zero
 		data->list = removeWall(data->list, 8);

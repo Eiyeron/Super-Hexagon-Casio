@@ -155,6 +155,8 @@ void init_game(Game_Data *data)
 	data->level->lc_probability = 0.05;
 	data->level->lc_duration = 15;
 
+	data->are_colors_reversed = 0;
+
 
 	data->list = NULL;
 	data->start_time = RTC_GetTicks(); //1 tick == 1/128 second
@@ -170,6 +172,7 @@ void init_game(Game_Data *data)
 	data->cam.speed = 1.5;
 	data->cam.zoom = 0.0;
 
+
 	data->nb_lines = 6;
 	data->line_transition.counter = 0;
 	data->line_transition.counter_start = 0;
@@ -182,6 +185,9 @@ void init_title(Game_Data *data)
 	data->last_time = 0;
 	data->current_time = RTC_GetTicks();
 	data->chrono_time = 0;
+
+	data->are_colors_reversed = 0;
+
 
 	data->cam.cX = 96;
 	data->cam.cY = 32;
@@ -201,6 +207,9 @@ void init_menu(Game_Data *data)
 	data->last_time = 0;
 	data->current_time = RTC_GetTicks();
 	data->chrono_time = 0;
+
+	data->are_colors_reversed = 0;
+
 
 	data->cam.cX = 64;
 	data->cam.cY = 64;

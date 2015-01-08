@@ -94,6 +94,7 @@ struct Game_Data{
 
 	Wall *list;
 
+	unsigned char are_colors_reversed;
 	Level *level;
 
 	Camera cam;
