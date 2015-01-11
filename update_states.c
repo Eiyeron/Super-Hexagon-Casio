@@ -16,7 +16,6 @@ void update_title(Game_Data *data)
 	}
 
 	updateCamera(&(data->cam), data->current_time - data->last_time);
-
 }
 
 #define min(a, b) ((a) < (b) ? (a) : (b))

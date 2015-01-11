@@ -55,7 +55,6 @@ void draw_title(Game_Data *data)
 	drawDiagonals(data, data->nb_lines, data->line_transition);
 	drawBottomLeftCornerText("Press Shift", data->are_colors_reversed);	
 	drawBottomRightCornerText("By Eiyeron", data->are_colors_reversed);	
-
 }
 void draw_menu(Game_Data *data)
 {
@@ -176,7 +175,7 @@ static void drawPolygon(Game_Data *data, int nb_lines, Line_Transition line_tran
 		y[i] = (8. + cam->zoom)*sin(PI * (tmp_angle + cam->angle)/180.) + cam->cY;
 
 		i++;
-		
+
 		switch(line_transition.delta_nb_lines)
 		{
 			case 0:
@@ -246,7 +245,6 @@ static void drawDiagonals(Game_Data *data, int nb_lines, Line_Transition line_tr
 		x2 = fmul(fcos(tmp_angle), FIX(128));
 		y2 = fmul(fsin(tmp_angle), FIX(128));
 		ML_line(UNFIX(x1) + data->cam.cX, UNFIX(y1) + data->cam.cY, UNFIX(x2) + data->cam.cX, UNFIX(y2) + data->cam.cY, drawing_color);
-
 		i++;
 
 		switch(line_transition.delta_nb_lines){
