@@ -61,8 +61,7 @@ void draw_menu(Game_Data *data)
 	fillBackground(data);
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
-	drawTopRightCornerText("WIP Menu. Forget that.", data->are_colors_reversed);
-
+	drawTopRightCornerText(data->entry_difficulties[data->current_entry - 1], data->are_colors_reversed);
 }
 void draw_game_over(Game_Data *data)
 {
@@ -151,7 +150,7 @@ static void drawHud(Game_Data *data) {
 
 static void drawPolygon(Game_Data *data, int nb_lines, Line_Transition line_transition) {
 	int x[32];
-	int y[32];
+ 	int y[32];
 	int i = 0;
 	int angle = 0;
 

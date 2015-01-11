@@ -112,6 +112,7 @@ struct Game_Data{
 	unsigned int current_entry; //from 1 to 6
 	unsigned int current_entry_high_score;
 	char **entry_difficulties; //a table of null-terminated strings
+	unsigned int keypress_delay;
 };
 
 struct Pattern{

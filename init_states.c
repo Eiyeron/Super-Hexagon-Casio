@@ -127,6 +127,7 @@ const unsigned char patternTest7[] = {
 
 void init_game(Game_Data *data)
 {
+//TODO: init the level depending on the value of data->current_entry
 	data->level = NULL;
 	data->level = malloc(sizeof(Level));
 	if(data->level == NULL)
@@ -240,6 +241,7 @@ void init_menu(Game_Data *data)
 	data->line_transition.counter_start = 0;
 	data->line_transition.delta_nb_lines = 0;
 
+	data->keypress_delay = 50;
 	data->nb_entries = 6;
 	data->current_entry = 1;
 data->current_entry_high_score = 0; //to load from a save file

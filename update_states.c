@@ -94,8 +94,7 @@ void update_game(Game_Data *data)
 	updateCamera(&(data->cam), data->current_time - data->last_time);
 
 }
-
-void update_menu(Game_Data *data)
+void update_game_over(Game_Data *data)
 {
 	data->last_time = data->current_time;
 	data->current_time = RTC_GetTicks();
@@ -111,9 +110,32 @@ void update_menu(Game_Data *data)
 
 	updateCamera(&(data->cam), data->current_time - data->last_time);
 }
-void update_game_over(Game_Data *data)
+void update_menu(Game_Data *data)
 {
-// TODO
+//WARNING: THIS IS JUST PLACEHOLDER TO TEST THE GRAPHICS (too lazy to do some real level handling right now...)
+        data->last_time = data->current_time;//updating the time variables
+        data->current_time = RTC_GetTicks();
+
+	if(data->keypress_delay == 0) //to make sure that the user isn't scrolling too fast
+	{
+		if(KeyDown(K_EXE)) //load the selected level
+			switch_to_state(GAME, data);//TODO: change some values in data first
+		else if(KeyDown(K_LEFT))
+		{
+			data->current_entry --;//change the selected id
+			if(data->current_entry == 0)//check for overflows
+				data->current_entry = 6;
+			data->keypress_delay = 15;//init the delay
+			//TODO: load high score data and stuff, probably not at run time, but in init_states
+		}else if(KeyDown(K_RIGHT))
+		{
+			data->current_entry ++;
+			if(data->current_entry == 7)
+				data->current_entry = 1;
+			data->keypress_delay = 15;
+		}
+	}else data->keypress_delay --;
+	updateCamera(&(data->cam), data->current_time - data->last_time);//update the camera for the background
 }
 
 void updateCamera(Camera *cam, unsigned int delta_time){
