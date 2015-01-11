@@ -2,6 +2,9 @@
 #include "pattern.h"
 #include "fixed.h"
 
+static void game_over(Game_Data *data);
+
+
 void update_title(Game_Data *data)
 {
 	data->last_time = data->current_time;
@@ -34,7 +37,8 @@ void update_game(Game_Data *data)
 
 		// if the player and a wall collide
 		if(isColliding(data->list, data->player_angle, data->nb_lines) == true) {
-			// death handling
+			game_over(data);
+			return;
 		}
 	// remove every wall whose distance to the center equals zero
 		data->list = removeWall(data->list, 8);
@@ -46,12 +50,19 @@ void update_game(Game_Data *data)
 		data->cooldown_timer = pattern.cooldown;
 	}
 
-	// TODO : stop at wall side.
 	if(KeyDown(K_LEFT)){
-		data->player_angle-=data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+		float new_player_position = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+		if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
+			new_player_position = data->player_angle;
+		}
+		data->player_angle = new_player_position;
 	}
 	if(KeyDown(K_RIGHT)){
-		data->player_angle+=data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+		float new_player_position = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+		if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
+			new_player_position = data->player_angle;
+		}
+		data->player_angle = new_player_position;
 	}
 
 	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
@@ -82,6 +93,7 @@ void update_game(Game_Data *data)
 	data->player_angle = MOD(data->player_angle, 360);
 
 	updateCamera(&(data->cam), data->current_time - data->last_time);
+
 }
 
 void update_menu(Game_Data *data)
@@ -111,4 +123,22 @@ void updateCamera(Camera *cam, unsigned int delta_time){
 	if(cam->angle >= 360)
 		cam->angle = cam->angle % 360;
 
+}
+
+
+static void game_over(Game_Data *data) {
+	// clean up wall
+	int i = 128;
+	while(data->list != NULL) {
+		Wall *next = data->list->nxt;
+		free(data->list);
+		data->list = next;
+	}
+	for (i = 0; i < data->level->nb_patterns; ++i)
+	{
+		freePattern(&data->level->patterns[i]);
+	}
+	free(data->level);
+
+	switch_to_state(MENU, data);
 }

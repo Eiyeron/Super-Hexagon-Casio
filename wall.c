@@ -118,13 +118,36 @@ void drawWalls(Wall *list, Game_Data *data, int nb_lines, Line_Transition line_t
 				fix dist = ftofix(tmp->d + cam->zoom);
 				for(i = 0; i < tmp->h && dist > FIX(8); ++i) {
 					if(dist < FIX(96))
-					ML_line(64 + fixtof(fmul(dist, cos1)), 32 + fixtof(fmul(dist,sin1)), 64 + fixtof(fmul(dist, cos2)), 32 + fixtof(fmul(dist, sin2)), drawing_color);
+						ML_line(64 + fixtof(fmul(dist, cos1)), 32 + fixtof(fmul(dist,sin1)), 64 + fixtof(fmul(dist, cos2)), 32 + fixtof(fmul(dist, sin2)), drawing_color);
 					dist -= FIX(1);
 				}
 			}
 		}
 		tmp = tmp->nxt;
 	}while(tmp != NULL);
+
+}
+
+
+// Tests if the players hits a wall by its sides and not only by being crushed under it.
+bool isCollidingSide(Wall *list, int player_angle, int nb_lines) {
+	Wall *tmp;
+	tmp = list;
+
+	do{
+		if(tmp != NULL)
+		{
+			if(tmp-> d <= 8+tmp->h + 2)
+			{	// and is on the same line than the player
+				if(tmp->line == (int)(player_angle/ (360 / nb_lines)) && tmp->line < nb_lines)
+				{
+					return true;
+				}
+			}
+		}
+		tmp = tmp->nxt;
+	}while(tmp != NULL);
+	return false;
 
 }
 
@@ -137,7 +160,8 @@ bool isColliding(Wall *list, int player_angle, int nb_lines)
 	do{
 		if(tmp != NULL)
 		{
-			if(tmp-> d <= 8+tmp->h + 2)// if the wall is close enough from the center of the screen
+			//if(tmp-> d <= 8+tmp->h + 2)// if the wall is close enough from the center of the screen
+			if(tmp-> d <= 8 + 2)// if the wall is close enough from the center of the screen
 			{	// and is on the same line than the player
 				if(tmp->line == (int)(player_angle/ (360 / nb_lines)) && tmp->line < nb_lines)
 				{	// BOOM
