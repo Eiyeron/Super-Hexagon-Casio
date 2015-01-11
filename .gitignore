@@ -25,3 +25,7 @@ SDCard
 *.bat
 *.dlw
 *.dlr
+
+#Sublime Text
+*.sublime-project
+*.sublime-workspace

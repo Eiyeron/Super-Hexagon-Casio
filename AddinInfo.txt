@@ -1,11 +1,11 @@
 //------------------------------------------------------------------
 // Addin-Application header control file, created with the CASIO SDK
 //------------------------------------------------------------------
-[OUTPUT]     : "HEXAGON.G1A"
+[OUTPUT]     : "SHEXAGON.G1A"
 [BINDATA]    : "FXADDINror.bin"
-[DISPNAME]   : "hexagon"
-[APPNAME]    : "@HEXAGON"
-[VERSION]    : "01.00.0000"
+[DISPNAME]   : "SHexagon"
+[APPNAME]    : "@SHEXAGO"
+[VERSION]    : "00.07.0000"
 [APL_ICON]   : "MainIcon.bmp"
 [MODULE_NUM] : 0
 [MOD1_TITLE] : "hexagon"

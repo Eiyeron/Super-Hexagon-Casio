@@ -1,13 +1,13 @@
 [DLSimProject]
-Name=hexagon
-Version=1.00.0000
+Name=SHexagon
+Version=00.07.0000
 Model=:fx-9860G.dlm
 SourcePath=SRC
 MemoryPath=INIT
 MemCardPath=SDCard
 
 [Program1]
-Program=hexagon.G1A
+Program=SHexagon.G1A
 Debug=Debug\FXADDINror.dbg
 LoadAddress=80000000:90100000
 
