@@ -28,18 +28,18 @@ void update_game(Game_Data *data)
 	}
 
 	if(data->list != NULL) {
-	//if the linked list is not empty
+	// if the linked list is not empty
 		updateWalls(data->list, min(data->current_time - data->last_time, 2));
-		//update the linked list
+		// update the linked list
 
-		//if the player and a wall collide
+		// if the player and a wall collide
 		if(isColliding(data->list, data->player_angle, data->nb_lines) == true) {
-			//death handling
+			// death handling
 		}
-	//remove every wall whose distance to the center equals zero
+	// remove every wall whose distance to the center equals zero
 		data->list = removeWall(data->list, 8);
 	}
-	//level generation
+	// level generation
 	if(!data->cooldown_timer--) {
 		Pattern pattern = data->level->patterns[rand()% data->level->nb_patterns];
 		addPattern(data, &pattern, rand()%data->nb_lines, rand()&1);
@@ -102,7 +102,7 @@ void update_menu(Game_Data *data)
 }
 void update_game_over(Game_Data *data)
 {
-//TODO
+// TODO
 }
 
 void updateCamera(Camera *cam, unsigned int delta_time){

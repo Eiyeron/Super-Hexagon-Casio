@@ -67,7 +67,7 @@ Wall *removeWall(Wall *list, int d)
 
 void updateWalls(Wall *list, unsigned int delta_time)
 {
-	//we want to move the obstacle by 1 every two ticks (1/64 seconds ~= 1/60)
+	// we want to move the obstacle by 1 every two ticks (1/64 seconds ~= 1/60)
 	//
 	Wall *tmp;
 	tmp = list;
@@ -75,7 +75,7 @@ void updateWalls(Wall *list, unsigned int delta_time)
 	do{
 		if(tmp != NULL)
 		{
-			//just reducing the distance from the center
+			// just reducing the distance from the center
 			tmp->d -= 0.5 * delta_time;
 		}
 		tmp = tmp->nxt;
@@ -83,7 +83,7 @@ void updateWalls(Wall *list, unsigned int delta_time)
 }
 
 void drawWalls(Wall *list, Game_Data *data, int nb_lines, Line_Transition line_transition)
-{//NEEDS A COMPLETE REWRITE TO SUPPORT THE LINE TRANSITIONS !
+{// NEEDS A COMPLETE REWRITE TO SUPPORT THE LINE TRANSITIONS !
 	Wall *tmp;
 	ML_Color drawing_color = data->are_colors_reversed ? WHITE : BLACK;
 	Camera *cam = &data->cam;
@@ -128,7 +128,7 @@ void drawWalls(Wall *list, Game_Data *data, int nb_lines, Line_Transition line_t
 
 }
 
-//tests every Wall in the list
+// tests every Wall in the list
 bool isColliding(Wall *list, int player_angle, int nb_lines)
 {
 	Wall *tmp;
@@ -137,10 +137,10 @@ bool isColliding(Wall *list, int player_angle, int nb_lines)
 	do{
 		if(tmp != NULL)
 		{
-			if(tmp-> d <= 8+tmp->h + 2)//if the wall is close enough from the center of the screen
-			{	//and is on the same line than the player
+			if(tmp-> d <= 8+tmp->h + 2)// if the wall is close enough from the center of the screen
+			{	// and is on the same line than the player
 				if(tmp->line == (int)(player_angle/ (360 / nb_lines)) && tmp->line < nb_lines)
-				{	//BOOM
+				{	// BOOM
 					return true;
 				}
 			}

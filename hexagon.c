@@ -10,11 +10,11 @@
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
     Game_Data data;
-	//variables for fps calculation
+	// variables for fps calculation
     unsigned int fps = 0, frame = 0, tempsOrigine = RTC_GetTicks();
-	//char string to display the fps
+	// char string to display the fps
     unsigned char fps_text[8] = {0};
-	//rand initialisation
+	// rand initialisation
     srand(RTC_GetTicks());
 
     // Key init
@@ -25,9 +25,9 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     switch_to_state(TITLE, &data);
 
 
-    while(KeyUp(K_EXIT)){ //main loop
-        //fps
-        if(RTC_GetTicks() - tempsOrigine >= 32 )//if 1/4 seconds elapsed
+    while(KeyUp(K_EXIT)){ // main loop
+        // fps
+        if(RTC_GetTicks() - tempsOrigine >= 32 )// if 1/4 seconds elapsed
         {
             fps = frame*4;
             frame = 0;
@@ -39,9 +39,9 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         update(&data);
         draw(&data);
 
-	//printing debug information
+	// printing debug information
 
-	//updating the screen
+	// updating the screen
         ML_display_vram();
         ML_clear_vram();
 

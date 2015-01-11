@@ -36,11 +36,11 @@ static const unsigned char hex_border_bottom_right_rev[8] ={0xFC, 0xFC, 0xF8, 0x
 void draw_game(Game_Data *data)
 {
 	fillBackground(data);
-	//draw the player and the lines
+	// draw the player and the lines
 	drawPlayer(data, data->player_angle);
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
-    	//showing the walls
+    	// showing the walls
 	if(data->list != NULL)
 		drawWalls(data->list, data, data->nb_lines, data->line_transition);
 	drawHud(data);
@@ -89,12 +89,13 @@ static void fillBackground(Game_Data *data) {
 }
 
 static void drawChrono(Game_Data *data) {
-	unsigned char time_text[8] = "";
+	unsigned char time_text[32] = "";
 
 	sprintf(time_text, "%.2f", data->chrono_time);
 
-
 	if(data->chrono_time < 60) {
+		// Drawing the text with the little progress bar. As I offset the text,
+		// I need to remake the whole routine.
 		ML_Color drawing_color = data->are_colors_reversed ? WHITE : BLACK;
 		unsigned int text_color = data->are_colors_reversed ? MINI_OVER : MINI_REV;
 		unsigned short length_of_time, length_of_time_line;
@@ -196,17 +197,17 @@ static void drawPolygon(Game_Data *data, int nb_lines, Line_Transition line_tran
 		}
 	}while(i <= nb_lines);
 
-	//draw the aforementionned circle, depending on the camera's center
-	//ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
+	// draw the aforementionned circle, depending on the camera's center
+	// ML_filled_circle(cam.cX, cam.cY, 6, BLACK);
 	ML_polygone(x, y, nb_lines, drawing_color);
-	//draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
+	// draw the player. At such a low scale, it was impossible to draw a rotating triangle, so its a radius 1 circle instead.
 	// TODO : Replace it for a quick sprite blit, or unwrapped ML_pixel procedure.
 }
 
-//draws the player
-//at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
-//but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.
-//there is still for code to calculate the vertices of the hexagon, in case we want to change that again
+// draws the player
+// at first, was supposed to draw an hexagon in the center, plus a triangle to show the player,
+// but the hexagon was not visible, and it was a pixel mess, so we're showing a circle instead.
+// there is still for code to calculate the vertices of the hexagon, in case we want to change that again
 static void drawPlayer(Game_Data *data, int player_angle)
 {
 	ML_Color drawing_color = data->are_colors_reversed ? WHITE : BLACK;
@@ -215,7 +216,7 @@ static void drawPlayer(Game_Data *data, int player_angle)
 
 }
 
-//draws one of the three rotating lines
+// draws one of the three rotating lines
 static void drawDiagonals(Game_Data *data, int nb_lines, Line_Transition line_transition)
 {
 	fix tmp_angle = FIX(data->cam.angle);
