@@ -144,6 +144,8 @@ void init_game(Game_Data *data)
 	readPattern(&data->level->patterns[6], patternTest7);
 	data->level->nb_patterns = 7;
 
+	data->level->player_rotation_speed = 60;
+
 	data->level->cam_change_interval = 5;
 	data->level->cam_change_precision = 1;
 	data->level->cam_change_probability = 0.75;

@@ -33,6 +33,10 @@ struct Level{
 	Pattern* patterns;
 	int nb_patterns;
 
+	// Rotation spped. Different levels have different speed.
+	// Just compare Hexagon and Hexagonest in the original game
+	float player_rotation_speed;
+
 	//for the camera rotation
 	int cam_change_interval; //5 seconds most of the time, but who knows...
 	int cam_change_precision; //to add a bit of randomness to the intervals

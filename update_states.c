@@ -40,17 +40,18 @@ void update_game(Game_Data *data)
 		data->list = removeWall(data->list, 8);
 	}
 	//level generation
-	//TODO: something else than pure randomness
 	if(!data->cooldown_timer--) {
 		Pattern pattern = data->level->patterns[rand()% data->level->nb_patterns];
 		addPattern(data, &pattern, rand()%data->nb_lines, rand()&1);
 		data->cooldown_timer = pattern.cooldown;
 	}
+
+	// TODO : stop at wall side.
 	if(KeyDown(K_LEFT)){
-		data->player_angle-=15;
+		data->player_angle-=data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
 	}
 	if(KeyDown(K_RIGHT)){
-		data->player_angle+=15;
+		data->player_angle+=data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
 	}
 
 	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
