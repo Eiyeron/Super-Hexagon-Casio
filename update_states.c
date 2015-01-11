@@ -65,7 +65,7 @@ void update_game(Game_Data *data)
 	}
 
 	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
-		switch_to_state(MENU, data);
+		game_over(data);
 	}
 
 
