@@ -178,13 +178,13 @@ Model modelDetector()
 		break;
 
 		case 0x34393542:
-			if((int*)((*SysCall)(0, 0, 0, 0, 1128))) return G75;
-			else return G75;
+		if((int*)((*SysCall)(0, 0, 0, 0, 1128))) return G75;
+		else return G75;
 		break;
 
 		case 0x80005D7C :
-			if((int*)((*SysCall)(0, 0, 0, 0, 1128))) return G85SD;
-			else return G85;
+		if((int*)((*SysCall)(0, 0, 0, 0, 1128))) return G85SD;
+		else return G85;
 		break;
 
 		case 0x34393342 :
@@ -242,39 +242,39 @@ unsigned char* strMirror(unsigned char* str)
 
 	for(len=0; str[len]!= '\0' ; len++);
 
-	for(i=0; i< (int) len/2; i++)
-	{
-		tmp = str[len-i-1];
-		str[len-i-1] = str[i];
-		str[i] = tmp;
+		for(i=0; i< (int) len/2; i++)
+		{
+			tmp = str[len-i-1];
+			str[len-i-1] = str[i];
+			str[i] = tmp;
+		}
+		return str;
 	}
-	return str;
-}
 #endif
 
 #ifdef EASY_STRROTATE /**						OK					*/
-unsigned char* strRotate(unsigned char* str, char mov)
-{
-	int i, len;
-	unsigned char tmp;
-
-	for(len=0; str[len]!= '\0' ; len++);
-
-	mov= mov%len;
-	if(mov < 0)
-		mov += len;
-	if(mov == 0)
-		return str;
-	while(mov)
+	unsigned char* strRotate(unsigned char* str, char mov)
 	{
-		tmp = str[len-1];
-		for(i=len-1;i>0;i--)
-			str[i] = str[i-1];
-		str[0] = tmp;
-		mov--;
+		int i, len;
+		unsigned char tmp;
+
+		for(len=0; str[len]!= '\0' ; len++);
+
+			mov= mov%len;
+		if(mov < 0)
+			mov += len;
+		if(mov == 0)
+			return str;
+		while(mov)
+		{
+			tmp = str[len-1];
+			for(i=len-1;i>0;i--)
+				str[i] = str[i-1];
+			str[0] = tmp;
+			mov--;
+		}
+		return str;
 	}
-	return str;
-}
 #endif
 
 #ifdef EASY_PRINTF/**						OK					*/
@@ -292,228 +292,228 @@ unsigned char* strRotate(unsigned char* str, char mov)
 	return;
 	}
 }*/
-void printf(unsigned char x, unsigned char y, unsigned char* str, char mode)
-{
-	locate(x,y);
-	if(mode)
-		PrintRev(str);
-	else
-		Print(str);
-}
+	void printf(unsigned char x, unsigned char y, unsigned char* str, char mode)
+	{
+		locate(x,y);
+		if(mode)
+			PrintRev(str);
+		else
+			Print(str);
+	}
 #endif
 
 #ifdef EASY_PRINTN/**						OK					*/
-void printn(unsigned char x, unsigned char y, int n, char mode)
-{
-	unsigned char c[12];
+	void printn(unsigned char x, unsigned char y, int n, char mode)
+	{
+		unsigned char c[12];
 
-	intToStr(c, n);
-	locate(x,y);
-	if(mode)
-		PrintRev(c);
-	else
-		Print(c);
-}
+		intToStr(c, n);
+		locate(x,y);
+		if(mode)
+			PrintRev(c);
+		else
+			Print(c);
+	}
 #endif
 
 
 
 #ifdef EASY_INT2STR/**						OK					*/
-unsigned char* intToStr(unsigned char* c, int n)
-{
-    if(n==0)
-    {
-        c[0] = '0';
-        c[1] = 0;
-    }
-    else
-    {
-        int i, l=0;
-        if(n<0)
-        {
-            c[0] = '-';
-            n = abs(n);
-            l++;
-        }
-        for(i=n ; i ; i/=10)
-            l++;
-        c[l] = 0;
-        for(i=n ; i ; i/=10)
-            c[--l] = i%10+'0';
-    }
-	return c;
-}
+	unsigned char* intToStr(unsigned char* c, int n)
+	{
+		if(n==0)
+		{
+			c[0] = '0';
+			c[1] = 0;
+		}
+		else
+		{
+			int i, l=0;
+			if(n<0)
+			{
+				c[0] = '-';
+				n = abs(n);
+				l++;
+			}
+			for(i=n ; i ; i/=10)
+				l++;
+			c[l] = 0;
+			for(i=n ; i ; i/=10)
+				c[--l] = i%10+'0';
+		}
+		return c;
+	}
 #endif
 
 #ifdef EASY_UINT2STR/**						OK					*/
-unsigned char* uintToStr(unsigned char* c, unsigned int n)
-{
-    if(n==0)
-    {
-        c[0] = '0';
-        c[1] = 0;
-    }
-    else
-    {
-        unsigned int i, l=0;
-        for(i=n ; i ; i/=10)
-            l++;
-        c[l] = 0;
-        for(i=n ; i ; i/=10)
-            c[--l] = i%10+'0';
-    }
-	return c;
-}
+	unsigned char* uintToStr(unsigned char* c, unsigned int n)
+	{
+		if(n==0)
+		{
+			c[0] = '0';
+			c[1] = 0;
+		}
+		else
+		{
+			unsigned int i, l=0;
+			for(i=n ; i ; i/=10)
+				l++;
+			c[l] = 0;
+			for(i=n ; i ; i/=10)
+				c[--l] = i%10+'0';
+		}
+		return c;
+	}
 #endif
 
 #ifdef EASY_CHAR2STR/**						OK					*/
-unsigned char* charToStr(unsigned char* c, char n)
-{
-    if(n==0)
-    {
-        c[0] = '0';
-        c[1] = 0;
-    }
-    else
-    {
-        int i, l=0;
-        if(n<0)
-        {
-            c[0] = '-';
-            n = abs(n);
-            l++;
-        }
-        for(i=n ; i ; i/=10)
-            l++;
-        c[l] = 0;
-        for(i=n ; i ; i/=10)
-            c[--l] = i%10+'0';
-    }
-	return c;
-}
+	unsigned char* charToStr(unsigned char* c, char n)
+	{
+		if(n==0)
+		{
+			c[0] = '0';
+			c[1] = 0;
+		}
+		else
+		{
+			int i, l=0;
+			if(n<0)
+			{
+				c[0] = '-';
+				n = abs(n);
+				l++;
+			}
+			for(i=n ; i ; i/=10)
+				l++;
+			c[l] = 0;
+			for(i=n ; i ; i/=10)
+				c[--l] = i%10+'0';
+		}
+		return c;
+	}
 #endif
 
 #ifdef EASY_UCHAR2STR/**						OK					*/
-unsigned char* ucharToStr(unsigned char* c, unsigned char n)
-{
-    if(n==0)
-    {
-        c[0] = '0';
-        c[1] = 0;
-    }
-    else
-    {
-        int i, l=0;
+	unsigned char* ucharToStr(unsigned char* c, unsigned char n)
+	{
+		if(n==0)
+		{
+			c[0] = '0';
+			c[1] = 0;
+		}
+		else
+		{
+			int i, l=0;
         /*if(n<0)
         {
             c[0] = '-';
             n = abs(n);
             l++;
         }*/
-        for(i=n ; i ; i/=10)
-            l++;
-        c[l] = 0;
-        for(i=n ; i ; i/=10)
-            c[--l] = i%10+'0';
+            for(i=n ; i ; i/=10)
+            	l++;
+            c[l] = 0;
+            for(i=n ; i ; i/=10)
+            	c[--l] = i%10+'0';
+        }
+        return c;
     }
-	return c;
-}
 #endif
 
 #ifdef EASY_FLOAT2STR
-unsigned char* floatToStr(unsigned char* c, float f, int precision)
-{
-	int i, n=0, index = 0;
-	if(f<0)
-	{
-		f *=-1;
-		c[0] = '-';
-		index++;
-	}
+    unsigned char* floatToStr(unsigned char* c, float f, int precision)
+    {
+    	int i, n=0, index = 0;
+    	if(f<0)
+    	{
+    		f *=-1;
+    		c[0] = '-';
+    		index++;
+    	}
 
-	i = f;
-	intToStr((unsigned char*)((int)c+index), i);
-	while(c[index])
-		index++;
-	if(f-i) {
-		c[index] = '.';
-		index++;
-		i = f = (f-i)*10;
-		while(f && n<precision) {
-			c[index] = i;
-			index++;
-			n++;
-			i = f = (f-i)*10;
-		}
-		c[index+1] = 0;
+    	i = f;
+    	intToStr((unsigned char*)((int)c+index), i);
+    	while(c[index])
+    		index++;
+    	if(f-i) {
+    		c[index] = '.';
+    		index++;
+    		i = f = (f-i)*10;
+    		while(f && n<precision) {
+    			c[index] = i;
+    			index++;
+    			n++;
+    			i = f = (f-i)*10;
+    		}
+    		c[index+1] = 0;
 
-	}
-	return c;
-}
+    	}
+    	return c;
+    }
 #endif
 
 
 
 #ifdef EASY_STR2CHAR
-char strToChar(unsigned char* c)
-{
-	int i, start = 0;
-	char n = 0;
-	if(c[0] == '-')
-		start++;
-	for(i=start; c[i]; i++)
-	{
-		if(c[i]<='9' && c[i] >= '0')
-			n = n*10+c[i] - '0';
-	}
-	if(start)
-		n *= -1;
-	return n;
-}
+    char strToChar(unsigned char* c)
+    {
+    	int i, start = 0;
+    	char n = 0;
+    	if(c[0] == '-')
+    		start++;
+    	for(i=start; c[i]; i++)
+    	{
+    		if(c[i]<='9' && c[i] >= '0')
+    			n = n*10+c[i] - '0';
+    	}
+    	if(start)
+    		n *= -1;
+    	return n;
+    }
 #endif
 
 #ifdef EASY_STR2UCHAR
-unsigned char strToUchar(unsigned char* c)
-{
-	int i = 0;
-	char n = 0;
-	for(i=0; c[i]; i++)
-	{
-		if(c[i]<='9' && c[i] >= '0')
-			n = n*10+c[i] - '0';
-	}
-	return n;
-}
+    unsigned char strToUchar(unsigned char* c)
+    {
+    	int i = 0;
+    	char n = 0;
+    	for(i=0; c[i]; i++)
+    	{
+    		if(c[i]<='9' && c[i] >= '0')
+    			n = n*10+c[i] - '0';
+    	}
+    	return n;
+    }
 #endif
 
 #ifdef EASY_STR2INT
-int strToInt(unsigned char* c)
-{
-	int i,n = 0, start = 0;
-	if(c[0] == '-')
-		start++;
-	for(i=start; c[i]; i++)
-	{
-		if(c[i]<='9' && c[i] >= '0')
-			n = n*10+c[i] - '0';
-	}
-	if(start)
-		n *= -1;
-	return n;
-}
+    int strToInt(unsigned char* c)
+    {
+    	int i,n = 0, start = 0;
+    	if(c[0] == '-')
+    		start++;
+    	for(i=start; c[i]; i++)
+    	{
+    		if(c[i]<='9' && c[i] >= '0')
+    			n = n*10+c[i] - '0';
+    	}
+    	if(start)
+    		n *= -1;
+    	return n;
+    }
 #endif
 
 #ifdef EASY_STR2UINT
-unsigned int strToUint(unsigned char* c)
-{
-	int i,n = 0;
-	for(i=0; c[i]; i++)
-	{
-		if(c[i]<='9' && c[i] >= '0')
-			n = n*10+c[i] - '0';
-	}
-	return n;
-}
+    unsigned int strToUint(unsigned char* c)
+    {
+    	int i,n = 0;
+    	for(i=0; c[i]; i++)
+    	{
+    		if(c[i]<='9' && c[i] >= '0')
+    			n = n*10+c[i] - '0';
+    	}
+    	return n;
+    }
 #endif
 
 
@@ -534,9 +534,9 @@ char* charToHex(char* result, unsigned char hex) // Needs an 3-char array ("xx\0
 	else
 		HEX2=HEX2-10+'a';
 
-		result[0] = HEX1;
-		result[1] = HEX2;
-		result[2] = '\0';
+	result[0] = HEX1;
+	result[1] = HEX2;
+	result[2] = '\0';
 
 	return result;
 }
@@ -618,14 +618,36 @@ int downBit_int(int num, char index)
 
 static void delay( void ) // Cette fonction n'est utilisée que pour KeyDown/Up, et elle n'est absolument pas utile ailleurs. D'où le static.
 {
-unsigned char i;
-  for (i=0;i<5;i++);
+	unsigned char i;
+	for (i=0;i<5;i++);
 }
 
 #ifdef EASY_KEY_DOWN
-unsigned char KeyDown( unsigned char code)
+#ifndef OS2Change
+#define OS2Change
+#ifndef OS2Change_GetOS2
+#define OS2Change_GetOS2
+typedef int(*sc_i2cp2sip)(char*, char*, short int*, short int*);
+const unsigned int sc0015[] = { 0xD201D002, 0x422B0009, 0x80010070, 0x0015 };
+#define GlibGetOSVersionInfo (*(sc_i2cp2sip)sc0015)
+int OSVersionAsInt(void)
 {
-	int result=0;
+	unsigned char mainversion;
+	unsigned char minorversion;
+	unsigned short release;
+	unsigned short build;
+	GlibGetOSVersionInfo( &mainversion, &minorversion, &release, &build );
+	return ( ( mainversion << 24 ) & 0xFF000000 ) | ( ( minorversion << 16 ) & 0x00FF0000 ) | ( release & 0x0000FFFF );
+}
+#define isOS2 (OSVersionAsInt() >= 0x02020000)
+#define OS2(x,y) ((OSVersionAsInt() >= 0x02020000)?y:x)
+#endif
+#ifndef OS2Change_Keyboard
+#define OS2Change_Keyboard
+
+unsigned char CheckKeyRow(unsigned char code)
+{
+	unsigned char result=0;
 	short*PORTB_CTRL=(void*)0xA4000102;
 	short*PORTM_CTRL=(void*)0xA4000118;
 	char*PORTB=(void*)0xA4000122;
@@ -634,33 +656,29 @@ unsigned char KeyDown( unsigned char code)
 	short smask;
 	char cmask;
 	unsigned char column, row;
-
 	column = code>>4;
 	row = code &0x0F;
-
 	smask = 0x0003 << (( row %8)*2);
 	cmask = ~( 1 << ( row %8) );
-	if ( row <8)
+	if(row <8)
 	{
-		// configure port B as input, except for the "row to check"-bit, which has to be an output.
 		*PORTB_CTRL = 0xAAAA ^ smask;
-		// configure port M as input; port M is inactive with row < 8
 		*PORTM_CTRL = (*PORTM_CTRL & 0xFF00 ) | 0x00AA;
 		delay();
-		*PORTB = cmask;    // set the "row to check"-bit to 0 on port B
-		*PORTM = (*PORTM & 0xF0 ) | 0x0F;    // port M is inactive with row < 8
+		*PORTB = cmask;
+		*PORTM = (*PORTM & 0xF0 ) | 0x0F;
 	}
 	else
 	{
-		*PORTB_CTRL = 0xAAAA;  // configure port B as input; port B is inactive with row >= 8
-		// configure port M as input, except for the "row to check"-bit, which has to be an output.
+		*PORTB_CTRL = 0xAAAA;
 		*PORTM_CTRL = ((*PORTM_CTRL & 0xFF00 ) | 0x00AA)  ^ smask;
 		delay();
-		*PORTB = 0xFF;    // port B is inactive with row >= 8 (all to 1)
-		*PORTM = (*PORTM & 0xF0 ) | cmask;  // set the "row to check"-bit to 0
-	};
+		*PORTB = 0xFF;
+		*PORTM = (*PORTM & 0xF0 ) | cmask;
+	}
+
 	delay();
-	result = (~(*PORTA))>>column&1;   // a pressed key in the row-to-check draws the corresponding bit to 0
+	result = (~(*PORTA))>>column & 1;
 	delay();
 	*PORTB_CTRL = 0xAAAA;
 	*PORTM_CTRL = (*PORTM_CTRL & 0xFF00 ) | 0x00AA;
@@ -668,8 +686,44 @@ unsigned char KeyDown( unsigned char code)
 	*PORTB_CTRL = 0x5555;
 	*PORTM_CTRL = (*PORTM_CTRL & 0xFF00 ) | 0x0055;
 	delay();
-  return result;
+
+	return result;
 }
+
+unsigned char KeyDown(unsigned char keycode)
+{
+	unsigned short key[8];
+	const unsigned short* keyboardregister = (unsigned short*)0xA44B0000;
+	if(isOS2)
+	{
+		unsigned char row = keycode%10;
+		memcpy(key, keyboardregister, sizeof(unsigned short) << 3);
+
+		return (0 != (key[row >> 1] & 1 << keycode / 10 - 1 + ((row & 1) << 3)));
+	}
+	else
+	{
+		return CheckKeyRow((keycode % 10) + ((keycode / 10 - 1) << 4));
+	}
+}
+unsigned char GetKeyMod(unsigned int *key)
+{
+	unsigned char x, ret;
+
+	ret = GetKey(key);
+
+	for(x = 0; x < 80; x++)
+	{
+		if(KeyDown(x))
+		{
+			*key = x;
+			break;
+		}
+	}
+	return ret;
+}
+#endif
+#endif
 #endif
 
 #ifdef EASY_KEY_UP
@@ -692,75 +746,75 @@ unsigned char AnyKey()
 #ifdef EASY_INPUT
 char* input(char* c, int x, int y, int longueur, char nb)
 {
-    int i, key, curseur=0;
-    char lettre;
-    locate(x, y);
+	int i, key, curseur=0;
+	char lettre;
+	locate(x, y);
 	Print("[");
-    locate(x+longueur+1, y);Print("]");
-    while(1)
-    {
-        locate(x+1, y);
-        Print(c);
-        if(strlen(c)<longueur) Print(" ");
-        Bdisp_DrawLineVRAM((x+curseur)*6, (y-1)*8, (x+curseur)*6, (y-1)*8+6);
-        Bdisp_DrawLineVRAM((x+curseur)*6+1, (y-1)*8, (x+curseur)*6+1, (y-1)*8+6);
-        GetKey(&key);
-        lettre=0;
-        switch(key)
-        {
-            case KEY_CTRL_LEFT: if(curseur) curseur--; break;
-            case KEY_CTRL_RIGHT: if(c[curseur]) curseur++; break;
-            case KEY_CTRL_DEL:
-                if(curseur)
-                {
-                    for(i=curseur ; i<longueur ; i++)
-                        c[i-1] = c[i];
-                    locate(x+curseur+1, y);Print(" ");
-                    curseur--;
-                }
-                else
-                {
-                    for(i=0 ; c[i] ; i++)
-                        c[i] = c[i+1];
-                }
-                break;
-            case KEY_CTRL_EXIT: c[0] = 0; return c;
-            case KEY_CTRL_QUIT: c[0] = 0; return c;
-            case KEY_CTRL_EXE: return c;
-            case KEY_CHAR_PLUS: lettre='+'; break;
-            case KEY_CHAR_MINUS: lettre='-'; break;
-            case KEY_CHAR_POW: lettre='^'; break;
-            case KEY_CTRL_XTT: lettre='X'; break;
-            default:
-                if(nb)
-                {
-                    if(key>='0' && key<='9')
-                        lettre=key;
-                }
-                else if(key>0 && key<256)
-                    lettre=key;
-        }
-        if(lettre && curseur<longueur)
-        {
-            for(i=longueur-1 ; i>=curseur ; i--)
-                c[i] = c[i-1];
-            c[curseur] = lettre;
-            curseur++;
-        }
-    }
-}
+		locate(x+longueur+1, y);Print("]");
+		while(1)
+		{
+			locate(x+1, y);
+			Print(c);
+			if(strlen(c)<longueur) Print(" ");
+			Bdisp_DrawLineVRAM((x+curseur)*6, (y-1)*8, (x+curseur)*6, (y-1)*8+6);
+			Bdisp_DrawLineVRAM((x+curseur)*6+1, (y-1)*8, (x+curseur)*6+1, (y-1)*8+6);
+			GetKey(&key);
+			lettre=0;
+			switch(key)
+			{
+				case KEY_CTRL_LEFT: if(curseur) curseur--; break;
+				case KEY_CTRL_RIGHT: if(c[curseur]) curseur++; break;
+				case KEY_CTRL_DEL:
+				if(curseur)
+				{
+					for(i=curseur ; i<longueur ; i++)
+						c[i-1] = c[i];
+					locate(x+curseur+1, y);Print(" ");
+					curseur--;
+				}
+				else
+				{
+					for(i=0 ; c[i] ; i++)
+						c[i] = c[i+1];
+				}
+				break;
+				case KEY_CTRL_EXIT: c[0] = 0; return c;
+				case KEY_CTRL_QUIT: c[0] = 0; return c;
+				case KEY_CTRL_EXE: return c;
+				case KEY_CHAR_PLUS: lettre='+'; break;
+				case KEY_CHAR_MINUS: lettre='-'; break;
+				case KEY_CHAR_POW: lettre='^'; break;
+				case KEY_CTRL_XTT: lettre='X'; break;
+				default:
+				if(nb)
+				{
+					if(key>='0' && key<='9')
+						lettre=key;
+				}
+				else if(key>0 && key<256)
+					lettre=key;
+			}
+			if(lettre && curseur<longueur)
+			{
+				for(i=longueur-1 ; i>=curseur ; i--)
+					c[i] = c[i-1];
+				c[curseur] = lettre;
+				curseur++;
+			}
+		}
+	}
 #endif
 
 #ifdef EASY_NUMARRAY_CHAR
-int numArray_char(char* arr)
-{
-	return sizeof(arr);
-}
+	int numArray_char(char* arr)
+	{
+		return sizeof(arr);
+	}
 #endif
 
 #ifdef EASY_NUMARRAY_INT
-int numArray_int(char* arr)
-{
-	return sizeof(arr)/4;
-}
+	int numArray_int(char* arr)
+	{
+		return sizeof(arr)/4;
+	}
 #endif

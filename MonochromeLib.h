@@ -87,7 +87,10 @@ extern "C" {
 #define CONTRAST_MAX	190
 typedef enum {TRANSPARENT=-1, WHITE, BLACK, XOR, CHECKER} ML_Color;
 
-char* ML_vram_adress();
+
+typedef char*(*sc_cpv)(void);
+extern const unsigned int sc0135[];
+#define ML_vram_adress (*(sc_cpv)sc0135)
 
 void ML_clear_vram();
 void ML_clear_screen();

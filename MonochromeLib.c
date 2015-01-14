@@ -115,13 +115,8 @@
 #define sgn(x)	(x<0?-1:1)
 #define rnd(x)	((int)(x+0.5))
 
-//Thanks to Simon Lothar for this function
-int SysCallCode[] = {0xD201422B,0x60F20000,0x80010070};
-int (*SysCall)( int R4, int R5, int R6, int R7, int FNo ) = (void*)&SysCallCode;
-char* ML_vram_adress()
-{
-	return (char*)((*SysCall)(0, 0, 0, 0, 309));
-}
+const unsigned int sc0135[] = { 0xD201D002, 0x422B0009, 0x80010070, 0x0135 };
+
 
 #ifdef ML_CLEAR_VRAM
 void ML_clear_vram()
