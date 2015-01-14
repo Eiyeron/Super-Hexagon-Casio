@@ -115,7 +115,11 @@
 #define sgn(x)	(x<0?-1:1)
 #define rnd(x)	((int)(x+0.5))
 
-const unsigned int sc0135[] = { 0xD201D002, 0x422B0009, 0x80010070, 0x0135 };
+const static unsigned int sc0135[] = { 0xD201D002, 0x422B0009, 0x80010070, 0x0135 };
+typedef char*(*sc_cpv)(void);
+char* ML_vram_adress() {
+	return (*(sc_cpv)sc0135)();
+}
 
 
 #ifdef ML_CLEAR_VRAM

@@ -88,10 +88,8 @@ extern "C" {
 typedef enum {TRANSPARENT=-1, WHITE, BLACK, XOR, CHECKER} ML_Color;
 
 
-typedef char*(*sc_cpv)(void);
-extern const unsigned int sc0135[];
-#define ML_vram_adress (*(sc_cpv)sc0135)
-
+//#define ML_vram_adress (*(sc_cpv)sc0135)
+char* ML_cram_adress();
 void ML_clear_vram();
 void ML_clear_screen();
 void ML_display_vram();
