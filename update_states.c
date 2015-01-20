@@ -51,16 +51,16 @@ void update_game(Game_Data *data)
 
 	if(KeyDown(K_LEFT)){
 		float new_player_position = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
+		/*if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
 			new_player_position = data->player_angle;
-		}
+		}*/
 		data->player_angle = new_player_position;
 	}
 	if(KeyDown(K_RIGHT)){
 		float new_player_position = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
+		/*if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
 			new_player_position = data->player_angle;
-		}
+		}*/
 		data->player_angle = new_player_position;
 	}
 

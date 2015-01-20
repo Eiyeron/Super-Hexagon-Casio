@@ -10,7 +10,7 @@ if exist FXADDINror.bin  del FXADDINror.bin
 cd ..
 if not exist debug\FXADDINror.bin  goto error
 
-"C:\CASIO\fx-9860G SDK\Tools\MakeAddinHeader363.exe" "C:\users\eiyeron\My Documents\Programming\SDK\fxsdk\Super-Hexagon-Casio"
+"C:\CASIO\fx-9860G SDK\Tools\MakeAddinHeader363.exe" "C:\Dev\Git\Super-Hexagon-Casio"
 if not exist SHEXAGON.G1A  goto error
 echo Build has completed.
 goto end
