@@ -49,70 +49,65 @@ void update_game(Game_Data *data)
 		data->cooldown_timer = pattern.cooldown;
 	}
 
-	if(KeyDown(K_LEFT)){
+	if(KeyDown(K_LEFT)) {
 		float new_player_position = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		/*if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
-			new_player_position = data->player_angle;
-		}*/
-			data->player_angle = new_player_position;
-		}
-		if(KeyDown(K_RIGHT)){
-			float new_player_position = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		/*if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
-			new_player_position = data->player_angle;
-		}*/
-			data->player_angle = new_player_position;
-		}
-
-		if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
-			game_over(data);
-		}
-
-
-		if(KeyDown(K_PLUS) && data->line_transition.counter == 0)
-		{
-			data->line_transition.counter = 10;
-			data->line_transition.counter_start = 10;
-			data->line_transition.delta_nb_lines = 1;
-		}else if(KeyDown(K_MINUS) && data->line_transition.counter == 0){
-			data->line_transition.counter = 10;
-			data->line_transition.counter_start = 10;
-			data->line_transition.delta_nb_lines = -1;
-		}
-		if(data->line_transition.counter != 0){
-			data->line_transition.counter --;
-			if(data->line_transition.counter <= 0){
-				data->nb_lines += data->line_transition.delta_nb_lines;
-				data->line_transition.counter_start = 0;
-				data->line_transition.delta_nb_lines = 0;
-			}
-		}
-
-
-		data->player_angle = MOD(data->player_angle, 360);
-
-		updateCamera(&(data->cam), data->current_time - data->last_time);
-
+		data->player_angle = new_player_position;
 	}
-	void update_game_over(Game_Data *data)
-	{
-		data->last_time = data->current_time;
-		data->current_time = RTC_GetTicks();
-		data->chrono_time += (data->current_time - data->last_time)/ 128.;
-
-		if(KeyDown(K_SHIFT) && data->shift_latch_value == 0) {
-			switch_to_state(GAME, data);
-		}
-		if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
-			switch_to_state(TITLE, data);
-		}
-
-
-		updateCamera(&(data->cam), data->current_time - data->last_time);
+	if(KeyDown(K_RIGHT)) {
+		float new_player_position = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+		data->player_angle = new_player_position;
 	}
-	void update_menu(Game_Data *data)
+
+	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
+		game_over(data);
+	}
+
+
+	if(KeyDown(K_PLUS) && data->line_transition.counter == 0)
 	{
-//WARNING: THIS IS JUST PLACEHOLDER TO TEST THE GRAPHICS (too lazy to do some real level handling right now...)
+		data->line_transition.counter = 10;
+		data->line_transition.counter_start = 10;
+		data->line_transition.delta_nb_lines = 1;
+	}else if(KeyDown(K_MINUS) && data->line_transition.counter == 0){
+		data->line_transition.counter = 10;
+		data->line_transition.counter_start = 10;
+		data->line_transition.delta_nb_lines = -1;
+	}
+	if(data->line_transition.counter != 0){
+		data->line_transition.counter --;
+		if(data->line_transition.counter <= 0){
+			data->nb_lines += data->line_transition.delta_nb_lines;
+			data->line_transition.counter_start = 0;
+			data->line_transition.delta_nb_lines = 0;
+		}
+	}
+
+
+	data->player_angle = MOD(data->player_angle, 360);
+
+	updateCamera(&(data->cam), data->current_time - data->last_time);
+
+}
+
+void update_game_over(Game_Data *data)
+{
+	data->last_time = data->current_time;
+	data->current_time = RTC_GetTicks();
+	data->chrono_time += (data->current_time - data->last_time)/ 128.;
+
+	if(KeyDown(K_SHIFT) && data->shift_latch_value == 0) {
+		switch_to_state(GAME, data);
+	}
+	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
+		switch_to_state(TITLE, data);
+	}
+
+
+	updateCamera(&(data->cam), data->current_time - data->last_time);
+}
+void update_menu(Game_Data *data)
+{
+	//WARNING: THIS IS JUST PLACEHOLDER TO TEST THE GRAPHICS (too lazy to do some real level handling right now...)
         data->last_time = data->current_time;//updating the time variables
         data->current_time = RTC_GetTicks();
 
