@@ -234,7 +234,7 @@ void init_menu(Game_Data *data)
 	data->cam.cX = 64;
 	data->cam.cY = 70;
 	data->cam.angle = 0;
-	data->cam.speed = 1.0;
+	data->cam.speed = 0;
 	data->cam.zoom = 8.0;
 	data->nb_lines = 6;
 	data->line_transition.counter = 0;

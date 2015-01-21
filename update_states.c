@@ -54,71 +54,71 @@ void update_game(Game_Data *data)
 		/*if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
 			new_player_position = data->player_angle;
 		}*/
-		data->player_angle = new_player_position;
-	}
-	if(KeyDown(K_RIGHT)){
-		float new_player_position = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+			data->player_angle = new_player_position;
+		}
+		if(KeyDown(K_RIGHT)){
+			float new_player_position = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
 		/*if(!isCollidingSide(data->list, data->player_angle, data->nb_lines) && isCollidingSide(data->list, new_player_position, data->nb_lines)) {
 			new_player_position = data->player_angle;
 		}*/
-		data->player_angle = new_player_position;
-	}
-
-	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
-		game_over(data);
-	}
-
-
-	if(KeyDown(K_PLUS) && data->line_transition.counter == 0)
-	{
-		data->line_transition.counter = 10;
-		data->line_transition.counter_start = 10;
-		data->line_transition.delta_nb_lines = 1;
-	}else if(KeyDown(K_MINUS) && data->line_transition.counter == 0){
-		data->line_transition.counter = 10;
-		data->line_transition.counter_start = 10;
-		data->line_transition.delta_nb_lines = -1;
-	}
-	if(data->line_transition.counter != 0){
-		data->line_transition.counter --;
-		if(data->line_transition.counter <= 0){
-			data->nb_lines += data->line_transition.delta_nb_lines;
-			data->line_transition.counter_start = 0;
-			data->line_transition.delta_nb_lines = 0;
+			data->player_angle = new_player_position;
 		}
+
+		if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
+			game_over(data);
+		}
+
+
+		if(KeyDown(K_PLUS) && data->line_transition.counter == 0)
+		{
+			data->line_transition.counter = 10;
+			data->line_transition.counter_start = 10;
+			data->line_transition.delta_nb_lines = 1;
+		}else if(KeyDown(K_MINUS) && data->line_transition.counter == 0){
+			data->line_transition.counter = 10;
+			data->line_transition.counter_start = 10;
+			data->line_transition.delta_nb_lines = -1;
+		}
+		if(data->line_transition.counter != 0){
+			data->line_transition.counter --;
+			if(data->line_transition.counter <= 0){
+				data->nb_lines += data->line_transition.delta_nb_lines;
+				data->line_transition.counter_start = 0;
+				data->line_transition.delta_nb_lines = 0;
+			}
+		}
+
+
+		data->player_angle = MOD(data->player_angle, 360);
+
+		updateCamera(&(data->cam), data->current_time - data->last_time);
+
 	}
+	void update_game_over(Game_Data *data)
+	{
+		data->last_time = data->current_time;
+		data->current_time = RTC_GetTicks();
+		data->chrono_time += (data->current_time - data->last_time)/ 128.;
+
+		if(KeyDown(K_SHIFT) && data->shift_latch_value == 0) {
+			switch_to_state(GAME, data);
+		}
+		if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
+			switch_to_state(TITLE, data);
+		}
 
 
-	data->player_angle = MOD(data->player_angle, 360);
-
-	updateCamera(&(data->cam), data->current_time - data->last_time);
-
-}
-void update_game_over(Game_Data *data)
-{
-	data->last_time = data->current_time;
-	data->current_time = RTC_GetTicks();
-	data->chrono_time += (data->current_time - data->last_time)/ 128.;
-
-	if(KeyDown(K_SHIFT) && data->shift_latch_value == 0) {
-		switch_to_state(GAME, data);
+		updateCamera(&(data->cam), data->current_time - data->last_time);
 	}
-	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
-		switch_to_state(TITLE, data);
-	}
-
-
-	updateCamera(&(data->cam), data->current_time - data->last_time);
-}
-void update_menu(Game_Data *data)
-{
+	void update_menu(Game_Data *data)
+	{
 //WARNING: THIS IS JUST PLACEHOLDER TO TEST THE GRAPHICS (too lazy to do some real level handling right now...)
         data->last_time = data->current_time;//updating the time variables
         data->current_time = RTC_GetTicks();
 
 	if(data->keypress_delay == 0) //to make sure that the user isn't scrolling too fast
 	{
-		if(KeyDown(K_EXE)) //load the selected level
+		if(KeyDown(K_SHIFT)) //load the selected level
 			switch_to_state(GAME, data);//TODO: change some values in data first
 		else if(KeyDown(K_LEFT))
 		{
@@ -126,21 +126,37 @@ void update_menu(Game_Data *data)
 			if(data->current_entry == 0)//check for overflows
 				data->current_entry = 6;
 			data->keypress_delay = 15;//init the delay
+			data->are_colors_reversed = data->current_entry > 3;
+
 			//TODO: load high score data and stuff, probably not at run time, but in init_states
+			data->cam.speed = 4;
 		}else if(KeyDown(K_RIGHT))
 		{
 			data->current_entry ++;
 			if(data->current_entry == 7)
 				data->current_entry = 1;
 			data->keypress_delay = 15;
+			data->are_colors_reversed = data->current_entry > 3;
+
+			data->cam.speed = -4;
 		}
-	}else data->keypress_delay --;
-	updateCamera(&(data->cam), data->current_time - data->last_time);//update the camera for the background
+	}else if(data->keypress_delay-- != 0 && data->cam.speed != 0) {
+		if(data->cam.speed < 0)
+			data->cam.angle += 360 + data->cam.speed;
+		else
+			data->cam.angle += data->cam.speed;
+		data->cam.angle %= 360;
+		if(data->keypress_delay == 0)
+			data->cam.speed = 0;
+		//Because the updateCamera isn't really precise
+		//updateCamera(&(data->cam), data->current_time - data->last_time);//update the camera for the background
+	}
+
 }
 
 void updateCamera(Camera *cam, unsigned int delta_time){
-	cam->angle += cam->speed * delta_time / 2.;
-
+	cam->angle += (int)(cam->speed * delta_time / 2.);
+	if(cam->angle < 0) cam->angle += 360;
 	if(cam->angle >= 360)
 		cam->angle = cam->angle % 360;
 

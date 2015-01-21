@@ -58,10 +58,16 @@ void draw_title(Game_Data *data)
 }
 void draw_menu(Game_Data *data)
 {
+	char buffer[20];
+	sprintf(buffer, "%i", data->cam.angle);
 	fillBackground(data);
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
 	drawTopRightCornerText(data->entry_difficulties[data->current_entry - 1], data->are_colors_reversed);
+	if(data->current_entry > 3) {
+		// Hyper Mode
+		drawBottomRightCornerText("Hyper Mode", data->are_colors_reversed);
+	}
 }
 void draw_game_over(Game_Data *data)
 {
