@@ -1,4 +1,4 @@
-/***********************************/
+ /***********************************/
 /**          Easy Coding          **/
 /**Category : Snippets Collection **/
 /**@author Eiyeron                **/
@@ -614,7 +614,7 @@ int downBit_int(int num, char index)
 }
 #endif
 
-
+// TODO : Foudn the new function to detect architecture instead of using versions.
 
 static void delay( void ) // Cette fonction n'est utilisée que pour KeyDown/Up, et elle n'est absolument pas utile ailleurs. D'où le static.
 {
@@ -640,7 +640,7 @@ int OSVersionAsInt(void)
 	return ( ( mainversion << 24 ) & 0xFF000000 ) | ( ( minorversion << 16 ) & 0x00FF0000 ) | ( release & 0x0000FFFF );
 }
 #define isOS2 (OSVersionAsInt() >= 0x02020000)
-#define OS2(x,y) ((OSVersionAsInt() >= 0x02020000)?y:x)
+#define OS2(x,y) ((isOS2)?y:x)
 #endif
 #ifndef OS2Change_Keyboard
 #define OS2Change_Keyboard

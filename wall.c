@@ -160,8 +160,8 @@ bool isColliding(Wall *list, int player_angle, int nb_lines)
 	do{
 		if(tmp != NULL)
 		{
-			//if(tmp-> d <= 8+tmp->h + 2)// if the wall is close enough from the center of the screen
-			if(tmp-> d <= 8 + 2)// if the wall is close enough from the center of the screen
+			if(tmp-> d <= 8+tmp->h + 2)// if the wall is close enough from the center of the screen
+			//if(tmp-> d <= 8 + 2)// if the wall is close enough from the center of the screen
 			{	// and is on the same line than the player
 				if(tmp->line == (int)(player_angle/ (360 / nb_lines)) && tmp->line < nb_lines)
 				{	// BOOM

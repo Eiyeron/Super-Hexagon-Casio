@@ -50,12 +50,10 @@ void update_game(Game_Data *data)
 	}
 
 	if(KeyDown(K_LEFT)) {
-		float new_player_position = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		data->player_angle = new_player_position;
+		data->player_angle = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
 	}
 	if(KeyDown(K_RIGHT)) {
-		float new_player_position = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		data->player_angle = new_player_position;
+		data->player_angle = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
 	}
 
 	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
@@ -91,15 +89,12 @@ void update_game(Game_Data *data)
 
 void update_game_over(Game_Data *data)
 {
-	data->last_time = data->current_time;
-	data->current_time = RTC_GetTicks();
-	data->chrono_time += (data->current_time - data->last_time)/ 128.;
-
 	if(KeyDown(K_SHIFT) && data->shift_latch_value == 0) {
 		switch_to_state(GAME, data);
 	}
-	if(KeyDown(K_ALPHA) && data->alpha_latch_value == 0) {
-		switch_to_state(TITLE, data);
+
+	if((KeyDown(K_ALPHA) && data->alpha_latch_value == 0)) {
+		switch_to_state(MENU, data);
 	}
 
 
@@ -172,5 +167,5 @@ static void game_over(Game_Data *data) {
 	}
 	free(data->level);
 
-	switch_to_state(MENU, data);
+	switch_to_state(GAME_OVER, data);
 }

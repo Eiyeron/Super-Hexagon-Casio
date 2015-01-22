@@ -244,15 +244,25 @@ void init_menu(Game_Data *data)
 	data->keypress_delay = 50;
 	data->nb_entries = 6;
 	data->current_entry = 1;
-data->current_entry_high_score = 0; //to load from a save file
-data->entry_difficulties = NULL;
-data->entry_difficulties = malloc(sizeof(char*) * 6);
-if(data->entry_difficulties == NULL)
-	return;
-load_difficulty_names(data->entry_difficulties);
+	data->current_entry_high_score = 0; //to load from a save file
+	data->entry_difficulties = NULL;
+	data->entry_difficulties = malloc(sizeof(char*) * 6);
+	if(data->entry_difficulties == NULL)
+		return;
+	load_difficulty_names(data->entry_difficulties);
 }
 
 void init_game_over(Game_Data *data)
 {
+	data->cam.cX = 96;
+	data->cam.cY = 32;
+	data->cam.angle = 0;
+	data->cam.speed = 1;
+	data->cam.zoom = 12;
+
+	data->nb_lines = 6;
+	data->line_transition.counter = 0;
+	data->line_transition.counter_start = 0;
+	data->line_transition.delta_nb_lines = 0;
 
 }

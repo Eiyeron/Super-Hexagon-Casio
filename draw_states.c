@@ -54,12 +54,10 @@ void draw_title(Game_Data *data)
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
 	drawBottomLeftCornerText("Press Shift", data->are_colors_reversed);	
-	drawBottomRightCornerText("By Eiyeron", data->are_colors_reversed);	
+	drawTopRightCornerText("By Eiyeron & Adbook", data->are_colors_reversed);	
 }
 void draw_menu(Game_Data *data)
 {
-	char buffer[20];
-	sprintf(buffer, "%i", data->cam.angle);
 	fillBackground(data);
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
@@ -71,7 +69,13 @@ void draw_menu(Game_Data *data)
 }
 void draw_game_over(Game_Data *data)
 {
-
+	unsigned char time_text[32] = "";
+	sprintf(time_text, "%.2f", data->chrono_time);
+	fillBackground(data);
+	drawPolygon(data, data->nb_lines, data->line_transition);
+	drawDiagonals(data, data->nb_lines, data->line_transition);
+	drawTopLeftCornerText(time_text, data->are_colors_reversed);
+	drawBottomLeftCornerText("Press Shift to retry", data->are_colors_reversed);
 }
 
 static void fillBackground(Game_Data *data) {
@@ -311,6 +315,14 @@ static unsigned int length_of_print_string(unsigned char* txt) {
 			current_char_length = 6;
 			break;
 
+			case '&':
+			current_char_length = 5;
+			break;
+
+			case '[':
+			case ']':
+			current_char_length = 3;
+			break;
 			//
 			//
 			default:
