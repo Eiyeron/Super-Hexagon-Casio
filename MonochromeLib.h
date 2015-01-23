@@ -52,7 +52,7 @@
 //#define ML_VERTICAL_SCROLL
 
 #define ML_BMP_OR
-// #define ML_BMP_AND
+#define ML_BMP_AND
 //#define ML_BMP_XOR
 #define ML_BMP_OR_CL
 //#define ML_BMP_AND_CL

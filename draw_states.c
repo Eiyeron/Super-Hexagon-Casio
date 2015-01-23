@@ -6,13 +6,14 @@
 // static functions
 
 static void fillBackground(Game_Data *data);
+static void draw_big_num(unsigned char *txt, int x, int y, unsigned char isReversed);
 
 static void drawPlayer(Game_Data *data, int player_angle);
 static void drawPolygon(Game_Data *data, int nb_lines, Line_Transition line_transition);
 static void drawDiagonals(Game_Data *data, int nb_lines, Line_Transition line_transition);
 static void drawHud(Game_Data *data);
 static void drawChrono(Game_Data *data);
-static void drawStep(Game_Data *data);
+static int getLevel(Game_Data *data);
 
 static unsigned int length_of_print_string(unsigned char* txt);
 static void drawTopLeftCornerText(unsigned char* txt, unsigned char isReversed);
@@ -31,6 +32,72 @@ static const unsigned char hex_border_top_left_rev[8] = {0x0F, 0x0F, 0x1F, 0x1F,
 static const unsigned char hex_border_top_right_rev[8] ={0xE0, 0xE0, 0xF0, 0xF0, 0xF8, 0xF8, 0xFC, 0xFC};
 static const unsigned char hex_border_bottom_left_rev[8] = {0x7F, 0x7F, 0x3F, 0x3F, 0x1F, 0x1F, 0x0F, 0x0F};
 static const unsigned char hex_border_bottom_right_rev[8] ={0xFC, 0xFC, 0xF8, 0xF8, 0xF0, 0xF0, 0xE0, 0xE0};
+
+static const unsigned char big_hex_border_left[] = {128,128,192,192,224,224,240,240,248,248};
+static const unsigned char big_hex_border_left_rev[] = {248,248,120,120,56,56,24,24,8,8};
+
+
+// 44*8
+static const unsigned char level_spr[] = {192,127,176,223,236,0,192,127,176,223,236,0,192,96,48,216,12,0,192,127,176,223,236,0,192,127,176,223,236,0,192,96,48,216,12,0,255,127,191,223,239,240,127,63,191,143,231,240};
+static const unsigned char level_spr_rev[] = {63,128,79,32,19,240,63,128,79,32,19,240,63,159,207,39,243,240,63,128,79,32,19,240,63,128,79,32,19,240,63,159,207,39,243,240,0,128,64,32,16,0,128,192,64,112,24,0};
+
+static const unsigned char num_0[] = {127,255,195,195,195,195,255,254};
+static const unsigned char num_1[] = {240,248,24,24,24,24,255,255};
+static const unsigned char num_2[] = {255,255,3,127,254,192,255,255};
+static const unsigned char num_3[] = {254,255,3,255,255,3,255,254};
+static const unsigned char num_4[] = {195,195,195,255,127,3,3,3};
+static const unsigned char num_5[] = {255,255,192,254,127,3,255,255};
+static const unsigned char num_6[] = {255,255,192,254,255,195,255,255};
+static const unsigned char num_7[] = {254,255,3,3,3,3,3,3};
+static const unsigned char num_8[] = {127,255,195,255,255,195,255,254};
+static const unsigned char num_9[] = {255,255,195,255,127,3,255,255};
+
+static const unsigned char num_0_rev[] = {128,0,60,60,60,60,0,1};
+static const unsigned char num_1_rev[] = {15,7,231,231,231,231,0,0};
+static const unsigned char num_2_rev[] = {0,0,252,128,1,63,0,0};
+static const unsigned char num_3_rev[] = {1,0,252,0,0,252,0,1};
+static const unsigned char num_4_rev[] = {60,60,60,0,128,252,252,252};
+static const unsigned char num_5_rev[] = {0,0,63,1,128,252,0,0};
+static const unsigned char num_6_rev[] = {0,0,63,1,0,60,0,0};
+static const unsigned char num_7_rev[] = {1,0,252,252,252,252,252,252};
+static const unsigned char num_8_rev[] = {128,0,60,0,0,60,0,1};
+static const unsigned char num_9_rev[] = {0,0,60,0,128,252,0,0};
+
+
+static const unsigned char *num_tab[10] = {
+	num_0,
+	num_1,
+	num_2,
+	num_3,
+	num_4,
+	num_5,
+	num_6,
+	num_7,
+	num_8,
+	num_9
+};
+
+static const unsigned char *num_tab_rev[10] = {
+	num_0_rev,
+	num_1_rev,
+	num_2_rev,
+	num_3_rev,
+	num_4_rev,
+	num_5_rev,
+	num_6_rev,
+	num_7_rev,
+	num_8_rev,
+	num_9_rev
+};
+
+static const unsigned char *step_text[6] = {
+		"Point",
+		"Line",
+		"Triangle",
+		"Square",
+		"Pentagon",
+		"Hexagon"
+	};
 
 
 void draw_game(Game_Data *data)
@@ -69,13 +136,57 @@ void draw_menu(Game_Data *data)
 }
 void draw_game_over(Game_Data *data)
 {
-	unsigned char time_text[32] = "";
-	sprintf(time_text, "%.2f", data->chrono_time);
+	const int time_y_position = 21;
+	const int time_border_y_position = time_y_position - 1;
+	const int time_bottom_border_y_position = time_border_y_position + 9;
+
+
+	const int level_y_position = 10;
+	const int level_border_y_position = level_y_position - 1;
+	const int level_bottom_border_y_position = level_border_y_position + 9;
+	const int x_offset = 2;
+	const int level_num_x_position = 44+2 + x_offset; // offset from level sprite
+
+	int time_length;
+	unsigned char int_time_text[32];
+	unsigned char decimal_text[32];
+	unsigned char level_text[2] = "0";
+	level_text[0] = getLevel(data) + '1';
+
+	sprintf(int_time_text, "%u", (int)data->chrono_time);
+	sprintf(decimal_text, ":%02u", (int)(data->chrono_time*100)%100);
+	time_length = time_length = 9*strlen(int_time_text);
+
 	fillBackground(data);
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
-	drawTopLeftCornerText(time_text, data->are_colors_reversed);
-	drawBottomLeftCornerText("Press Shift to retry", data->are_colors_reversed);
+
+
+	if(!data->are_colors_reversed) {
+
+		ML_rectangle(0, level_border_y_position, level_num_x_position + 9, level_bottom_border_y_position, 0, BLACK, BLACK);
+		ML_bmp_or(big_hex_border_left, level_num_x_position + 9, level_border_y_position, 5, 10);
+		ML_bmp_and(level_spr_rev, x_offset, level_y_position, 44, 8);
+
+		ML_rectangle(0, time_border_y_position, time_length + 3*4, time_bottom_border_y_position, 0, BLACK, BLACK);
+		ML_bmp_or(big_hex_border_left, time_length + 3*4, time_border_y_position, 5, 10);
+		PrintMini(time_length + x_offset, time_y_position, decimal_text, MINI_REV);
+	}
+	else {
+		ML_rectangle(0, level_border_y_position, level_num_x_position + 9, level_bottom_border_y_position, 0, WHITE, WHITE);
+		ML_bmp_and(big_hex_border_left_rev, level_num_x_position + 9 + 1, level_border_y_position, 4, 10);
+		ML_bmp_or(level_spr, x_offset, level_y_position, 44, 8);
+
+		ML_rectangle(0, time_border_y_position, time_length + 3*4, time_bottom_border_y_position, 0, WHITE, WHITE);
+		ML_bmp_and(big_hex_border_left_rev, time_length + 3*4 + 1, time_border_y_position, 4, 10);
+		PrintMini(time_length + x_offset, time_y_position, decimal_text, MINI_OVER);
+	}
+	draw_big_num(level_text, level_num_x_position, level_y_position, !data->are_colors_reversed);
+	draw_big_num(int_time_text, x_offset, time_y_position, !data->are_colors_reversed);
+	drawTopLeftCornerText(step_text[getLevel(data)], data->are_colors_reversed);
+
+
+	drawBottomRightCornerText("Shift to retry", data->are_colors_reversed);
 }
 
 static void fillBackground(Game_Data *data) {
@@ -123,15 +234,7 @@ static void drawChrono(Game_Data *data) {
 	}
 }
 
-static void drawStep(Game_Data *data) {
-	unsigned char *step_text[6] = {
-		"Point",
-		"Line",
-		"Triangle",
-		"Square",
-		"Pentagon",
-		"Hexagon"
-	};
+static int getLevel(Game_Data *data) {
 	unsigned short step_time[5] = {
 		10,
 		20,
@@ -148,19 +251,19 @@ static void drawStep(Game_Data *data) {
 			break;
 		}
 	}
-
-	drawTopRightCornerText(step_text[current_step], data->are_colors_reversed);
+	return current_step;
 }
+
 
 static void drawHud(Game_Data *data) {
 	drawChrono(data);
-	drawStep(data);
+	drawTopRightCornerText(step_text[getLevel(data)], data->are_colors_reversed);
 
 }
 
 static void drawPolygon(Game_Data *data, int nb_lines, Line_Transition line_transition) {
 	int x[32];
- 	int y[32];
+	int y[32];
 	int i = 0;
 	int angle = 0;
 
@@ -323,8 +426,7 @@ static unsigned int length_of_print_string(unsigned char* txt) {
 			case ']':
 			current_char_length = 3;
 			break;
-			//
-			//
+
 			default:
 			current_char_length = 4;
 			break;
@@ -391,3 +493,14 @@ static void drawBottomRightCornerText(unsigned char* txt, unsigned char isRevers
 	ML_horizontal_line(63, xPosition, 127, drawing_color);
 	PrintMini(xPosition, 57, txt, text_color);
 }
+
+static void draw_big_num(unsigned char *txt, int x, int y, unsigned char isReversed) {
+	int i;
+	for(i = 0; i < strlen(txt); i++) {
+		if(txt[i] >= '0' && txt[i] <= '9')
+			if(isReversed)
+				ML_bmp_8_and(num_tab_rev[txt[i] - '0'], x + 9*i, y);
+			else
+				ML_bmp_8_or(num_tab[txt[i] - '0'], x + 9*i, y);
+		}
+	}

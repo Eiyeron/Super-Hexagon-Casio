@@ -1,7 +1,7 @@
 #include "states.h"
 
 static void key_latch_update(Game_Data* data) {
-	data->shift_latch_value = KeyDown(K_SHIFT);
+	data->shift_latch_value = (KeyDown(K_EXE) || KeyDown(K_SHIFT));
 	data->alpha_latch_value = KeyDown(K_ALPHA);
 }
 
