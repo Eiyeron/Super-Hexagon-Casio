@@ -111,11 +111,13 @@ struct Game_Data{
 	unsigned int nb_entries;
 	unsigned int current_entry; //from 1 to 6
 	unsigned int current_entry_high_score;
-	char are_entries_loaded;
 	char **entry_difficulties; //a table of null-terminated strings
 	float *entry_highscores;
 	char it_s_a_highscore; // IT'S A HIGSCORE!
 	unsigned int keypress_delay;
+
+	char is_save_feature_enabled;
+	int fileHandle;
 };
 
 struct Pattern{

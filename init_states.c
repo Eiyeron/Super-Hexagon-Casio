@@ -1,5 +1,6 @@
 #include "init_states.h"
 #include "pattern.h"
+#include "fxlib.h"
 
 const unsigned char patternTest1[] = {
 	0x0F,    0x00, 0x60,
@@ -254,18 +255,6 @@ void init_menu(Game_Data *data)
 	data->nb_entries = 6;
 	data->current_entry = 1;
 	data->current_entry_high_score = 0; //to load from a save file
-	if(!data->are_entries_loaded) {
-		data->are_entries_loaded = 1;
-		data->entry_difficulties = NULL;
-		data->entry_highscores = NULL;
-		data->entry_difficulties = malloc(sizeof(char*) * 6);
-		data->entry_highscores = malloc(sizeof(float) * 6);
-		if(data->entry_difficulties == NULL || data->entry_highscores == NULL)
-			return;
-		for(i = 0; i < 6; i++)
-			data->entry_highscores[i] = 0.0f;
-		load_difficulty_names(data->entry_difficulties);
-	}
 }
 
 void init_game_over(Game_Data *data)
