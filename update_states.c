@@ -31,7 +31,7 @@ void update_game(Game_Data *data)
 
 	if(data->list != NULL) {
 	// if the linked list is not empty
-		updateWalls(data->list, min(data->current_time - data->last_time, 2));
+		updateWalls(data->list, data->current_time - data->last_time);
 		// update the linked list
 
 		// if the player and a wall collide

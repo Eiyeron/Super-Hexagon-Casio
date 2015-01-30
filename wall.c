@@ -144,8 +144,8 @@ bool isCollidingSide(Wall *list, int player_angle, int nb_lines) {
 					return true;
 				}
 			}
+			tmp = tmp->nxt;
 		}
-		tmp = tmp->nxt;
 	}while(tmp != NULL);
 	return false;
 
@@ -168,8 +168,8 @@ bool isColliding(Wall *list, int player_angle, int nb_lines)
 					return true;
 				}
 			}
+			tmp = tmp->nxt;
 		}
-		tmp = tmp->nxt;
 	}while(tmp != NULL);
 	return false;
 }

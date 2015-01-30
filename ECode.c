@@ -623,27 +623,64 @@ static void delay( void ) // Cette fonction n'est utilisée que pour KeyDown/Up, 
 }
 
 #ifdef EASY_KEY_DOWN
-#ifndef OS2Change
-#define OS2Change
-#ifndef OS2Change_GetOS2
-#define OS2Change_GetOS2
-typedef int(*sc_i2cp2sip)(char*, char*, short int*, short int*);
-const unsigned int sc0015[] = { 0xD201D002, 0x422B0009, 0x80010070, 0x0015 };
-#define GlibGetOSVersionInfo (*(sc_i2cp2sip)sc0015)
-int OSVersionAsInt(void)
+int GetMPU()
 {
-	unsigned char mainversion;
-	unsigned char minorversion;
-	unsigned short release;
-	unsigned short build;
-	GlibGetOSVersionInfo( &mainversion, &minorversion, &release, &build );
-	return ( ( mainversion << 24 ) & 0xFF000000 ) | ( ( minorversion << 16 ) & 0x00FF0000 ) | ( release & 0x0000FFFF );
+    int mpu;
+    unsigned char s[30];
+    unsigned int key;
+    unsigned char savevalue;
+    mpu = 0;
+    savevalue = *(unsigned short*)0xA4000114;
+    *(unsigned short*)0xA4000114 = 0xFFFF;
+    switch ( *(unsigned short*)0xA4000114 ){
+        case 0x0FFF :
+            mpu = 1;
+            break;
+
+        case 0x00FF :
+            mpu = 2;
+            break;
+
+        default :
+            switch ( *(unsigned int*)0xFF000030 & 0xFFFFFF00 ){
+                case 0x10300B00 :
+                    switch ( *(unsigned int*)0xFF000044 & 0xFFFFFFF0 ){
+                        case 0x00002C00 :
+                            mpu = 3;
+                            break;
+
+                        case 0x00002200 :
+                            mpu = 4;    // just for reference
+                            break;
+            };
+            break;
+        };
+        break;
+    };
+    *(unsigned short*)0xA4000114 = savevalue;
+
+    return mpu;
 }
-#define isOS2 (OSVersionAsInt() >= 0x02020000)
-#define OS2(x,y) ((isOS2)?y:x)
-#endif
-#ifndef OS2Change_Keyboard
-#define OS2Change_Keyboard
+
+int getCPUFamily()
+{
+    switch(GetMPU()){
+        case 3 :
+        case 4 :
+            return 0;
+            break;
+        case 2 :
+        case 1 :
+        case 5 : // mpu7705 ?
+            return 1;
+            break;
+        default :
+            return 2;
+    }
+}
+#define isSH4 (GetMPU() == 0)
+#define isSH3 (GetMPU() == 1)
+#define isEMU (GetMPU() == 2)
 
 unsigned char CheckKeyRow(unsigned char code)
 {
@@ -694,7 +731,7 @@ unsigned char KeyDown(unsigned char keycode)
 {
 	unsigned short key[8];
 	const unsigned short* keyboardregister = (unsigned short*)0xA44B0000;
-	if(isOS2)
+	if(isSH4)
 	{
 		unsigned char row = keycode%10;
 		memcpy(key, keyboardregister, sizeof(unsigned short) << 3);
@@ -706,24 +743,7 @@ unsigned char KeyDown(unsigned char keycode)
 		return CheckKeyRow((keycode % 10) + ((keycode / 10 - 1) << 4));
 	}
 }
-unsigned char GetKeyMod(unsigned int *key)
-{
-	unsigned char x, ret;
 
-	ret = GetKey(key);
-
-	for(x = 0; x < 80; x++)
-	{
-		if(KeyDown(x))
-		{
-			*key = x;
-			break;
-		}
-	}
-	return ret;
-}
-#endif
-#endif
 #endif
 
 #ifdef EASY_KEY_UP
