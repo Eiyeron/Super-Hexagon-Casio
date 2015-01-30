@@ -20,7 +20,7 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     // Key init
     data.shift_latch_value = 0;
     data.alpha_latch_value = 0;
-
+    data.are_entries_loaded = 0;
 
     switch_to_state(TITLE, &data);
 

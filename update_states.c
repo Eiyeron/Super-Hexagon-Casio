@@ -49,10 +49,17 @@ void update_game(Game_Data *data)
 		data->cooldown_timer = pattern.cooldown;
 	}
 
-	if(KeyDown(K_LEFT)) {
+	if(KeyDown(K_LEFT) && !isCollidingSide(data->list, data->player_angle, data->nb_lines)) {
 		data->player_angle = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+		// int newAngle = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
+		//if(isCollidingSide(data->list, newAngle, data->nb_lines))
+		//	data->player_angle = ((newAngle)/data->nb_lines)*data->nb_lines + 1;
+		//else
+		//data->player_angle = newAngle;
 	}
 	if(KeyDown(K_RIGHT)) {
+//		if(isCollidingSide(data->list, data->player_angle, data->nb_lines))
+//			else
 		data->player_angle = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
 	}
 
@@ -113,6 +120,7 @@ void update_menu(Game_Data *data)
 		else if(KeyDown(K_LEFT))
 		{
 			data->current_entry --;//change the selected id
+			data->chrono_time = data->entry_highscores[data->current_entry - 1];
 			if(data->current_entry == 0)//check for overflows
 				data->current_entry = 6;
 			data->keypress_delay = 15;//init the delay
@@ -123,6 +131,7 @@ void update_menu(Game_Data *data)
 		}else if(KeyDown(K_RIGHT))
 		{
 			data->current_entry ++;
+			data->chrono_time = data->entry_highscores[data->current_entry - 1];
 			if(data->current_entry == 7)
 				data->current_entry = 1;
 			data->keypress_delay = 15;
@@ -166,6 +175,7 @@ static void game_over(Game_Data *data) {
 		freePattern(&data->level->patterns[i]);
 	}
 	free(data->level);
+	data->level = NULL;
 
 	switch_to_state(GAME_OVER, data);
 }

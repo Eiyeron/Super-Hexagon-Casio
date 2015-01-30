@@ -16,7 +16,9 @@ static void drawChrono(Game_Data *data);
 static int getLevel(Game_Data *data);
 
 static unsigned int length_of_print_string(unsigned char* txt);
+static void drawTopLeftCornerTextOffset(unsigned char* txt, unsigned char isReversed, int y);
 static void drawTopLeftCornerText(unsigned char* txt, unsigned char isReversed);
+static void drawTopRightCornerTextOffset(unsigned char* txt, unsigned char isReversed, int y);
 static void drawTopRightCornerText(unsigned char* txt, unsigned char isReversed);
 static void drawBottomLeftCornerText(unsigned char* txt, unsigned char isReversed);
 static void drawBottomRightCornerText(unsigned char* txt, unsigned char isReversed);
@@ -120,18 +122,26 @@ void draw_title(Game_Data *data)
 
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
-	drawBottomLeftCornerText("Press Shift", data->are_colors_reversed);	
-	drawTopRightCornerText("By Eiyeron & Adbook", data->are_colors_reversed);	
+	drawBottomLeftCornerText("Press Shift", data->are_colors_reversed);
+	drawTopRightCornerText("By Eiyeron & Adbook", data->are_colors_reversed);
 }
 void draw_menu(Game_Data *data)
 {
+	char highscore_text[50] = {0};
+	sprintf(highscore_text, "Best time : %.2f", data->entry_highscores[data->current_entry - 1]);
 	fillBackground(data);
 	drawPolygon(data, data->nb_lines, data->line_transition);
 	drawDiagonals(data, data->nb_lines, data->line_transition);
+	drawPlayer(data, (360 - data->cam.angle + 270)%360);
 	drawTopRightCornerText(data->entry_difficulties[data->current_entry - 1], data->are_colors_reversed);
 	if(data->current_entry > 3) {
 		// Hyper Mode
-		drawBottomRightCornerText("Hyper Mode", data->are_colors_reversed);
+		drawTopLeftCornerText("Hyper Mode", data->are_colors_reversed);
+		drawTopLeftCornerTextOffset(highscore_text, data->are_colors_reversed, 8);
+		drawTopLeftCornerTextOffset(step_text[getLevel(data)], data->are_colors_reversed, 16);
+	} else {
+		drawTopRightCornerTextOffset(highscore_text, data->are_colors_reversed, 8);
+		drawTopRightCornerTextOffset(step_text[getLevel(data)], data->are_colors_reversed, 16);
 	}
 }
 void draw_game_over(Game_Data *data)
@@ -184,6 +194,9 @@ void draw_game_over(Game_Data *data)
 	draw_big_num(level_text, level_num_x_position, level_y_position, !data->are_colors_reversed);
 	draw_big_num(int_time_text, x_offset, time_y_position, !data->are_colors_reversed);
 	drawTopLeftCornerText(step_text[getLevel(data)], data->are_colors_reversed);
+	if(data->it_s_a_highscore) {
+		drawTopRightCornerText("New highscore!", data->are_colors_reversed);
+	}
 
 
 	drawBottomRightCornerText("Shift to retry", data->are_colors_reversed);
@@ -226,7 +239,7 @@ static void drawChrono(Game_Data *data) {
 		if(!data->are_colors_reversed) {
 			ML_bmp_8_or(hex_border_top_left, length_of_time_line, 0);
 		} else {
-			ML_bmp_8_and(hex_border_top_left_rev, length_of_time_line, 0);			
+			ML_bmp_8_and(hex_border_top_left_rev, length_of_time_line, 0);
 		}
 	}
 	else {
@@ -323,7 +336,7 @@ static void drawPlayer(Game_Data *data, int player_angle)
 {
 	ML_Color drawing_color = data->are_colors_reversed ? WHITE : BLACK;
 
-	ML_filled_circle((9. + data->cam.zoom)*cos( PI*(player_angle + data->cam.angle)/180) + data->cam.cX, (9. + data->cam.zoom)*sin( PI*(player_angle+data->cam.angle)/180) + data->cam.cY, 1, drawing_color);
+	ML_point((9. + data->cam.zoom)*cos( PI*(player_angle + data->cam.angle)/180) + data->cam.cX, (9. + data->cam.zoom)*sin( PI*(player_angle+data->cam.angle)/180) + data->cam.cY, 3, drawing_color);
 
 }
 
@@ -339,7 +352,7 @@ static void drawDiagonals(Game_Data *data, int nb_lines, Line_Transition line_tr
 
 	fix coeff = 0;
 	fix transition_angle = 0;
-	
+
 	ML_Color drawing_color = data->are_colors_reversed ? WHITE : BLACK;
 
 	delta_angle = fdiv(FIX(360), FIX(nb_lines));
@@ -418,12 +431,17 @@ static unsigned int length_of_print_string(unsigned char* txt) {
 			current_char_length = 6;
 			break;
 
+			case '!':
+			current_char_length = 2;
+			break;
+
 			case '&':
 			current_char_length = 5;
 			break;
 
 			case '[':
 			case ']':
+			case '.':
 			current_char_length = 3;
 			break;
 
@@ -436,34 +454,44 @@ static unsigned int length_of_print_string(unsigned char* txt) {
 	return text_length;
 }
 
-static void drawTopLeftCornerText(unsigned char* txt, unsigned char isReversed) {
+static void drawTopLeftCornerTextOffset(unsigned char* txt, unsigned char isReversed, int y) {
 	ML_Color drawing_color = isReversed ? WHITE : BLACK;
 	unsigned int text_color = isReversed ? MINI_OVER : MINI_REV;
 	unsigned int text_length = length_of_print_string(txt);
 	if(!isReversed) {
-		ML_bmp_8_or(hex_border_top_left, text_length, 0);
+		ML_bmp_8_or(hex_border_top_left, text_length, y);
 	} else {
-		ML_bmp_8_and(hex_border_top_left_rev, text_length, 0);
+		ML_bmp_8_and(hex_border_top_left_rev, text_length, y);
 	}
-	PrintMini(0, 1, txt, text_color);
+	PrintMini(0, y + 1, txt, text_color);
 
-	ML_horizontal_line(7, 0, text_length, drawing_color);
+	ML_horizontal_line(7 + y, 0, text_length, drawing_color);
+
 }
 
-static void drawTopRightCornerText(unsigned char* txt, unsigned char isReversed) {
+static void drawTopLeftCornerText(unsigned char* txt, unsigned char isReversed) {
+	drawTopLeftCornerTextOffset(txt, isReversed, 0);
+}
+
+static void drawTopRightCornerTextOffset(unsigned char* txt, unsigned char isReversed, int y) {
 	ML_Color drawing_color = isReversed ? WHITE : BLACK;
 	unsigned int text_color = isReversed ? MINI_OVER : MINI_REV;
 	int text_length = length_of_print_string(txt);
 	int xPosition = 128 - text_length;
 	if(!isReversed) {
-		ML_bmp_8_or(hex_border_top_right, xPosition - 8, 0);	
+		ML_bmp_8_or(hex_border_top_right, xPosition - 8, y);
 	} else {
-		ML_bmp_8_and(hex_border_top_right_rev, xPosition - 8, 0);	
+		ML_bmp_8_and(hex_border_top_right_rev, xPosition - 8, y);
 
 	}
-	PrintMini(xPosition, 1, txt, text_color);
+	PrintMini(xPosition, y + 1, txt, text_color);
 
-	ML_horizontal_line(7, xPosition, 127, drawing_color);
+	ML_horizontal_line(7 + y, xPosition, 127, drawing_color);
+}
+
+
+static void drawTopRightCornerText(unsigned char* txt, unsigned char isReversed) {
+	drawTopRightCornerTextOffset(txt, isReversed, 0);
 }
 
 static void drawBottomLeftCornerText(unsigned char* txt, unsigned char isReversed) {
@@ -488,7 +516,7 @@ static void drawBottomRightCornerText(unsigned char* txt, unsigned char isRevers
 	if(!isReversed) {
 		ML_bmp_8_or(hex_border_bottom_right, xPosition - 8, 56);
 	} else {
-		ML_bmp_8_and(hex_border_bottom_right_rev, xPosition - 8, 56);		
+		ML_bmp_8_and(hex_border_bottom_right_rev, xPosition - 8, 56);
 	}
 	ML_horizontal_line(63, xPosition, 127, drawing_color);
 	PrintMini(xPosition, 57, txt, text_color);

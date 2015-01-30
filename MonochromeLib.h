@@ -28,7 +28,7 @@
 //#define ML_GET_CONTRAST
 
 #define ML_PIXEL
-//#define ML_POINT
+#define ML_POINT
 //#define ML_PIXEL_TEST
 
 #define ML_LINE

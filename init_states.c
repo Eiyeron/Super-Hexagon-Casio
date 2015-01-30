@@ -130,12 +130,19 @@ void init_game(Game_Data *data)
 //TODO: init the level depending on the value of data->current_entry
 	data->level = NULL;
 	data->level = malloc(sizeof(Level));
-	if(data->level == NULL)
+	if(data->level == NULL) {
+		switch_to_state(data, TITLE);
 		return;
+	}
 
 	data->level->id = 1;
 
 	data->level->patterns = malloc(7*sizeof(Pattern));
+	if(data->level->patterns == NULL) {
+		free(data->level);
+		switch_to_state(data, TITLE);
+		return;
+	}
 	readPattern(&data->level->patterns[0], patternTest1);
 	readPattern(&data->level->patterns[1], patternTest2);
 	readPattern(&data->level->patterns[2], patternTest3);
@@ -181,6 +188,7 @@ void init_game(Game_Data *data)
 	data->line_transition.counter_start = 0;
 	data->line_transition.delta_nb_lines = 0;
 	data->cooldown_timer = 16;
+	data->it_s_a_highscore = 0;
 }
 
 void init_title(Game_Data *data)
@@ -230,6 +238,7 @@ memcpy(str_list[5], c_6, sizeof(char) * strlen(c_6));
 
 void init_menu(Game_Data *data)
 {
+	int i;
 
 	data->cam.cX = 64;
 	data->cam.cY = 70;
@@ -245,11 +254,18 @@ void init_menu(Game_Data *data)
 	data->nb_entries = 6;
 	data->current_entry = 1;
 	data->current_entry_high_score = 0; //to load from a save file
-	data->entry_difficulties = NULL;
-	data->entry_difficulties = malloc(sizeof(char*) * 6);
-	if(data->entry_difficulties == NULL)
-		return;
-	load_difficulty_names(data->entry_difficulties);
+	if(!data->are_entries_loaded) {
+		data->are_entries_loaded = 1;
+		data->entry_difficulties = NULL;
+		data->entry_highscores = NULL;
+		data->entry_difficulties = malloc(sizeof(char*) * 6);
+		data->entry_highscores = malloc(sizeof(float) * 6);
+		if(data->entry_difficulties == NULL || data->entry_highscores == NULL)
+			return;
+		for(i = 0; i < 6; i++)
+			data->entry_highscores[i] = 0.0f;
+		load_difficulty_names(data->entry_difficulties);
+	}
 }
 
 void init_game_over(Game_Data *data)
@@ -265,4 +281,8 @@ void init_game_over(Game_Data *data)
 	data->line_transition.counter_start = 0;
 	data->line_transition.delta_nb_lines = 0;
 
+	if(data->chrono_time > data->entry_highscores[data->current_entry - 1]) {
+		data->it_s_a_highscore = 1;
+		data->entry_highscores[data->current_entry - 1] = data->chrono_time;
+	}
 }

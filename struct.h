@@ -46,7 +46,7 @@ struct Level{
 	float cam_min_speed;
 
 	float fast_spin_probability; // very low, there sometimes is a slightly faster spin for one second, then a normal spin. This is the number that allow us to generate it
-	
+
 	// for the line number changes (lc prefix):
 	int lc_min_score; // minimum score in seconds to reach before any line number change occurs
 	float lc_probability;
@@ -111,7 +111,10 @@ struct Game_Data{
 	unsigned int nb_entries;
 	unsigned int current_entry; //from 1 to 6
 	unsigned int current_entry_high_score;
+	char are_entries_loaded;
 	char **entry_difficulties; //a table of null-terminated strings
+	float *entry_highscores;
+	char it_s_a_highscore; // IT'S A HIGSCORE!
 	unsigned int keypress_delay;
 };
 
