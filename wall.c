@@ -129,28 +129,6 @@ void drawWalls(Wall *list, Game_Data *data, int nb_lines, Line_Transition line_t
 }
 
 
-// Tests if the players hits a wall by its sides and not only by being crushed under it.
-bool isCollidingSide(Wall *list, int player_angle, int nb_lines) {
-	Wall *tmp;
-	tmp = list;
-
-	do{
-		if(tmp != NULL)
-		{
-			if(tmp-> d <= 8+tmp->h + 2)
-			{	// and is on the same line than the player
-				if(tmp->line == (int)(player_angle/ (360 / nb_lines)) && tmp->line < nb_lines)
-				{
-					return true;
-				}
-			}
-			tmp = tmp->nxt;
-		}
-	}while(tmp != NULL);
-	return false;
-
-}
-
 // tests every Wall in the list
 bool isColliding(Wall *list, int player_angle, int nb_lines)
 {

@@ -49,17 +49,10 @@ void update_game(Game_Data *data)
 		data->cooldown_timer = pattern.cooldown;
 	}
 
-	if(KeyDown(K_LEFT) && !isCollidingSide(data->list, data->player_angle, data->nb_lines)) {
+	if(KeyDown(K_LEFT)) {
 		data->player_angle = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		// int newAngle = data->player_angle - data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
-		//if(isCollidingSide(data->list, newAngle, data->nb_lines))
-		//	data->player_angle = ((newAngle)/data->nb_lines)*data->nb_lines + 1;
-		//else
-		//data->player_angle = newAngle;
 	}
 	if(KeyDown(K_RIGHT)) {
-//		if(isCollidingSide(data->list, data->player_angle, data->nb_lines))
-//			else
 		data->player_angle = data->player_angle + data->level->player_rotation_speed *  (data->current_time - data->last_time)*FRAME_TIME;
 	}
 
