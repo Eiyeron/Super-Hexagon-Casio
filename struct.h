@@ -24,6 +24,13 @@ typedef struct Line_Transition Line_Transition;
 typedef struct Game_Data Game_Data;
 typedef struct Pattern Pattern;
 typedef enum {GAME, MENU, TITLE, GAME_OVER, OUT_OF_MEMORY} State;
+typedef struct SaveData SaveData;
+
+
+struct SaveData{
+    unsigned int levelUnlocked;
+    float highscores[6];
+};
 
 struct Level{
 

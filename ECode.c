@@ -678,9 +678,8 @@ int getCPUFamily()
             return 2;
     }
 }
-#define isSH4 (GetMPU() == 0)
-#define isSH3 (GetMPU() == 1)
-#define isEMU (GetMPU() == 2)
+#define isSH4 (GetMPU() == 1)
+#define isSH3 (GetMPU() == 0)
 
 unsigned char CheckKeyRow(unsigned char code)
 {

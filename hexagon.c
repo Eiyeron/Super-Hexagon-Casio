@@ -7,6 +7,9 @@
 #include "syscall.h"
 #include "states.h"
 
+static const FONTCHARACTER filename[] = {'\\', '\\', 'f', 'l', 's', '0', '\\', 'S', 'H', 'C', '.', 's', 'a', 'v', 0};
+static const unsigned int filesize = sizeof(SaveData);
+
 void load_difficulty_names(char **str_list)
 {
     char c_1[] = "Hard";
@@ -35,13 +38,41 @@ void load_difficulty_names(char **str_list)
     memcpy(str_list[5], c_6, sizeof(char) * strlen(c_6));
 }
 
+
+
+void loadDataFromSave(Game_Data* data) {
+    int i, hasLoadedSave;
+    SaveData dataLoaded;
+    hasLoadedSave = 0;
+    data->fileHandle = Bfile_OpenFile(filename, _OPENMODE_READ);
+    if(data->fileHandle>= 0) {
+        hasLoadedSave = 1;
+        //(char*)data->entry_highscores
+        if(Bfile_ReadFile(data->fileHandle, &dataLoaded, sizeof(dataLoaded), -1) < sizeof(dataLoaded))
+            hasLoadedSave = 0;
+        else {
+            Bfile_CloseFile(data->fileHandle);
+            Bfile_DeleteFile(filename);
+        }
+    }
+
+    if(!hasLoadedSave) {
+        for(i = 0; i < 6; i++) {
+            data->entry_highscores[i] = 0.0f;
+        }
+    } else {
+        for(i = 0; i < 6; i++) {
+            data->entry_highscores[i] = dataLoaded.highscores[i];
+        }
+    }
+
+}
+
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
-    const FONTCHARACTER filename[] = {'\\', '\\', 'f', 'l', 's', '0', '\\', 'S', 'H', 'C', '.', 's', 'a', 'v', 0};
-    const filesize = sizeof(float) * 6;
-    Game_Data data;
+    SaveData dataToSave;
     int i;
-    float buffer[6] = {0};
+    Game_Data data;
 	// variables for fps calculation
     unsigned int fps = 0, frame = 0, tempsOrigine = RTC_GetTicks();
 	// char string to display the fps
@@ -59,31 +90,14 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         switch_to_state(OUT_OF_MEMORY, &data);
 
 
-    data.is_save_feature_enabled = 1;
-    data.fileHandle = Bfile_OpenFile(filename, _OPENMODE_READ);
-    if(data.fileHandle == IML_FILEERR_ENTRYNOTFOUND) {
-    } else if(data.fileHandle>= 0) {
-        if(Bfile_ReadFile(data.fileHandle, (char*)data.entry_highscores, filesize, -1) < 0)
-            data.is_save_feature_enabled = 0;
-        Bfile_CloseFile(data.fileHandle);
-        Bfile_DeleteFile(filename);
-    } else
-    data.is_save_feature_enabled = 0;
-
-
-    if(!data.is_save_feature_enabled){
-        for(i = 0; i < 6; i++) {
-            data.entry_highscores[i] = 0.0f;
-        }
-    }
-
     data.entry_difficulties = NULL;
     data.entry_difficulties = malloc(sizeof(char*) * 6);
     if(data.entry_difficulties == NULL)
-        return 1;
+        switch_to_state(OUT_OF_MEMORY, &data);
     load_difficulty_names(data.entry_difficulties);
 
 
+    loadDataFromSave(&data);
     switch_to_state(TITLE, &data);
 
 
@@ -110,12 +124,14 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
         Sleep(1/0.06);
     }
 
-    if(data.is_save_feature_enabled) {
-        Bfile_CreateFile(filename, filesize);
-        data.fileHandle = Bfile_OpenFile(filename, _OPENMODE_WRITE);
-        Bfile_WriteFile(data.fileHandle, (char*)data.entry_highscores, filesize);
+    for(i = 0; i < 6; ++i)
+        dataToSave.highscores[i] = data.entry_highscores[i];
+    Bfile_CreateFile(filename, filesize);
+    data.fileHandle = Bfile_OpenFile(filename, _OPENMODE_WRITE);
+    if(data.fileHandle >= 0) {
+        Bfile_WriteFile(data.fileHandle, &dataToSave, filesize);
         Bfile_CloseFile(data.fileHandle);
-   }
+    }
 
     free(data.entry_highscores);
 
