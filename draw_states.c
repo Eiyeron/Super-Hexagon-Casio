@@ -202,6 +202,15 @@ void draw_game_over(Game_Data *data)
 	drawBottomRightCornerText("Shift to retry", data->are_colors_reversed);
 }
 
+void draw_oom(Game_Data* data) {
+	fillBackground(data);
+	drawPolygon(data, data->nb_lines, data->line_transition);
+	drawDiagonals(data, data->nb_lines, data->line_transition);
+	drawTopRightCornerText("Oops! Out of Memory", data->are_colors_reversed);
+	drawTopRightCornerTextOffset("Your progress will be saved.", data->are_colors_reversed, 8);
+	drawBottomLeftCornerText("Press EXIT to quit.", data->are_colors_reversed);
+}
+
 static void fillBackground(Game_Data *data) {
 	if(data->are_colors_reversed) {
 		int i, end, *pointer_long, vram;
@@ -441,9 +450,11 @@ static unsigned int length_of_print_string(unsigned char* txt) {
 
 			case '[':
 			case ']':
-			case '.':
+			/*case '.':*/
+			case '\'':
 			current_char_length = 3;
 			break;
+
 
 			default:
 			current_char_length = 4;

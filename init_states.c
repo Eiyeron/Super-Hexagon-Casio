@@ -129,10 +129,11 @@ const unsigned char patternTest7[] = {
 void init_game(Game_Data *data)
 {
 //TODO: init the level depending on the value of data->current_entry
+	int i;
 	data->level = NULL;
 	data->level = malloc(sizeof(Level));
 	if(data->level == NULL) {
-		switch_to_state(data, TITLE);
+		switch_to_state(data, OUT_OF_MEMORY);
 		return;
 	}
 
@@ -141,7 +142,7 @@ void init_game(Game_Data *data)
 	data->level->patterns = malloc(7*sizeof(Pattern));
 	if(data->level->patterns == NULL) {
 		free(data->level);
-		switch_to_state(data, TITLE);
+		switch_to_state(data, OUT_OF_MEMORY);
 		return;
 	}
 	readPattern(&data->level->patterns[0], patternTest1);
@@ -152,6 +153,17 @@ void init_game(Game_Data *data)
 	readPattern(&data->level->patterns[5], patternTest6);
 	readPattern(&data->level->patterns[6], patternTest7);
 	data->level->nb_patterns = 7;
+	for(i = 0; i < data->level->nb_patterns; ++i) {
+		if(&data->level->patterns[i] == NULL) {
+			int j;
+			for(j = 0; j < i; ++j) {
+				free(&data->level->patterns[j]);
+			}
+			free(&data->level);
+			switch_to_state(data, OUT_OF_MEMORY);
+			return;
+		}
+	}
 
 	data->level->player_rotation_speed = 60;
 
@@ -211,32 +223,6 @@ void init_title(Game_Data *data)
 	data->line_transition.delta_nb_lines = 0;
 }
 
-void load_difficulty_names(char **str_list)
-{
-	char c_1[] = "Hard";
-	char c_2[] = "Harder";
-	char c_3[] = "Hardest";
-	char c_4[] = "Hardester";
-	char c_5[] = "Hardestest";
-	char c_6[] = "Hardestestest";
-	int i = 0;
-	int j = 0;
-	for(i = 0; i < 6; i++)
-	{
-		str_list[i] = NULL;
-		str_list[i] = malloc(sizeof(char) * 24);
-		if(str_list[i] == NULL)
-			return;
-		for(j = 0; j < 24; str_list[i][j] = 0, j++);
-	}
-memcpy(str_list[0], c_1, sizeof(char) * strlen(c_1));
-memcpy(str_list[1], c_2, sizeof(char) * strlen(c_2));
-memcpy(str_list[2], c_3, sizeof(char) * strlen(c_3));
-memcpy(str_list[3], c_4, sizeof(char) * strlen(c_4));
-memcpy(str_list[4], c_5, sizeof(char) * strlen(c_5));
-memcpy(str_list[5], c_6, sizeof(char) * strlen(c_6));
-}
-
 void init_menu(Game_Data *data)
 {
 	int i;
@@ -274,4 +260,22 @@ void init_game_over(Game_Data *data)
 		data->it_s_a_highscore = 1;
 		data->entry_highscores[data->current_entry - 1] = data->chrono_time;
 	}
+}
+
+void init_oom(Game_Data *data) {
+	data->cam.cX = 0;
+	data->cam.cY = 0;
+	data->cam.speed = -1;
+	data->cam.zoom = 25;
+
+	data->nb_lines = 6;
+	data->line_transition.counter = 0;
+	data->line_transition.counter_start = 0;
+	data->line_transition.delta_nb_lines = 0;
+
+	if(data->chrono_time > data->entry_highscores[data->current_entry - 1]) {
+		data->it_s_a_highscore = 1;
+		data->entry_highscores[data->current_entry - 1] = data->chrono_time;
+	}
+
 }

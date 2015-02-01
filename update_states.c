@@ -146,6 +146,12 @@ void update_menu(Game_Data *data)
 
 }
 
+void update_oom(Game_Data *data) {
+	data->last_time = data->current_time;
+	data->current_time = RTC_GetTicks();
+	updateCamera(&(data->cam), data->current_time - data->last_time);
+}
+
 void updateCamera(Camera *cam, unsigned int delta_time){
 	cam->angle += (int)(cam->speed * delta_time / 2.);
 	if(cam->angle < 0) cam->angle += 360;
@@ -172,3 +178,4 @@ static void game_over(Game_Data *data) {
 
 	switch_to_state(GAME_OVER, data);
 }
+
