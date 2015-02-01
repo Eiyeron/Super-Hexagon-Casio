@@ -678,8 +678,10 @@ int getCPUFamily()
             return 2;
     }
 }
-#define isSH4 (GetMPU() == 1)
-#define isSH3 (GetMPU() == 0)
+
+#define isEMU (GetMPU() == 2)
+#define isSH3 (GetMPU() == 1)
+#define isSH4 (GetMPU() == 0)
 
 unsigned char CheckKeyRow(unsigned char code)
 {
@@ -730,17 +732,17 @@ unsigned char KeyDown(unsigned char keycode)
 {
 	unsigned short key[8];
 	const unsigned short* keyboardregister = (unsigned short*)0xA44B0000;
-	if(isSH4)
-	{
-		unsigned char row = keycode%10;
-		memcpy(key, keyboardregister, sizeof(unsigned short) << 3);
-
+	unsigned char row;
+		if(isSH4)
+        {
+		memcpy(&key, keyboardregister, sizeof(unsigned short) << 3);
+		row = keycode%10;
 		return (0 != (key[row >> 1] & 1 << keycode / 10 - 1 + ((row & 1) << 3)));
-	}
+        }
 	else
-	{
-		return CheckKeyRow((keycode % 10) + ((keycode / 10 - 1) << 4));
-	}
+        {
+        return CheckKeyRow((keycode % 10) + ((keycode / 10 - 1) << 4));
+        }
 }
 
 #endif

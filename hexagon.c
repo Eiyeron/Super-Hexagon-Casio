@@ -100,6 +100,14 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     loadDataFromSave(&data);
     switch_to_state(TITLE, &data);
 
+    {
+        char machin[] = "0";
+        machin[0] = GetMPU() + '0';
+        locate(1,1);
+        Print(machin);
+        GetKey(&i);
+
+    }
 
     while(KeyUp(K_EXIT)){ // main loop
         // fps
